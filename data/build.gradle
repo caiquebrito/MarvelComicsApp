@@ -1,0 +1,59 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply from: '../tools/jacoco.gradle'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "MARVEL_API_PUB_KEY", "\"e2d714ad0eec8dd9251fb6e340d1d20d\"")
+        buildConfigField("String", "MARVEL_API_PRI_KEY", "\"a8265201786d1e2ba7888cc2a3f7aaae22efd3ea\"")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(path: ':entity')
+    implementation project(path: ':infrastructure')
+    // kotlin s
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    // rxjava
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+    //dagger
+    implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    // jUnit
+    testImplementation "junit:junit:$rootProject.ext.jUnitVersion"
+
+    // Mockito
+    testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+    testImplementation "com.nhaarman:mockito-kotlin:$rootProject.ext.mockitoKotlinVersion"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+}
