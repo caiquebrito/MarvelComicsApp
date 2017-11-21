@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 
 import com.marvelcomics.brito.domain.character.CharactersUseCase;
 import com.marvelcomics.brito.infrastructure.di.SchedulersProvider;
-import com.marvelcomics.brito.marvelcomics.ui.HomeActivity;
+import com.marvelcomics.brito.marvelcomics.ui.activity.HomeActivity;
 import com.marvelcomics.brito.presentation.viewmodel.home.HomeViewModel;
 
 import dagger.Module;

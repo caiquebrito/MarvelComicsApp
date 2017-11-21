@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="character"
+            type="com.marvelcomics.brito.entity.CharacterEntity"/>
+    </data>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:background="@color/marvel_black"
+            tools:context="com.marvelcomics.brito.marvelcomics.ui.fragment.CharacterFragment">
+
+            <View
+                android:id="@+id/view_separator"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/marvel_white"/>
+
+            <TextView
+                android:id="@+id/textview_fragment_character_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/marvel_white"
+                android:text="@{character.name}"
+                app:layout_constraintTop_toBottomOf="@id/view_separator"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:text="HULK"/>
+
+            <ImageView
+                android:id="@+id/imageview_fragment_character"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="fitXY"
+                android:src="@{character}"
+                tools:background="@color/marvel_white"
+                app:layout_constraintTop_toBottomOf="@id/textview_fragment_character_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/textview_fragment_character_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textColor="@color/marvel_white"
+                android:textSize="16sp"
+                android:text="@{character.description}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageview_fragment_character"
+                app:layout_constraintTop_toBottomOf="@id/textview_fragment_character_name"
+                tools:text="Hulk Smash!!! " />
+        </android.support.constraint.ConstraintLayout>
+</layout>

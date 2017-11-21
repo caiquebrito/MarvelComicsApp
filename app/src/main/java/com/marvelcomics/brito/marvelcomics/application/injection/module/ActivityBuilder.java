@@ -1,7 +1,7 @@
 package com.marvelcomics.brito.marvelcomics.application.injection.module;
 
 import com.marvelcomics.brito.marvelcomics.application.injection.module.activity.HomeModule;
-import com.marvelcomics.brito.marvelcomics.ui.HomeActivity;
+import com.marvelcomics.brito.marvelcomics.ui.activity.HomeActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

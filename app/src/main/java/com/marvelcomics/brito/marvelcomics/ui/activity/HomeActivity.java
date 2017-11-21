@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.marvelcomics.ui;
+package com.marvelcomics.brito.marvelcomics.ui.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -6,12 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 
 import com.marvelcomics.brito.entity.CharacterEntity;
-import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.ActivityHomeBinding;
+import com.marvelcomics.brito.marvelcomics.ui.fragment.CharacterFragment;
 import com.marvelcomics.brito.presentation.ResourceModel;
 import com.marvelcomics.brito.presentation.viewmodel.home.HomeViewModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -68,21 +67,20 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case SUCCESS:
                 List<CharacterEntity> characterResource = listResourceModel.getData();
-                updateViewWithCharacterInfo(characterResource.get(0));
+                //TODO Tratar quando vir result vazio
+                instantiateCharacterFragment(characterResource.get(0));
                 break;
             case ERROR:
-                binding.textviewMarvelCharacterResult.setText("Error Marvel API: " + listResourceModel.getMessage());
+                //binding.textviewMarvelCharacterResult.setText("Error Marvel API: " + listResourceModel.getMessage());
                 break;
             default:
                 // do nothing
         }
     }
 
-    private void updateViewWithCharacterInfo(CharacterEntity characterEntity) {
-        binding.textviewMarvelCharacterResult.setText(characterEntity.getDescription());
-        Picasso.with(this)
-                .load(
-                        characterEntity.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Full.FULLSIZE))
-                .into(binding.imageviewMarvelCharacterResult);
+    private void instantiateCharacterFragment(CharacterEntity characterEntity) {
+        CharacterFragment fragment = CharacterFragment.newInstance(characterEntity);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home_character,
+                fragment, fragment.getClass().getSimpleName()).commit();
     }
 }
