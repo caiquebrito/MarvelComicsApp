@@ -45,4 +45,13 @@ public class ComicEntity {
     public void setThumbnailEntity(ThumbnailEntity thumbnailEntity) {
         this.thumbnailEntity = thumbnailEntity;
     }
+
+    public String getFullUrlThumbnailWithAspect(String aspect) {
+        ThumbnailEntity thumb = this.getThumbnailEntity();
+        if (aspect.isEmpty()) {
+            return thumb.getPath() + "." + thumb.getExtension();
+        } else {
+            return thumb.getPath() + "/" + aspect + "." + thumb.getExtension();
+        }
+    }
 }

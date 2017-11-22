@@ -10,11 +10,14 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public class MarvelApplication extends Application implements HasActivityInjector {
+public class MarvelApplication extends Application implements HasActivityInjector, HasSupportFragmentInjector {
 
     @Inject
-    DispatchingAndroidInjector<Activity> injector;
+    DispatchingAndroidInjector<Activity> injectorActivity;
+    @Inject
+    DispatchingAndroidInjector<android.support.v4.app.Fragment> injectorFragment;
 
     @Override
     public void onCreate() {
@@ -24,7 +27,12 @@ public class MarvelApplication extends Application implements HasActivityInjecto
 
     @Override
     public AndroidInjector<Activity> activityInjector() {
-        return injector;
+        return injectorActivity;
+    }
+
+    @Override
+    public AndroidInjector<android.support.v4.app.Fragment> supportFragmentInjector() {
+        return injectorFragment;
     }
 
     protected void buildTopLevelDependenciesGraph() {

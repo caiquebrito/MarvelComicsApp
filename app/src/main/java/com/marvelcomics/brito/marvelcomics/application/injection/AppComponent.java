@@ -5,6 +5,7 @@ import android.app.Application;
 import com.marvelcomics.brito.marvelcomics.application.MarvelApplication;
 import com.marvelcomics.brito.marvelcomics.application.injection.module.ActivityBuilder;
 import com.marvelcomics.brito.marvelcomics.application.injection.module.AppModule;
+import com.marvelcomics.brito.marvelcomics.application.injection.module.FragmentBuilder;
 import com.marvelcomics.brito.marvelcomics.application.injection.module.InfrastructureModule;
 import com.marvelcomics.brito.marvelcomics.application.injection.module.RepositoryModule;
 import com.marvelcomics.brito.marvelcomics.application.injection.module.WebServiceModule;
@@ -20,6 +21,7 @@ import dagger.android.AndroidInjectionModule;
         modules = {
                 AndroidInjectionModule.class,
                 ActivityBuilder.class,
+                FragmentBuilder.class,
                 AppModule.class,
                 WebServiceModule.class,
                 InfrastructureModule.class,

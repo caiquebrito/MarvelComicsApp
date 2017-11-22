@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewFragment"
+            type="com.marvelcomics.brito.marvelcomics.ui.fragment.comics.ComicsFragment"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:background="@color/marvel_black"
+        tools:context="com.marvelcomics.brito.marvelcomics.ui.fragment.CharacterFragment">
+
+        <View
+            android:id="@+id/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/marvel_white"/>
+
+        <TextView
+            android:id="@+id/textview_fragment_comics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/marvel_white"
+            android:text="Comics"
+            app:layout_constraintTop_toBottomOf="@id/view_separator"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_fragment_comic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            tools:background="@color/marvel_white"
+            app:layout_constraintTop_toBottomOf="@id/textview_fragment_comics"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

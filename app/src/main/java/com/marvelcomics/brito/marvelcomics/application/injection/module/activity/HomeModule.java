@@ -14,7 +14,7 @@ import dagger.Provides;
 public class HomeModule {
 
     @Provides
-    static HomeViewModel providesLoginViewModel(
+    static HomeViewModel providesHomeViewModel(
             HomeActivity homeActivity,
             CharactersUseCase charactersUseCase,
             SchedulersProvider provider) {
