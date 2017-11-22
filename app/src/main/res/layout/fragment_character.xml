@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:background="@color/marvel_black"
-            tools:context="com.marvelcomics.brito.marvelcomics.ui.fragment.CharacterFragment">
+            tools:context="com.marvelcomics.brito.marvelcomics.ui.fragment.character.CharacterFragment">
 
             <View
                 android:id="@+id/view_separator"

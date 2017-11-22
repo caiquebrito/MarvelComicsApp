@@ -10,16 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:background="@color/marvel_black"
-        tools:context="com.marvelcomics.brito.marvelcomics.ui.fragment.character.CharacterFragment">
+        tools:context="com.marvelcomics.brito.marvelcomics.ui.fragment.series.SeriesFragment">
 
         <View
-            android:id="@+id/view_separator"
+            android:id="@+id/view_separator_top"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:background="@color/marvel_white"/>
+            android:background="@color/marvel_white"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textview_fragment_comics"
+            android:id="@+id/textview_fragment_series"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -28,18 +29,26 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/marvel_white"
-            android:text="Comics"
-            app:layout_constraintTop_toBottomOf="@id/view_separator"
+            android:text="Series"
+            app:layout_constraintTop_toBottomOf="@id/view_separator_top"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_fragment_comic"
+            android:id="@+id/recyclerview_fragment_series"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             tools:background="@color/marvel_white"
-            app:layout_constraintTop_toBottomOf="@id/textview_fragment_comics"
+            app:layout_constraintTop_toBottomOf="@id/textview_fragment_series"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <View
+            android:id="@+id/view_separator_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/marvel_white"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_fragment_series"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 </layout>

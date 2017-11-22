@@ -9,8 +9,9 @@ import android.support.v7.widget.SearchView;
 import com.marvelcomics.brito.entity.CharacterEntity;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.ActivityHomeBinding;
-import com.marvelcomics.brito.marvelcomics.ui.fragment.CharacterFragment;
+import com.marvelcomics.brito.marvelcomics.ui.fragment.character.CharacterFragment;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.comics.ComicsFragment;
+import com.marvelcomics.brito.marvelcomics.ui.fragment.series.SeriesFragment;
 import com.marvelcomics.brito.presentation.ResourceModel;
 import com.marvelcomics.brito.presentation.viewmodel.home.HomeViewModel;
 
@@ -70,9 +71,10 @@ public class HomeActivity extends AppCompatActivity {
             case SUCCESS:
                 List<CharacterEntity> characterResource = listResourceModel.getData();
                 if (!characterResource.isEmpty()) {
-                    instantiateCharacterFragment(characterResource.get(0));
-                    instantiateComicsFragment(characterResource.get(0).getId());
-                    instantiateSeriesFragment();
+                    CharacterEntity character = characterResource.get(0);
+                    instantiateCharacterFragment(character);
+                    instantiateComicsFragment(character.getId());
+                    instantiateSeriesFragment(character.getId());
                 } else {
                     //TODO DialogAlert
                 }
@@ -96,8 +98,9 @@ public class HomeActivity extends AppCompatActivity {
         commitFragment(R.id.fragment_home_comics, fragment);
     }
 
-    private void instantiateSeriesFragment() {
-
+    private void instantiateSeriesFragment(int id) {
+        SeriesFragment fragment = SeriesFragment.newInstance(id);
+        commitFragment(R.id.fragment_home_series, fragment);
     }
 
     private void commitFragment(int containerId, Fragment fragment) {

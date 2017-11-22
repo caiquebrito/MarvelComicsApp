@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.marvelcomics.ui.fragment;
+package com.marvelcomics.brito.marvelcomics.ui.fragment.character;
 
 
 import android.databinding.BindingAdapter;
