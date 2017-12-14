@@ -3,15 +3,17 @@ package com.marvelcomics.brito.domain;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public abstract class UseCase<P,R> {
+public abstract class UseCase<Parameter, Repository> {
 
-    protected abstract Observable<R> createObservable(P data);
+    protected abstract Observable<Repository> createObservable(Parameter data);
 
-    public void execute(P data, Scheduler subscriberScheduler, Scheduler observerScheduler, Observer<R> observer) {
+    public void execute(Parameter data, Observer<Repository> observer) {
         createObservable(data)
-                .subscribeOn(subscriberScheduler)
-                .observeOn(observerScheduler)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
 }
