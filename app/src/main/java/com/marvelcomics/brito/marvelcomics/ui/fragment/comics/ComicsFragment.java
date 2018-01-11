@@ -1,10 +1,10 @@
 package com.marvelcomics.brito.marvelcomics.ui.fragment.comics;
 
+import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.marvelcomics.brito.entity.ComicEntity;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.FragmentComicsBinding;
+import com.marvelcomics.brito.marvelcomics.ui.ResourceModelHandler;
+import com.marvelcomics.brito.marvelcomics.ui.fragment.BaseFragment;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.ItemOffSetDecorationHorizontal;
 import com.marvelcomics.brito.presentation.ResourceModel;
 import com.marvelcomics.brito.presentation.viewmodel.comics.ComicsViewModel;
@@ -23,7 +25,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
-public class ComicsFragment extends Fragment {
+public class ComicsFragment extends BaseFragment implements ResourceModelHandler.ResourceModelListener<ResourceModel<List<ComicEntity>>> {
 
     private static final String ARGUMENT_CHARACTER_ID = "character_id_args";
     private int characterId;
@@ -55,33 +57,33 @@ public class ComicsFragment extends Fragment {
         observeComics();
     }
 
-    private void observeComics() {
-        comicsViewModel.loadComics(characterId).observe(this, listResourceModel -> {
-            if (listResourceModel != null) {
-                handleComicsResult(listResourceModel);
-            }
-        });
+    @Override
+    public void onSuccessState(ResourceModel<List<ComicEntity>> resourceModel) {
+        List<ComicEntity> comicResource = resourceModel.getData();
+        if (!comicResource.isEmpty()) {
+            createdAdapter(comicResource);
+        } else {
+            //TODO DialogAlert
+        }
     }
 
-    private void handleComicsResult(ResourceModel<List<ComicEntity>> listResourceModel) {
-        switch (listResourceModel.getState()) {
-            case LOADING:
-                break;
-            case SUCCESS:
-                List<ComicEntity> comicResource = listResourceModel.getData();
-                if (!comicResource.isEmpty()) {
-                    createdAdapter(comicResource);
-                } else {
-                    //TODO DialogAlert
-                }
-                break;
-            case ERROR:
-                //TODO DialogAlert
-                //binding.textviewMarvelCharacterResult.setText("Error Marvel API: " + listResourceModel.getMessage());
-                break;
-            default:
-                // do nothing
-        }
+    @Override
+    public void onErrorState(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onLoadingState() {
+
+    }
+
+    private void observeComics() {
+        comicsViewModel.loadComics(characterId).observe(this, new Observer<ResourceModel<List<ComicEntity>>>() {
+            @Override
+            public void onChanged(@Nullable ResourceModel<List<ComicEntity>> listResourceModel) {
+                onModelChanged(listResourceModel, ComicsFragment.this);
+            }
+        });
     }
 
     private void createdAdapter(List<ComicEntity> comicResource) {

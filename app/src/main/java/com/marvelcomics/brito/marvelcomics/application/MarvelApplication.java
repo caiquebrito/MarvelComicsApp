@@ -2,7 +2,9 @@ package com.marvelcomics.brito.marvelcomics.application;
 
 import android.app.Activity;
 import android.app.Application;
+import android.arch.persistence.room.Room;
 
+import com.marvelcomics.brito.data.datasource.database.MarvelComicsDatabase;
 import com.marvelcomics.brito.marvelcomics.application.injection.DaggerAppComponent;
 
 import javax.inject.Inject;
@@ -19,10 +21,21 @@ public class MarvelApplication extends Application implements HasActivityInjecto
     @Inject
     DispatchingAndroidInjector<android.support.v4.app.Fragment> injectorFragment;
 
+    public static MarvelComicsDatabase database;
+
     @Override
     public void onCreate() {
         super.onCreate();
         buildTopLevelDependenciesGraph();
+        instantiateRoom();
+    }
+
+    private void instantiateRoom() {
+        database = Room.databaseBuilder(
+                this,
+                MarvelComicsDatabase.class,
+                "marvel.db")
+                .build();
     }
 
     @Override

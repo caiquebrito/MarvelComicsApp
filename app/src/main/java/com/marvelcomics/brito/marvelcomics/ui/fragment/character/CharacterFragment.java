@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.marvelcomics.ui.fragment.character;
 
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -44,8 +45,10 @@ public class CharacterFragment extends Fragment {
 
     @BindingAdapter("android:src")
     public static void setCharacterImage(ImageView imageView, CharacterEntity character) {
+        Context context = imageView.getContext();
         Picasso.with(imageView.getContext())
                 .load(character.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.XLARGE))
+                .placeholder(context.getDrawable(R.drawable.progress))
                 .into(imageView);
     }
 

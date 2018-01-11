@@ -8,60 +8,79 @@
         <import type="android.view.View"/>
         <variable
             name="viewActivity"
-            type="com.marvelcomics.brito.marvelcomics.ui.activity.HomeActivity"/>
+            type="com.marvelcomics.brito.marvelcomics.ui.activity.home.HomeActivity"/>
     </data>
 
-    <ScrollView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_strip_line">
+        android:background="@drawable/background_strip_line"
+        tools:context="com.marvelcomics.brito.marvelcomics.ui.activity.home.HomeActivity">
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context="com.marvelcomics.brito.marvelcomics.ui.activity.HomeActivity">
+        <ImageView
+            android:id="@+id/imageview_home_marvel_logo"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/marvel_logo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageview_home_marvel_logo"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/marvel_logo"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchview_marvel_character"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            android:onClick="@{() -> viewActivity.searchViewFocus()}"
+            app:layout_constraintLeft_toRightOf="@id/imageview_home_marvel_logo"
+            app:layout_constraintRight_toRightOf="parent"
+            app:queryHint="Characters name" />
 
-            <android.support.v7.widget.SearchView
-                android:id="@+id/searchview_marvel_character"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:background="#FFFFFF"
-                android:onClick="@{() -> viewActivity.searchViewFocus()}"
-                app:layout_constraintLeft_toRightOf="@id/imageview_home_marvel_logo"
-                app:layout_constraintRight_toRightOf="parent"
-                app:queryHint="Characters name" />
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageview_home_marvel_logo">
 
-            <FrameLayout
-                android:id="@+id/fragment_home_character"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/searchview_marvel_character"/>
+                android:layout_height="wrap_content">
 
-            <FrameLayout
-                android:id="@+id/fragment_home_comics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_home_character"/>
+                <FrameLayout
+                    android:id="@+id/fragment_home_character"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/fragment_home_series"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_home_comics"/>
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
+                <FrameLayout
+                    android:id="@+id/fragment_home_comics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_home_character" />
+
+                <FrameLayout
+                    android:id="@+id/fragment_home_series"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_home_comics" />
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/imageview_loading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/progress"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchview_marvel_character" />
+    </android.support.constraint.ConstraintLayout>
 </layout>

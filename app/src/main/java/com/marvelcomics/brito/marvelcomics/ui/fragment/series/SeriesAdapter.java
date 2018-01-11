@@ -1,5 +1,6 @@
 package com.marvelcomics.brito.marvelcomics.ui.fragment.series;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -38,8 +39,10 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.ViewHolder
 
     @BindingAdapter("android:src")
     public static void setComicImage(ImageView imageView, SeriesEntity series) {
+        Context context = imageView.getContext();
         Picasso.with(imageView.getContext())
                 .load(series.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.XLARGE))
+                .placeholder(context.getDrawable(R.drawable.progress))
                 .fit()
                 .centerInside()
                 .into(imageView);

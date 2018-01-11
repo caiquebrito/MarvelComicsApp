@@ -11,14 +11,9 @@ import com.marvelcomics.brito.presentation.viewmodel.BaseViewModel;
 
 import java.util.List;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-
 public class HomeViewModel extends BaseViewModel {
 
     private MutableLiveData<ResourceModel<List<CharacterEntity>>> characters;
-
     private CharactersUseCase charactersUseCase;
 
     public void setCharactersUseCase(CharactersUseCase charactersUseCase) {

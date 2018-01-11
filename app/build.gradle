@@ -47,6 +47,9 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintVersion"
     // arch components
     implementation "android.arch.lifecycle:extensions:$rootProject.ext.archComponentsVersion"
+    implementation "android.arch.persistence.room:runtime:$rootProject.ext.archComponentsVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.ext.archComponentsVersion"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.ext.archComponentsVersion"
     // dagger 2
     implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
     implementation "com.google.dagger:dagger-android:$rootProject.ext.daggerVersion"

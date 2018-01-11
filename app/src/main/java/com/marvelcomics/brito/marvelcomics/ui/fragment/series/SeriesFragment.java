@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,8 @@ import android.view.ViewGroup;
 import com.marvelcomics.brito.entity.SeriesEntity;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.FragmentSeriesBinding;
+import com.marvelcomics.brito.marvelcomics.ui.ResourceModelHandler;
+import com.marvelcomics.brito.marvelcomics.ui.fragment.BaseFragment;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.ItemOffSetDecorationHorizontal;
 import com.marvelcomics.brito.presentation.ResourceModel;
 import com.marvelcomics.brito.presentation.viewmodel.series.SeriesViewModel;
@@ -23,7 +24,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
-public class SeriesFragment extends Fragment {
+public class SeriesFragment extends BaseFragment implements ResourceModelHandler.ResourceModelListener<ResourceModel<List<SeriesEntity>>> {
 
     private static final String ARGUMENT_CHARACTER_ID = "character_id_args";
     private int characterId;
@@ -57,31 +58,28 @@ public class SeriesFragment extends Fragment {
 
     private void observeComics() {
         seriesViewModel.loadSeries(characterId).observe(this, listResourceModel -> {
-            if (listResourceModel != null) {
-                handleSeriesResult(listResourceModel);
-            }
+            onModelChanged(listResourceModel, SeriesFragment.this);
         });
     }
 
-    private void handleSeriesResult(ResourceModel<List<SeriesEntity>> listResourceModel) {
-        switch (listResourceModel.getState()) {
-            case LOADING:
-                break;
-            case SUCCESS:
-                List<SeriesEntity> seriesResource = listResourceModel.getData();
-                if (!seriesResource.isEmpty()) {
-                    createdAdapter(seriesResource);
-                } else {
-                    //TODO DialogAlert
-                }
-                break;
-            case ERROR:
-                //TODO DialogAlert
-                //binding.textviewMarvelCharacterResult.setText("Error Marvel API: " + listResourceModel.getMessage());
-                break;
-            default:
-                // do nothing
+    @Override
+    public void onSuccessState(ResourceModel<List<SeriesEntity>> resourceModel) {
+        List<SeriesEntity> seriesResource = resourceModel.getData();
+        if (!seriesResource.isEmpty()) {
+            createdAdapter(seriesResource);
+        } else {
+            //TODO DialogAlert
         }
+    }
+
+    @Override
+    public void onErrorState(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onLoadingState() {
+
     }
 
     private void createdAdapter(List<SeriesEntity> seriesResource) {

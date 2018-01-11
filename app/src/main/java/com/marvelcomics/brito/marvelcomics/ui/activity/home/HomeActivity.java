@@ -1,14 +1,18 @@
-package com.marvelcomics.brito.marvelcomics.ui.activity;
+package com.marvelcomics.brito.marvelcomics.ui.activity.home;
 
+import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.view.View;
 
 import com.marvelcomics.brito.entity.CharacterEntity;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.ActivityHomeBinding;
+import com.marvelcomics.brito.marvelcomics.ui.ResourceModelHandler;
+import com.marvelcomics.brito.marvelcomics.ui.activity.BaseActivity;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.character.CharacterFragment;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.comics.ComicsFragment;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.series.SeriesFragment;
@@ -21,7 +25,7 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity implements ResourceModelHandler.ResourceModelListener<ResourceModel<List<CharacterEntity>>> {
 
     private ActivityHomeBinding binding;
 
@@ -35,6 +39,30 @@ public class HomeActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setViewActivity(this);
         initListeners();
+    }
+
+    @Override
+    public void onSuccessState(ResourceModel<List<CharacterEntity>> resourceModel) {
+        List<CharacterEntity> characterResource = resourceModel.getData();
+        if (!characterResource.isEmpty()) {
+            binding.imageviewLoading.setVisibility(View.GONE);
+            CharacterEntity character = characterResource.get(0);
+            instantiateCharacterFragment(character);
+            instantiateComicsFragment(character.getId());
+            instantiateSeriesFragment(character.getId());
+        } else {
+            //TODO DialogAlert
+        }
+    }
+
+    @Override
+    public void onErrorState(Throwable throwable) {
+        //TODO DialogAlert
+    }
+
+    @Override
+    public void onLoadingState() {
+        binding.imageviewLoading.setVisibility(View.VISIBLE);
     }
 
     public void searchViewFocus() {
@@ -57,35 +85,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void observeCharacter(String name) {
-        homeViewModel.loadCharacters(name).observe(this, listResourceModel -> {
-            if (listResourceModel != null) {
-                handleCharactersResult(listResourceModel);
+        homeViewModel.loadCharacters(name).observe(this, new Observer<ResourceModel<List<CharacterEntity>>>() {
+            @Override
+            public void onChanged(@Nullable ResourceModel<List<CharacterEntity>> listResourceModel) {
+                onModelChanged(listResourceModel, HomeActivity.this);
             }
         });
-    }
-
-    private void handleCharactersResult(ResourceModel<List<CharacterEntity>> listResourceModel) {
-        switch (listResourceModel.getState()) {
-            case LOADING:
-                break;
-            case SUCCESS:
-                List<CharacterEntity> characterResource = listResourceModel.getData();
-                if (!characterResource.isEmpty()) {
-                    CharacterEntity character = characterResource.get(0);
-                    instantiateCharacterFragment(character);
-                    instantiateComicsFragment(character.getId());
-                    instantiateSeriesFragment(character.getId());
-                } else {
-                    //TODO DialogAlert
-                }
-                break;
-            case ERROR:
-                //TODO DialogAlert
-                //binding.textviewMarvelCharacterResult.setText("Error Marvel API: " + listResourceModel.getMessage());
-                break;
-            default:
-                // do nothing
-        }
     }
 
     private void instantiateCharacterFragment(CharacterEntity characterEntity) {
