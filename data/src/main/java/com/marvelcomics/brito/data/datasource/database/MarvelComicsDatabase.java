@@ -6,7 +6,8 @@ import android.arch.persistence.room.RoomDatabase;
 import com.marvelcomics.brito.data.datasource.local.character.CharacterDao;
 import com.marvelcomics.brito.data.datasource.local.character.CharacterRoom;
 
-@Database(entities = {CharacterRoom.class}, version = 1, exportSchema = false)
+@Database(entities = {CharacterRoom.class}, version = MarvelComicsDatabase.VERSION, exportSchema = false)
 public abstract class MarvelComicsDatabase extends RoomDatabase {
-    abstract CharacterDao characterDao();
+    static final int VERSION = 1;
+    public abstract CharacterDao getCharacterDao();
 }
