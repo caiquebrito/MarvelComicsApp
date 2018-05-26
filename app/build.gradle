@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply from: '../tools/jacoco.gradle'
 
 android {
@@ -75,12 +74,7 @@ dependencies {
     // Mockito
     testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
     testImplementation "org.mockito:mockito-android:$rootProject.ext.mockitoVersion"
-    testImplementation "com.nhaarman:mockito-kotlin:$rootProject.ext.mockitoKotlinVersion"
     androidTestImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
     androidTestImplementation "org.mockito:mockito-android:$rootProject.ext.mockitoVersion"
-    androidTestImplementation "com.nhaarman:mockito-kotlin:$rootProject.ext.mockitoKotlinVersion"
-    // kotlin std-lib
-    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.ext.kotlinVersion"
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.ext.kotlinVersion"
 
 }

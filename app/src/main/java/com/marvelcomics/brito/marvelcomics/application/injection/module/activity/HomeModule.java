@@ -4,8 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 
 import com.marvelcomics.brito.domain.character.CharactersUseCase;
 import com.marvelcomics.brito.infrastructure.di.SchedulersProvider;
-import com.marvelcomics.brito.marvelcomics.ui.activity.home.HomeActivity;
-import com.marvelcomics.brito.presentation.viewmodel.home.HomeViewModel;
+import com.marvelcomics.brito.presentation.presenter.home.HomePresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,13 +13,10 @@ import dagger.Provides;
 public class HomeModule {
 
     @Provides
-    static HomeViewModel providesHomeViewModel(
-            HomeActivity homeActivity,
-            CharactersUseCase charactersUseCase,
-            SchedulersProvider provider) {
-        HomeViewModel viewModel = ViewModelProviders.of(homeActivity).get(HomeViewModel.class);
-        viewModel.setCharactersUseCase(charactersUseCase);
-        viewModel.setSchedulersProvider(provider);
-        return viewModel;
+    static HomePresenter providesHomePresenter(CharactersUseCase charactersUseCase,
+                                               SchedulersProvider provider) {
+        HomePresenter presenter = new HomePresenter(charactersUseCase);
+        presenter.setSchedulersProvider(provider);
+        return presenter;
     }
 }

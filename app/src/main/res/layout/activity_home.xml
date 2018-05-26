@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewActivity"
-            type="com.marvelcomics.brito.marvelcomics.ui.activity.home.HomeActivity"/>
+            type="com.marvelcomics.brito.marvelcomics.ui.activity.home.HomeActivity" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -32,16 +33,16 @@
             android:layout_height="50dp"
             android:background="#FFFFFF"
             android:onClick="@{() -> viewActivity.searchViewFocus()}"
-            app:layout_constraintLeft_toRightOf="@id/imageview_home_marvel_logo"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageview_home_marvel_logo"
             app:queryHint="Characters name" />
 
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageview_home_marvel_logo">
 
             <android.support.constraint.ConstraintLayout
@@ -76,11 +77,12 @@
             android:id="@+id/imageview_loading"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:contentDescription="@null"
             android:src="@drawable/progress"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchview_marvel_character" />
     </android.support.constraint.ConstraintLayout>
 </layout>

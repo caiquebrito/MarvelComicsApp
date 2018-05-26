@@ -4,19 +4,19 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.marvelcomics.brito.entity.SeriesEntity;
+import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.FragmentSeriesBinding;
-import com.marvelcomics.brito.marvelcomics.ui.ResourceModelHandler;
-import com.marvelcomics.brito.marvelcomics.ui.fragment.BaseFragment;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.ItemOffSetDecorationHorizontal;
-import com.marvelcomics.brito.presentation.ResourceModel;
-import com.marvelcomics.brito.presentation.viewmodel.series.SeriesViewModel;
+import com.marvelcomics.brito.presentation.presenter.series.SeriesContract;
+import com.marvelcomics.brito.presentation.presenter.series.SeriesPresenter;
 
 import java.util.List;
 
@@ -24,13 +24,13 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
-public class SeriesFragment extends BaseFragment implements ResourceModelHandler.ResourceModelListener<ResourceModel<List<SeriesEntity>>> {
+public class SeriesFragment extends Fragment implements SeriesContract.View {
 
     private static final String ARGUMENT_CHARACTER_ID = "character_id_args";
     private int characterId;
 
     @Inject
-    protected SeriesViewModel seriesViewModel;
+    protected SeriesPresenter seriesPresenter;
 
     private FragmentSeriesBinding binding;
 
@@ -47,39 +47,28 @@ public class SeriesFragment extends BaseFragment implements ResourceModelHandler
         super.onCreateView(inflater, container, savedInstanceState);
         AndroidSupportInjection.inject(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_series, container, false);
+        seriesPresenter.setView(this);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        observeComics();
-    }
-
-    private void observeComics() {
-        seriesViewModel.loadSeries(characterId).observe(this, listResourceModel -> {
-            onModelChanged(listResourceModel, SeriesFragment.this);
-        });
+        loadSeries();
     }
 
     @Override
-    public void onSuccessState(ResourceModel<List<SeriesEntity>> resourceModel) {
-        List<SeriesEntity> seriesResource = resourceModel.getData();
-        if (!seriesResource.isEmpty()) {
-            createdAdapter(seriesResource);
-        } else {
-            //TODO DialogAlert
-        }
+    public void showSeries(List<SeriesEntity> seriesEntities) {
+        createdAdapter(seriesEntities);
     }
 
     @Override
-    public void onErrorState(Throwable throwable) {
-
+    public void showError(String message) {
+        AlertDialogUtils.showSimpleDialog("Erro", message, getContext());
     }
 
-    @Override
-    public void onLoadingState() {
-
+    private void loadSeries() {
+        seriesPresenter.loadSeries(characterId);
     }
 
     private void createdAdapter(List<SeriesEntity> seriesResource) {

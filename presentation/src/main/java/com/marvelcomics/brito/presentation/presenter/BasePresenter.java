@@ -1,12 +1,10 @@
-package com.marvelcomics.brito.presentation.viewmodel;
-
-import android.arch.lifecycle.ViewModel;
+package com.marvelcomics.brito.presentation.presenter;
 
 import com.marvelcomics.brito.infrastructure.di.SchedulersProvider;
 
 import javax.inject.Inject;
 
-public abstract class BaseViewModel extends ViewModel {
+public class BasePresenter {
 
     @Inject
     protected SchedulersProvider schedulersProvider;

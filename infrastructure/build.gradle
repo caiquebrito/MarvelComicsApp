@@ -1,10 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 apply from: '../tools/jacoco.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -25,6 +23,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
@@ -38,7 +37,4 @@ dependencies {
     testImplementation "junit:junit:$rootProject.ext.jUnitVersion"
     // Mockito
     testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
-    testImplementation "com.nhaarman:mockito-kotlin:$rootProject.ext.mockitoKotlinVersion"
-    // kotlin std-lib
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.ext.kotlinVersion"
 }

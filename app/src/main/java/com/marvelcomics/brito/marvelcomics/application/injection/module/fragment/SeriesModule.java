@@ -1,11 +1,8 @@
 package com.marvelcomics.brito.marvelcomics.application.injection.module.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
-
 import com.marvelcomics.brito.domain.series.SeriesUseCase;
 import com.marvelcomics.brito.infrastructure.di.SchedulersProvider;
-import com.marvelcomics.brito.marvelcomics.ui.fragment.series.SeriesFragment;
-import com.marvelcomics.brito.presentation.viewmodel.series.SeriesViewModel;
+import com.marvelcomics.brito.presentation.presenter.series.SeriesPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,13 +11,12 @@ import dagger.Provides;
 public class SeriesModule {
 
     @Provides
-    static SeriesViewModel providesSeriesViewModel(
-            SeriesFragment seriesFragment,
+    static SeriesPresenter providesSeriesPresenter(
             SeriesUseCase seriesUseCase,
             SchedulersProvider provider) {
-        SeriesViewModel viewModel = ViewModelProviders.of(seriesFragment).get(SeriesViewModel.class);
-        viewModel.setSeriesUseCase(seriesUseCase);
-        viewModel.setSchedulersProvider(provider);
-        return viewModel;
+        SeriesPresenter presenter = new SeriesPresenter();
+        presenter.setSeriesUseCase(seriesUseCase);
+        presenter.setSchedulersProvider(provider);
+        return presenter;
     }
 }

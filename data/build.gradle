@@ -1,10 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 apply from: '../tools/jacoco.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -28,6 +26,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
@@ -35,8 +34,6 @@ dependencies {
 
     implementation project(path: ':entity')
     implementation project(path: ':infrastructure')
-    // kotlin s
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     // room persistence
     implementation "android.arch.persistence.room:runtime:$rootProject.ext.archComponentsVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.ext.archComponentsVersion"
@@ -55,9 +52,6 @@ dependencies {
 
     // Mockito
     testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
-    testImplementation "com.nhaarman:mockito-kotlin:$rootProject.ext.mockitoKotlinVersion"
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 repositories {
     mavenCentral()
