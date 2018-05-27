@@ -2,7 +2,6 @@ package com.marvelcomics.brito.infrastructure.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
 public class AlertDialogUtils {
 
@@ -11,12 +10,7 @@ public class AlertDialogUtils {
                 .setTitle(title)
                 .setMessage(message)
                 .setCancelable(false)
-                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNeutralButton("Ok", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 }

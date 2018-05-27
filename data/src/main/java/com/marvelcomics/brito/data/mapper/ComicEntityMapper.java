@@ -8,9 +8,18 @@ import com.marvelcomics.brito.infrastructure.exception.MarvelApiException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class ComicEntityMapper {
 
-    public static List<ComicEntity> transform(RemoteMarvelContainer<ComicResponse> remoteMarvelData)
+    @Inject
+    protected ThumbnailEntityMapper thumbnailEntityMapper;
+
+    @Inject
+    public ComicEntityMapper() {
+    }
+
+    public List<ComicEntity> transform(RemoteMarvelContainer<ComicResponse> remoteMarvelData)
             throws MarvelApiException {
 
         try {
@@ -20,7 +29,7 @@ public class ComicEntityMapper {
                         comicResponse.getId(),
                         comicResponse.getTitle(),
                         comicResponse.getDescription(),
-                        ThumbnailEntityMapper.transform(comicResponse.getThumbnailResponse())
+                        thumbnailEntityMapper.transform(comicResponse.getThumbnailResponse())
                 );
                 comicEntityList.add(comicEntity);
             }

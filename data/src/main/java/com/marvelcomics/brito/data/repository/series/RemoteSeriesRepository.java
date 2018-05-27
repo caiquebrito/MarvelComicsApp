@@ -1,10 +1,8 @@
 package com.marvelcomics.brito.data.repository.series;
 
 import com.marvelcomics.brito.data.datasource.remote.MarvelWebService;
-import com.marvelcomics.brito.data.mapper.SeriesEntityMapper;
-import com.marvelcomics.brito.entity.SeriesEntity;
-
-import java.util.List;
+import com.marvelcomics.brito.data.datasource.remote.response.SeriesResponse;
+import com.marvelcomics.brito.data.datasource.remote.response.model.RemoteMarvelContainer;
 
 import io.reactivex.Observable;
 
@@ -17,9 +15,7 @@ public class RemoteSeriesRepository implements SeriesRepository {
     }
 
     @Override
-    public Observable<List<SeriesEntity>> series(int characterId) {
-        return marvelWebService.series(characterId)
-                .map(SeriesEntityMapper::transform)
-                .toObservable();
+    public Observable<RemoteMarvelContainer<SeriesResponse>> series(int characterId) {
+        return marvelWebService.series(characterId).toObservable();
     }
 }

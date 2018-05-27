@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.marvelcomics.brito.entity.SeriesEntity;
-import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.FragmentSeriesBinding;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.ItemOffSetDecorationHorizontal;
@@ -64,7 +63,8 @@ public class SeriesFragment extends Fragment implements SeriesContract.View {
 
     @Override
     public void showError(String message) {
-        AlertDialogUtils.showSimpleDialog("Erro", message, getContext());
+        //TODO getActivity.getTheme could return nullPointer
+        //AlertDialogUtils.showSimpleDialog("Erro", message, getActivity());
     }
 
     private void loadSeries() {

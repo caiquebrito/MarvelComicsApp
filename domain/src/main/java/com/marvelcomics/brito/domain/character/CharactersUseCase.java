@@ -1,5 +1,6 @@
 package com.marvelcomics.brito.domain.character;
 
+import com.marvelcomics.brito.data.mapper.CharacterEntityMapper;
 import com.marvelcomics.brito.data.repository.character.CharacterRepository;
 import com.marvelcomics.brito.domain.UseCase;
 import com.marvelcomics.brito.entity.CharacterEntity;
@@ -15,12 +16,16 @@ public class CharactersUseCase extends UseCase<String, List<CharacterEntity>> {
     private CharacterRepository characterRepository;
 
     @Inject
+    protected CharacterEntityMapper characterEntityMapper;
+
+    @Inject
     public CharactersUseCase(CharacterRepository characterRepository) {
         this.characterRepository = characterRepository;
     }
 
     @Override
     protected Observable<List<CharacterEntity>> createObservable(String name) {
-        return characterRepository.characters(name);
+        return characterRepository.characters(name)
+                .map(characterEntityMapper::transform);
     }
 }

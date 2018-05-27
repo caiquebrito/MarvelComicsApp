@@ -2,6 +2,8 @@ package com.marvelcomics.brito.presentation.presenter.home;
 
 import com.marvelcomics.brito.domain.character.CharactersUseCase;
 import com.marvelcomics.brito.entity.CharacterEntity;
+import com.marvelcomics.brito.infrastructure.di.ResourceProvider;
+import com.marvelcomics.brito.presentation.R;
 import com.marvelcomics.brito.presentation.presenter.BasePresenter;
 import com.marvelcomics.brito.presentation.presenter.PresenterObserver;
 
@@ -11,10 +13,7 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
 
     private CharactersUseCase charactersUseCase;
     private HomeContract.View view;
-
-    public HomePresenter(CharactersUseCase charactersUseCase) {
-        this.charactersUseCase = charactersUseCase;
-    }
+    private ResourceProvider resourceProvider;
 
     @Override
     public void loadCharacter(String name) {
@@ -24,7 +23,7 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
                 if (!characterEntities.isEmpty()) {
                     view.showCharacter(characterEntities.get(0));
                 } else {
-                    onErrorObserver(new Exception("Não foi encontrado nenhum personagem com esse nome."));
+                    view.showError(resourceProvider.getString(R.string.home_character_not_found));
                 }
             }
 
@@ -35,7 +34,15 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
         });
     }
 
+    public HomePresenter(CharactersUseCase charactersUseCase) {
+        this.charactersUseCase = charactersUseCase;
+    }
+
     public void setView(HomeContract.View view) {
         this.view = view;
+    }
+
+    public void setResourceProvider(ResourceProvider resourceProvider) {
+        this.resourceProvider = resourceProvider;
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Presentation</string>
+    <string name="home_character_not_found">Não foi encontrado nenhum personagem com esse nome.</string>
 </resources>
