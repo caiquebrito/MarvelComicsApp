@@ -2,14 +2,27 @@ package com.marvelcomics.brito.presentation.presenter;
 
 import com.marvelcomics.brito.infrastructure.di.SchedulersProvider;
 
-import javax.inject.Inject;
+public abstract class BasePresenter<View> {
 
-public class BasePresenter {
-
-    @Inject
+    protected final View view;
     protected SchedulersProvider schedulersProvider;
 
-    public void setSchedulersProvider(SchedulersProvider schedulersProvider) {
+    protected BasePresenter(View view, SchedulersProvider schedulersProvider) {
+        this.view = view;
         this.schedulersProvider = schedulersProvider;
+    }
+
+    /**
+     * Contains common setup actions needed for all presenters, if any.
+     * Subclasses may override this.
+     */
+    public void start() {
+    }
+
+    /**
+     * Contains common cleanup actions needed for all presenters, if any.
+     * Subclasses may override this.
+     */
+    public void stop() {
     }
 }

@@ -2,18 +2,26 @@ package com.marvelcomics.brito.presentation.presenter.comics;
 
 import com.marvelcomics.brito.domain.comic.ComicsUseCase;
 import com.marvelcomics.brito.entity.ComicEntity;
+import com.marvelcomics.brito.infrastructure.di.ResourceProvider;
+import com.marvelcomics.brito.infrastructure.di.SchedulersProvider;
+import com.marvelcomics.brito.presentation.R;
 import com.marvelcomics.brito.presentation.presenter.BasePresenter;
 import com.marvelcomics.brito.presentation.presenter.PresenterObserver;
 
 import java.util.List;
 
-public class ComicsPresenter extends BasePresenter implements ComicsContract.Presenter {
+public class ComicsPresenter extends BasePresenter<ComicsContract.View> implements ComicsContract.Presenter {
 
     private ComicsUseCase comicsUseCase;
-    private ComicsContract.View view;
+    private ResourceProvider resourceProvider;
 
-    public void setComicsUseCase(ComicsUseCase comicsUseCase) {
+    public ComicsPresenter(ComicsContract.View view,
+                           SchedulersProvider schedulersProvider,
+                           ComicsUseCase comicsUseCase,
+                           ResourceProvider resourceProvider) {
+        super(view, schedulersProvider);
         this.comicsUseCase = comicsUseCase;
+        this.resourceProvider = resourceProvider;
     }
 
     @Override
@@ -24,7 +32,7 @@ public class ComicsPresenter extends BasePresenter implements ComicsContract.Pre
                 if (!comicEntities.isEmpty()) {
                     view.showComics(comicEntities);
                 } else {
-                    onErrorObserver(new Exception("Comics is empty."));
+                    onErrorObserver(new Exception(resourceProvider.getString(R.string.comics_not_found)));
                 }
             }
 
@@ -33,9 +41,5 @@ public class ComicsPresenter extends BasePresenter implements ComicsContract.Pre
                 view.showError(throwable.getMessage());
             }
         });
-    }
-
-    public void setView(ComicsContract.View view) {
-        this.view = view;
     }
 }

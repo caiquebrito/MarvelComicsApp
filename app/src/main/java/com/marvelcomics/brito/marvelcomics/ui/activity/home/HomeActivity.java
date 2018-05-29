@@ -34,7 +34,6 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
         AndroidInjection.inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setViewActivity(this);
-        homePresenter.setView(this);
         initListeners();
     }
 

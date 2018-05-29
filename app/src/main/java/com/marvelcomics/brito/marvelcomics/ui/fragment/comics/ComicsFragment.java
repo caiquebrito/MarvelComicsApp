@@ -46,7 +46,6 @@ public class ComicsFragment extends Fragment implements ComicsContract.View {
         super.onCreateView(inflater, container, savedInstanceState);
         AndroidSupportInjection.inject(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_comics, container, false);
-        comicsPresenter.setView(this);
         return binding.getRoot();
     }
 

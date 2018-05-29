@@ -2,15 +2,28 @@ package com.marvelcomics.brito.presentation.presenter.series;
 
 import com.marvelcomics.brito.domain.series.SeriesUseCase;
 import com.marvelcomics.brito.entity.SeriesEntity;
+import com.marvelcomics.brito.infrastructure.di.ResourceProvider;
+import com.marvelcomics.brito.infrastructure.di.SchedulersProvider;
+import com.marvelcomics.brito.presentation.R;
 import com.marvelcomics.brito.presentation.presenter.BasePresenter;
 import com.marvelcomics.brito.presentation.presenter.PresenterObserver;
 
 import java.util.List;
 
-public class SeriesPresenter extends BasePresenter implements SeriesContract.Presenter {
+public class SeriesPresenter extends BasePresenter<SeriesContract.View> implements SeriesContract.Presenter {
 
-    private SeriesContract.View view;
     private SeriesUseCase seriesUseCase;
+    private ResourceProvider resourceProvider;
+
+    public SeriesPresenter(SeriesContract.View view,
+                              SchedulersProvider schedulersProvider,
+                              SeriesUseCase seriesUseCase,
+                              ResourceProvider resourceProvider) {
+        super(view, schedulersProvider);
+        this.seriesUseCase = seriesUseCase;
+        this.resourceProvider = resourceProvider;
+    }
+
 
     @Override
     public void loadSeries(int characterId) {
@@ -20,7 +33,7 @@ public class SeriesPresenter extends BasePresenter implements SeriesContract.Pre
                 if (!seriesEntities.isEmpty()) {
                     view.showSeries(seriesEntities);
                 } else {
-                    onErrorObserver(new Exception("Series not loaded."));
+                    onErrorObserver(new Exception(resourceProvider.getString(R.string.series_not_found)));
                 }
             }
 
@@ -29,13 +42,5 @@ public class SeriesPresenter extends BasePresenter implements SeriesContract.Pre
                 view.showError(throwable.getMessage());
             }
         });
-    }
-
-    public void setSeriesUseCase(SeriesUseCase seriesUseCase) {
-        this.seriesUseCase = seriesUseCase;
-    }
-
-    public void setView(SeriesContract.View view) {
-        this.view = view;
     }
 }

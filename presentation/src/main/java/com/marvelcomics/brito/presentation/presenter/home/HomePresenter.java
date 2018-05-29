@@ -3,17 +3,26 @@ package com.marvelcomics.brito.presentation.presenter.home;
 import com.marvelcomics.brito.domain.character.CharactersUseCase;
 import com.marvelcomics.brito.entity.CharacterEntity;
 import com.marvelcomics.brito.infrastructure.di.ResourceProvider;
+import com.marvelcomics.brito.infrastructure.di.SchedulersProvider;
 import com.marvelcomics.brito.presentation.R;
 import com.marvelcomics.brito.presentation.presenter.BasePresenter;
 import com.marvelcomics.brito.presentation.presenter.PresenterObserver;
 
 import java.util.List;
 
-public class HomePresenter extends BasePresenter implements HomeContract.Presenter {
+public class HomePresenter extends BasePresenter<HomeContract.View> implements HomeContract.Presenter {
 
     private CharactersUseCase charactersUseCase;
-    private HomeContract.View view;
     private ResourceProvider resourceProvider;
+
+    public HomePresenter(HomeContract.View view,
+                            SchedulersProvider schedulersProvider,
+                            CharactersUseCase charactersUseCase,
+                            ResourceProvider resourceProvider) {
+        super(view, schedulersProvider);
+        this.resourceProvider = resourceProvider;
+        this.charactersUseCase = charactersUseCase;
+    }
 
     @Override
     public void loadCharacter(String name) {
@@ -32,17 +41,5 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
                 view.showError(throwable.getMessage());
             }
         });
-    }
-
-    public HomePresenter(CharactersUseCase charactersUseCase) {
-        this.charactersUseCase = charactersUseCase;
-    }
-
-    public void setView(HomeContract.View view) {
-        this.view = view;
-    }
-
-    public void setResourceProvider(ResourceProvider resourceProvider) {
-        this.resourceProvider = resourceProvider;
     }
 }

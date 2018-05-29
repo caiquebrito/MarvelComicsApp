@@ -46,7 +46,6 @@ public class SeriesFragment extends Fragment implements SeriesContract.View {
         super.onCreateView(inflater, container, savedInstanceState);
         AndroidSupportInjection.inject(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_series, container, false);
-        seriesPresenter.setView(this);
         return binding.getRoot();
     }
 
