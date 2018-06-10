@@ -2,6 +2,7 @@ package com.marvelcomics.brito.marvelcomics.ui.activity.home;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -17,9 +18,12 @@ import com.marvelcomics.brito.marvelcomics.ui.fragment.series.SeriesFragment;
 import com.marvelcomics.brito.presentation.presenter.home.HomeContract;
 import com.marvelcomics.brito.presentation.presenter.home.HomePresenter;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import retrofit2.http.PATCH;
 
 public class HomeActivity extends AppCompatActivity implements HomeContract.View {
 
@@ -39,7 +43,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
 
     @Override
     public void showCharacter(CharacterEntity character) {
-        binding.imageviewLoading.setVisibility(View.GONE);
+        binding.progressbarLoadingCharacter.setVisibility(View.GONE);
         instantiateCharacterFragment(character);
         instantiateComicsFragment(character.getId());
         instantiateSeriesFragment(character.getId());
@@ -47,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
 
     @Override
     public void showError(String message) {
-        binding.imageviewLoading.setVisibility(View.GONE);
+        binding.progressbarLoadingCharacter.setVisibility(View.GONE);
         AlertDialogUtils.showSimpleDialog("Erro", message, this);
     }
 
@@ -59,8 +63,9 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
         binding.searchviewMarvelCharacter.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                binding.imageviewLoading.setVisibility(View.VISIBLE);
+                binding.progressbarLoadingCharacter.setVisibility(View.VISIBLE);
                 homePresenter.loadCharacter(query);
+                removeFragment();
                 return false;
             }
 
@@ -89,5 +94,11 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
     private void commitFragment(int containerId, Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(containerId,
                 fragment, fragment.getClass().getSimpleName()).commit();
+    }
+
+    private void removeFragment() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
     }
 }

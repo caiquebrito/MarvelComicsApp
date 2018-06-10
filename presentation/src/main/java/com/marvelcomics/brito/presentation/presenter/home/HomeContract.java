@@ -1,5 +1,7 @@
 package com.marvelcomics.brito.presentation.presenter.home;
 
+import android.os.Parcelable;
+
 import com.marvelcomics.brito.entity.CharacterEntity;
 
 import java.util.List;

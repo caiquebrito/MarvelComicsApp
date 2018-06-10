@@ -73,12 +73,10 @@
             </android.support.constraint.ConstraintLayout>
         </ScrollView>
 
-        <ImageView
-            android:id="@+id/imageview_loading"
+        <ProgressBar
+            android:id="@+id/progressbar_loading_character"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:contentDescription="@null"
-            android:src="@drawable/progress"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

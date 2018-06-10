@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import com.marvelcomics.brito.entity.SeriesEntity;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.FragmentSeriesBinding;
+import com.marvelcomics.brito.marvelcomics.ui.activity.home.HomeActivity;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.ItemOffSetDecorationHorizontal;
+import com.marvelcomics.brito.presentation.presenter.home.HomeContract;
 import com.marvelcomics.brito.presentation.presenter.series.SeriesContract;
 import com.marvelcomics.brito.presentation.presenter.series.SeriesPresenter;
 
@@ -26,6 +28,7 @@ import dagger.android.support.AndroidSupportInjection;
 public class SeriesFragment extends Fragment implements SeriesContract.View {
 
     private static final String ARGUMENT_CHARACTER_ID = "character_id_args";
+    private static final String ARGUMENT_HOME_VIEW = "home_view_args";
     private int characterId;
 
     @Inject
@@ -57,12 +60,16 @@ public class SeriesFragment extends Fragment implements SeriesContract.View {
 
     @Override
     public void showSeries(List<SeriesEntity> seriesEntities) {
+        binding.progressbarLoadingSeries.setVisibility(View.GONE);
+        binding.recyclerviewFragmentSeries.setVisibility(View.VISIBLE);
         createdAdapter(seriesEntities);
     }
 
     @Override
     public void showError(String message) {
         //TODO getActivity.getTheme could return nullPointer
+        binding.progressbarLoadingSeries.setVisibility(View.GONE);
+        binding.recyclerviewFragmentSeries.setVisibility(View.VISIBLE);
         //AlertDialogUtils.showSimpleDialog("Erro", message, getActivity());
     }
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.marvelcomics.brito.entity.ComicEntity;
 import com.marvelcomics.brito.marvelcomics.R;
 import com.marvelcomics.brito.marvelcomics.databinding.FragmentComicsBinding;
+import com.marvelcomics.brito.marvelcomics.ui.activity.home.HomeActivity;
 import com.marvelcomics.brito.marvelcomics.ui.fragment.ItemOffSetDecorationHorizontal;
 import com.marvelcomics.brito.presentation.presenter.comics.ComicsContract;
 import com.marvelcomics.brito.presentation.presenter.comics.ComicsPresenter;
@@ -57,11 +58,15 @@ public class ComicsFragment extends Fragment implements ComicsContract.View {
 
     @Override
     public void showComics(List<ComicEntity> comics) {
+        binding.progressbarLoadingComics.setVisibility(View.GONE);
+        binding.recyclerviewFragmentComic.setVisibility(View.VISIBLE);
         createdAdapter(comics);
     }
 
     @Override
     public void showError(String message) {
+        binding.progressbarLoadingComics.setVisibility(View.GONE);
+        binding.recyclerviewFragmentComic.setVisibility(View.VISIBLE);
         //TODO getActivity.getTheme could return nullPointer
         //AlertDialogUtils.showSimpleDialog("Erro", message, getActivity());
     }
