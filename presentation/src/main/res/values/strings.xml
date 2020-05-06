@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Presentation</string>
-    <string name="home_character_not_found">Não foi encontrado nenhum personagem com esse nome.</string>
-    <string name="series_not_found">Não encontrado series para este personagem.</string>
-    <string name="comics_not_found">Não encontrado quadrinhos para este personagem.</string>
-</resources>

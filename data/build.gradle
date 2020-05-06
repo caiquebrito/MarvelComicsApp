@@ -1,14 +1,19 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
 
         buildConfigField("String", "MARVEL_API_PUB_KEY", "\"e2d714ad0eec8dd9251fb6e340d1d20d\"")
         buildConfigField("String", "MARVEL_API_PRI_KEY", "\"a8265201786d1e2ba7888cc2a3f7aaae22efd3ea\"")
@@ -17,40 +22,25 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation project(path: ':entity')
     implementation project(path: ':infrastructure')
-    // room persistence
-    implementation "android.arch.persistence.room:runtime:$rootProject.ext.archComponentsVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.ext.archComponentsVersion"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.ext.archComponentsVersion"
-    // rxjava
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
-    // retrofit
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.0.1"
-    //dagger
-    implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
-    // jUnit
-    testImplementation "junit:junit:$rootProject.ext.jUnitVersion"
 
-    // Mockito
-    testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
-}
-repositories {
-    mavenCentral()
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
+
+    implementation "com.squareup.retrofit2:retrofit:2.6.2"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.2.0"
+
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
