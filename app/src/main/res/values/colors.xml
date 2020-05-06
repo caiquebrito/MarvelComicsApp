@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/marvel_black</color>
-    <color name="colorPrimaryDark">@color/marvel_black</color>
-    <color name="colorAccent">@color/marvel_red</color>
-
-    <color name="marvel_black">#000000</color>
-    <color name="marvel_red">#E23636</color>
-    <color name="marvel_white">#FFFFFF</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
 </resources>

@@ -1,1 +1,5 @@
-include ':app', ':infrastructure', ':data', ':entity', ':presentation', ':domain'
+rootProject.name='MarvelComicsApp'
+include ':app'
+include ':infrastructure'
+include ':data'
+include ':viewmodel'
