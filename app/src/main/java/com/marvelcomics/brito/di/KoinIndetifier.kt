@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.marvelcomics.di
+package com.marvelcomics.brito.di
 
 object KoinIndetifier {
 

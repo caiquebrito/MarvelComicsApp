@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.marvelcomics.di
+package com.marvelcomics.brito.di
 
 import com.marvelcomics.brito.data.repository.characters.CharacterRepository
 import com.marvelcomics.brito.data.repository.characters.CharacterRepositoryImpl

@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.marvelcomics.view.fragment.comics
+package com.marvelcomics.brito.view.fragment.comics
 
 import androidx.fragment.app.Fragment
 

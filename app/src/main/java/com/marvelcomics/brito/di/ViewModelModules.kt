@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.marvelcomics.di
+package com.marvelcomics.brito.di
 
 import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
 import com.marvelcomics.brito.viewmodel.comic.ComicViewModel
