@@ -7,6 +7,12 @@
     android:background="@drawable/background_strip_line"
     tools:context=".view.HomeActivity">
 
+    <VideoView
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"/>
+
     <ImageView
         android:id="@+id/imageview_home_marvel_logo"
         android:layout_width="100dp"
@@ -17,15 +23,30 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchview_marvel_character"
+    <EditText
+        android:id="@+id/edittext_marvel_character"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:maxLines="1"
+        android:hint="Procure seu heroi aqui"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@+id/button_search_marvel_character"
         app:layout_constraintStart_toEndOf="@+id/imageview_home_marvel_logo"
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="Characters name" />
+
+    <Button
+        android:id="@+id/button_search_marvel_character"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/shape_round_left"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:text="Procurar"/>
 
     <ScrollView
         android:layout_width="0dp"
@@ -72,5 +93,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchview_marvel_character" />
+        app:layout_constraintTop_toBottomOf="@id/edittext_marvel_character" />
 </androidx.constraintlayout.widget.ConstraintLayout>

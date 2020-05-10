@@ -20,7 +20,8 @@ class CharacterViewModel(private val characterRepository: CharacterRepository) :
 
     val character: LiveData<ResourceModel<RemoteMarvelData<CharacterResponse>>> =
         liveData(Dispatchers.IO) {
-            emit(ResourceModel.loading(null))
-            emit(characterRepository.characters(characterName.value!!))
+            characterName.value?.let {
+                emit(characterRepository.characters(it))
+            }
         }
 }

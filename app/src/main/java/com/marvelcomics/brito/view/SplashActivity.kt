@@ -18,6 +18,7 @@ class SplashActivity : AppCompatActivity() {
             Thread.sleep(3000L)
             launch(Dispatchers.Main) {
                 startActivity(intentFor<HomeActivity>())
+                finish()
             }
         }
     }
