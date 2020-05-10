@@ -1,15 +1,12 @@
 # MarvelComicsApp
-Simple app with Dagger2, RxJava, Retrofit, DataBinding, MVP, a clean layout code using
-Constraints and Clean Architecture concepts integrated with MarvelAPI.
-*** Under Construction
+Simple app with Koin, Kotlin Coroutines, Retrofit, MVVM and Clean Architecture concepts integrated with MarvelAPI.
 
 ### Libraries Reference
-* [Dagger 2](https://github.com/google/dagger)
+* [Insert Koin](https://insert-koin.io/)
+* [Anko](https://github.com/Kotlin/anko)
 * [Retrofit](https://github.com/square/retrofit)
-* [Databinding](https://developer.android.com/topic/libraries/data-binding/?hl=pt-br)
-* [RxJava](https://github.com/ReactiveX/RxJava)
-* [Picasso](https://github.com/square/picasso)
-*** Under Construction
+* [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
+* [Glide](https://github.com/bumptech/glide)
 
 ### Pic from the application
 ![alt text](https://imgur.com/vaOJCPz.png "Hulk Smash!!!")
