@@ -1,46 +1,44 @@
 package com.marvelcomics.brito.view.fragment.character
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.marvelcomics.brito.R
+import com.marvelcomics.brito.data.entity.CharacterEntity
+import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
+import kotlinx.android.synthetic.main.fragment_character.view.*
 
 class CharacterFragment : Fragment() {
-//    public static final String ARGUMENT_CHARACTER = "character_args";
-//
-//    private CharacterEntity characterEntity;
-//    private FragmentCharacterBinding binding;
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        Bundle args = getArguments();
-//        characterEntity = args.getParcelable(ARGUMENT_CHARACTER);
-//    }
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_character, container, false);
-//        binding.setCharacter(characterEntity);
-//        return binding.getRoot();
-//    }
-//
-//    @BindingAdapter("android:src")
-//    public static void setCharacterImage(ImageView imageView, CharacterEntity character) {
-//        Context context = imageView.getContext();
-//        Picasso.with(imageView.getContext())
-//                .load(character.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.XLARGE))
-//                .placeholder(context.getDrawable(R.drawable.progress))
-//                .into(imageView);
-//    }
-//
-//    public static CharacterFragment newInstance(CharacterEntity characterEntity) {
-//        CharacterFragment fragment = new CharacterFragment();
-//
-//        Bundle args = new Bundle();
-//        args.putParcelable(ARGUMENT_CHARACTER, characterEntity);
-//
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+
+    private var characterEntity: CharacterEntity? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val args = arguments
+        characterEntity = args?.getSerializable(ARGUMENT_CHARACTER) as CharacterEntity
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val inflater = layoutInflater.inflate(R.layout.fragment_character, null)
+        inflater.textview_fragment_character_name.text = characterEntity?.name
+        inflater.textview_fragment_character_description.text = characterEntity?.description
+        Glide.with(this)
+            .load(characterEntity?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.MEDIUM))
+            .placeholder(context?.getDrawable(R.drawable.progress))
+            .into(inflater.imageview_fragment_character)
+    }
+
+    companion object {
+        const val ARGUMENT_CHARACTER = "character_args"
+
+        fun newInstance(characterEntity: CharacterEntity): CharacterFragment {
+            val fragment = CharacterFragment()
+            val args = Bundle()
+            args.putSerializable(ARGUMENT_CHARACTER, characterEntity)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 }

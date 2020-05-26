@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.marvelcomics.brito.R
+import com.marvelcomics.brito.addFragment
 import com.marvelcomics.brito.data.handler.ResourceModel
 import com.marvelcomics.brito.hideKeyboard
+import com.marvelcomics.brito.view.fragment.character.CharacterFragment
 import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -22,26 +24,30 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initUi()
-        initObservers()
     }
 
     private fun initUi() {
         button_search_marvel_character.onClick {
             edittext_marvel_character.text.toString().apply {
                 if (this.isNotBlank()) {
-                    characterViewModel.getCharacter(this)
+                    getCharacter(this)
                     hideKeyboard()
                 }
             }
         }
     }
 
-    private fun initObservers() {
-        characterViewModel.character.observe(this, Observer {
+    private fun getCharacter(name: String) {
+        characterViewModel.getCharacter(name).observe(this, Observer {
             when (it.status) {
                 ResourceModel.State.SUCCESS -> {
-                    Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
                     progressbar_loading_character.visibility = View.GONE
+                    it.data?.let { character ->
+                        val characterFragment = CharacterFragment.newInstance(character)
+                        addFragment(characterFragment, fragment_home_character.id)
+                    } ?: let {
+                        //error
+                    }
                 }
                 ResourceModel.State.ERROR -> {
                     Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()

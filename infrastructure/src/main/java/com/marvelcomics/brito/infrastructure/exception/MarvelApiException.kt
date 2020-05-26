@@ -6,5 +6,5 @@ class MarvelApiException(
     description: String?,
     cause: Throwable?
 ) : Exception(description, cause) {
-    constructor(message: String?, cause: Throwable?) : this(-1, "", message, cause) {}
+    constructor(message: String?, cause: Throwable? = null) : this(-1, "", message, cause) {}
 }

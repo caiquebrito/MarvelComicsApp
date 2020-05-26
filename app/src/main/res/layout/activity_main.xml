@@ -8,10 +8,10 @@
     tools:context=".view.HomeActivity">
 
     <VideoView
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@android:color/white"/>
+        android:background="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageview_home_marvel_logo"
@@ -28,25 +28,26 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#FFFFFF"
-        android:maxLines="1"
         android:hint="Procure seu heroi aqui"
+        android:maxLines="1"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:singleLine="true"
         app:layout_constraintEnd_toStartOf="@+id/button_search_marvel_character"
         app:layout_constraintStart_toEndOf="@+id/imageview_home_marvel_logo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="Characters name" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_search_marvel_character"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/shape_round_left"
         android:backgroundTint="@color/colorPrimary"
+        android:text="Procurar"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:text="Procurar"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="0dp"
@@ -89,6 +90,7 @@
         android:id="@+id/progressbar_loading_character"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:background="@drawable/progress"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
