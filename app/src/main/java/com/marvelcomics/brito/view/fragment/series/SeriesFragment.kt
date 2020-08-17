@@ -1,73 +1,118 @@
-package com.marvelcomics.brito.marvelcomics.view.fragment.series
+package com.marvelcomics.brito.view.fragment.series
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.marvelcomics.brito.R
+import com.marvelcomics.brito.data.entity.SeriesEntity
+import com.marvelcomics.brito.data.handler.ResourceModel
+import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
+import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
+import com.marvelcomics.brito.view.fragment.comics.ComicsFragment
+import com.marvelcomics.brito.viewmodel.series.SeriesViewModel
+import kotlinx.android.synthetic.main.fragment_series.view.*
+import org.koin.android.ext.android.inject
 
 class SeriesFragment : Fragment() {
-//    private static final String ARGUMENT_CHARACTER_ID = "character_id_args";
-//    private static final String ARGUMENT_HOME_VIEW = "home_view_args";
-//    private int characterId;
-//
-//    @Inject
-//    protected SeriesPresenter seriesPresenter;
-//
-//    private FragmentSeriesBinding binding;
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Bundle args = getArguments();
-//        characterId = args.getInt(ARGUMENT_CHARACTER_ID);
-//    }
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        AndroidSupportInjection.inject(this);
-//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_series, container, false);
-//        return binding.getRoot();
-//    }
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        loadSeries();
-//    }
-//
-//    @Override
-//    public void showSeries(List<SeriesEntity> seriesEntities) {
-//        binding.progressbarLoadingSeries.setVisibility(View.GONE);
-//        binding.recyclerviewFragmentSeries.setVisibility(View.VISIBLE);
-//        createdAdapter(seriesEntities);
-//    }
-//
-//    @Override
-//    public void showError(String message) {
-//        //TODO getActivity.getTheme could return nullPointer
-//        binding.progressbarLoadingSeries.setVisibility(View.GONE);
-//        binding.recyclerviewFragmentSeries.setVisibility(View.VISIBLE);
-//        //AlertDialogUtils.showSimpleDialog("Erro", message, getActivity());
-//    }
-//
-//    private void loadSeries() {
-//        seriesPresenter.loadSeries(characterId);
-//    }
-//
-//    private void createdAdapter(List<SeriesEntity> seriesResource) {
-//        SeriesAdapter adapter = new SeriesAdapter(seriesResource);
-//        binding.recyclerviewFragmentSeries.setLayoutManager(
-//                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-//        binding.recyclerviewFragmentSeries.setAdapter(adapter);
-//        binding.recyclerviewFragmentSeries.addItemDecoration(new ItemOffSetDecorationHorizontal(8));
-//    }
-//
-//    public static SeriesFragment newInstance(int characterId) {
-//        SeriesFragment fragment = new SeriesFragment();
-//
-//        Bundle args = new Bundle();
-//        args.putInt(ARGUMENT_CHARACTER_ID, characterId);
-//
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+
+    private val seriesViewModel: SeriesViewModel by inject()
+
+    private var characterId: Int? = 0
+
+    private var progressbarLoadingSeries: ProgressBar? = null
+    private var recyclerviewSeries: RecyclerView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        characterId = arguments?.getInt(ARGUMENT_CHARACTER_ID)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val inflatedView = inflater.inflate(R.layout.fragment_series, null)
+        progressbarLoadingSeries = inflatedView.progressbar_loading_series
+        recyclerviewSeries = inflatedView.recyclerview_fragment_series
+        return inflatedView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initObservers()
+        loadSeries()
+    }
+
+    private fun initObservers() {
+        seriesViewModel.series.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                ResourceModel.State.SUCCESS -> {
+                    it.data?.let { listSeries ->
+                        showSeries(listSeries)
+                    }
+                }
+                ResourceModel.State.ERROR -> {
+                    it.message?.let { message ->
+                        showError(message)
+                    }
+                }
+                ResourceModel.State.LOADING -> {
+                    showLoading()
+                }
+                else -> {
+
+                }
+            }
+        })
+    }
+
+    private fun loadSeries() {
+        seriesViewModel.characterId.value = characterId.toString()
+    }
+
+    private fun showSeries(series: List<SeriesEntity>) {
+        progressbarLoadingSeries?.visibility = View.GONE
+        recyclerviewSeries?.visibility = View.VISIBLE
+        createAdapter(series)
+    }
+
+    private fun showLoading() {
+        progressbarLoadingSeries?.visibility = View.VISIBLE
+        recyclerviewSeries?.visibility = View.GONE
+    }
+
+    private fun showError(message: String) {
+        progressbarLoadingSeries?.visibility = View.GONE
+        recyclerviewSeries?.visibility = View.VISIBLE
+        AlertDialogUtils.showSimpleDialog("Erro", message, requireContext())
+    }
+
+    private fun createAdapter(listSeries: List<SeriesEntity>) {
+        val seriesAdapter = SeriesAdapter(listSeries)
+        recyclerviewSeries?.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerviewSeries?.adapter = seriesAdapter
+        recyclerviewSeries?.addItemDecoration(ItemOffSetDecorationHorizontal(8))
+    }
+
+    companion object {
+        const val ARGUMENT_CHARACTER_ID = "character_id_args"
+
+        fun newInstance(characterId: Int): SeriesFragment {
+            val fragment = SeriesFragment()
+            val args = Bundle()
+            args.putInt(ARGUMENT_CHARACTER_ID, characterId)
+
+            fragment.arguments = args
+            return fragment
+        }
+    }
 }

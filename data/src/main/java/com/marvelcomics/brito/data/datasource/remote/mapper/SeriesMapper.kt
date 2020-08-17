@@ -12,8 +12,7 @@ class SeriesMapper(private val thumbnailMapper: ThumbnailMapper) {
     fun transform(remoteMarvelData: RemoteMarvelContainer<SeriesResponse>): List<SeriesEntity>? {
         try {
             val seriesEntityList = ArrayList<SeriesEntity>()
-            val results = remoteMarvelData.remoteMarvelData?.results
-            results?.let {
+            remoteMarvelData.remoteMarvelData?.results?.let {
                 for (seriesResponse in it) {
                     val seriesEntity = SeriesEntity(
                         seriesResponse.id,

@@ -1,61 +1,53 @@
 package com.marvelcomics.brito.view.fragment.comics
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.marvelcomics.brito.R
+import com.marvelcomics.brito.circularProgressBar
+import com.marvelcomics.brito.data.entity.ComicEntity
+import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 
-class ComicsAdapter : RecyclerView.Adapter<ComicsAdapter.ViewHolder?>() {
-
-    //    private List<ComicEntity> comics = new ArrayList<>();
-//
-//    public ComicsAdapter(List<ComicEntity> comics) {
-//        this.comics = comics;
-//    }
-//
-//    @Override
-//    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-//        ItemComicBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_comic, parent, false);
-//        return new ViewHolder(binding);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(ViewHolder holder, int position) {
-//        holder.bind(comics.get(position));
-//    }
-//
-//    @BindingAdapter("android:src")
-//    public static void setComicImage(ImageView imageView, ComicEntity comic) {
-//        Context context = imageView.getContext();
-//        Picasso.with(imageView.getContext())
-//                .load(comic.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.XLARGE))
-//                .placeholder(context.getDrawable(R.drawable.progress))
-//                .fit()
-//                .centerInside()
-//                .into(imageView);
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return comics.size();
-//    }
-
-    open inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        init {
-
-        }
-    }
+class ComicsAdapter(private val comics: List<ComicEntity>) :
+    RecyclerView.Adapter<ComicsAdapter.ViewHolder?>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val view = layoutInflater.inflate(R.layout.item_comic, null)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        holder.bind(comics[position])
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return comics.size
+    }
+
+    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+
+        private var title: TextView? = null
+        private var imageView: ImageView? = null
+
+        init {
+            title = view.findViewById(R.id.textview_title_comic)
+            imageView = view.findViewById(R.id.imageview_comic)
+        }
+
+        fun bind(comicEntity: ComicEntity) {
+            title?.text = comicEntity.title
+            imageView?.let {
+                Glide.with(it.context)
+                    .load(comicEntity.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL))
+                    .placeholder(view.context.circularProgressBar())
+                    .fitCenter()
+                    .into(it)
+            }
+        }
     }
 }

@@ -3,8 +3,16 @@ package com.marvelcomics.brito.data.entity
 import java.io.Serializable
 
 data class SeriesEntity(
-    private val id: Int = 0,
-    private val title: String? = null,
-    private val description: String? = null,
+    val id: Int = 0,
+    val title: String? = null,
+    val description: String? = null,
     private val thumbnailEntity: ThumbnailEntity? = null
-) : Serializable
+) : Serializable {
+    fun getFullUrlThumbnailWithAspect(aspect: String): String? {
+        return if (aspect.isEmpty()) {
+            thumbnailEntity?.path.toString() + "." + thumbnailEntity?.extension
+        } else {
+            thumbnailEntity?.path.toString() + "/" + aspect + "." + thumbnailEntity?.extension
+        }
+    }
+}

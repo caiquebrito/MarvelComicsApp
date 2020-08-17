@@ -20,6 +20,6 @@ interface MarvelWebService {
     suspend fun series(@Path("characterId") characterId: Int): RemoteMarvelContainer<SeriesResponse>
 
     companion object {
-        val BASE_URL = "https://gateway.marvel.com/v1/public/"
+        const val BASE_URL = "https://gateway.marvel.com/v1/public/"
     }
 }

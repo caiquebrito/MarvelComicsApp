@@ -9,7 +9,7 @@ import java.util.*
 class ComicMapper(private val thumbnailMapper: ThumbnailMapper?) {
 
     @Throws(MarvelApiException::class)
-    fun transform(remoteMarvelData: RemoteMarvelContainer<ComicResponse>): List<ComicEntity> {
+    fun transform(remoteMarvelData: RemoteMarvelContainer<ComicResponse>): List<ComicEntity>? {
         try {
             val comicEntityList = ArrayList<ComicEntity>()
             remoteMarvelData.remoteMarvelData?.results?.let {

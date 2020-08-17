@@ -1,10 +1,15 @@
 package com.marvelcomics.brito.view.fragment.character
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.marvelcomics.brito.R
+import com.marvelcomics.brito.circularProgressBar
 import com.marvelcomics.brito.data.entity.CharacterEntity
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 import kotlinx.android.synthetic.main.fragment_character.view.*
@@ -19,15 +24,23 @@ class CharacterFragment : Fragment() {
         characterEntity = args?.getSerializable(ARGUMENT_CHARACTER) as CharacterEntity
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val inflater = layoutInflater.inflate(R.layout.fragment_character, null)
-        inflater.textview_fragment_character_name.text = characterEntity?.name
-        inflater.textview_fragment_character_description.text = characterEntity?.description
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val inflatedView = inflater.inflate(R.layout.fragment_character, null)
+        inflatedView.textview_fragment_character_name.text = characterEntity?.name
+        inflatedView.textview_fragment_character_description.text = characterEntity?.description
+
         Glide.with(this)
             .load(characterEntity?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.MEDIUM))
-            .placeholder(context?.getDrawable(R.drawable.progress))
-            .into(inflater.imageview_fragment_character)
+            .placeholder(context.circularProgressBar())
+            .apply(RequestOptions().centerCrop())
+            .into(inflatedView.imageview_fragment_character)
+
+        return inflatedView
     }
 
     companion object {

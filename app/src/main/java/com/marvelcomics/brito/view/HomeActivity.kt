@@ -7,9 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.addFragment
+import com.marvelcomics.brito.data.datasource.remote.mapper.CharacterMapper
 import com.marvelcomics.brito.data.handler.ResourceModel
 import com.marvelcomics.brito.hideKeyboard
+import com.marvelcomics.brito.replaceFragment
 import com.marvelcomics.brito.view.fragment.character.CharacterFragment
+import com.marvelcomics.brito.view.fragment.comics.ComicsFragment
+import com.marvelcomics.brito.view.fragment.series.SeriesFragment
 import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -30,21 +34,25 @@ class HomeActivity : AppCompatActivity() {
         button_search_marvel_character.onClick {
             edittext_marvel_character.text.toString().apply {
                 if (this.isNotBlank()) {
-                    getCharacter(this)
+                    getCharacterNav(this)
                     hideKeyboard()
                 }
             }
         }
     }
 
-    private fun getCharacter(name: String) {
-        characterViewModel.getCharacter(name).observe(this, Observer {
+    private fun getCharacterNav(name: String) {
+        characterViewModel.character.observe(this, Observer {
             when (it.status) {
                 ResourceModel.State.SUCCESS -> {
                     progressbar_loading_character.visibility = View.GONE
                     it.data?.let { character ->
                         val characterFragment = CharacterFragment.newInstance(character)
-                        addFragment(characterFragment, fragment_home_character.id)
+                        replaceFragment(characterFragment, fragment_home_character.id)
+                        val comicsFragment = ComicsFragment.newInstance(character.id)
+                        replaceFragment(comicsFragment, fragment_home_comics.id)
+                        val seriesFragment = SeriesFragment.newInstance(character.id)
+                        replaceFragment(seriesFragment, fragment_home_series.id)
                     } ?: let {
                         //error
                     }
@@ -60,5 +68,6 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         })
+        characterViewModel.characterName.value = name
     }
 }
