@@ -7,10 +7,6 @@ import com.marvelcomics.brito.data.datasource.remote.response.ComicResponse
 import com.marvelcomics.brito.data.datasource.remote.response.SeriesResponse
 import com.marvelcomics.brito.data.datasource.remote.response.model.RemoteMarvelContainer
 import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 class MarvelWebServiceImpl(baseUrl: String, vararg interceptors: Interceptor) : MarvelWebService {
 

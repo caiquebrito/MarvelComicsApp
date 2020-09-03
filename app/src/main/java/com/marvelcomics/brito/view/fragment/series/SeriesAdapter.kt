@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.circularProgressBar
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 
@@ -29,7 +28,7 @@ class SeriesAdapter(private val series: List<SeriesEntity>) :
         return series.size
     }
 
-    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private var title: TextView? = null
         private var imageView: ImageView? = null

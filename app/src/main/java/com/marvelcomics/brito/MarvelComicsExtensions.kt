@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity

@@ -10,10 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.data.handler.ResourceModel
 import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
+import com.marvelcomics.brito.viewmodel.comic.ComicUiState
 import com.marvelcomics.brito.viewmodel.comic.ComicViewModel
 import kotlinx.android.synthetic.main.fragment_comics.view.*
 import org.koin.android.ext.android.inject
@@ -52,22 +52,17 @@ class ComicsFragment : Fragment() {
 
     private fun initObservers() {
         comicViewModel.comics.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                ResourceModel.State.SUCCESS -> {
-                    it.data?.let { listComics ->
-                        showComics(listComics)
-                    }
+            when (it) {
+                is ComicUiState.Success -> {
+                    showComics(it.list)
                 }
-                ResourceModel.State.ERROR -> {
-                    it.message?.let { message ->
+                is ComicUiState.Error -> {
+                    it.exception.message?.let { message ->
                         showError(message)
                     }
                 }
-                ResourceModel.State.LOADING -> {
+                is ComicUiState.Loading -> {
                     showLoading()
-                }
-                else -> {
-
                 }
             }
         })

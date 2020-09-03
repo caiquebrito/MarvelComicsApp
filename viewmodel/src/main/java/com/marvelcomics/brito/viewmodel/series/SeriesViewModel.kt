@@ -1,11 +1,9 @@
 package com.marvelcomics.brito.viewmodel.series
 
 import androidx.lifecycle.*
-import com.marvelcomics.brito.data.datasource.remote.response.SeriesResponse
-import com.marvelcomics.brito.data.handler.ResourceModel
 import com.marvelcomics.brito.data.repository.series.SeriesRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import java.lang.Exception
 
 class SeriesViewModel(private val seriesRepository: SeriesRepository) : ViewModel() {
 
@@ -13,8 +11,12 @@ class SeriesViewModel(private val seriesRepository: SeriesRepository) : ViewMode
 
     val series = characterId.switchMap { id ->
         liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(ResourceModel.loading())
-            emit(seriesRepository.series(id.toInt()))
+            emit(SeriesUiState.Loading)
+            try {
+                emit(SeriesUiState.Success(seriesRepository.series(id.toInt())))
+            } catch (exception: Exception) {
+                emit(SeriesUiState.Error(exception))
+            }
         }
     }
 }

@@ -6,9 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.addFragment
-import com.marvelcomics.brito.data.datasource.remote.mapper.CharacterMapper
-import com.marvelcomics.brito.data.handler.ResourceModel
 import com.marvelcomics.brito.hideKeyboard
 import com.marvelcomics.brito.replaceFragment
 import com.marvelcomics.brito.view.fragment.character.CharacterFragment

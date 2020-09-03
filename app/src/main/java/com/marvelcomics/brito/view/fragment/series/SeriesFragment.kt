@@ -10,11 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.data.handler.ResourceModel
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
-import com.marvelcomics.brito.view.fragment.comics.ComicsFragment
+import com.marvelcomics.brito.viewmodel.series.SeriesUiState
 import com.marvelcomics.brito.viewmodel.series.SeriesViewModel
 import kotlinx.android.synthetic.main.fragment_series.view.*
 import org.koin.android.ext.android.inject
@@ -53,22 +52,17 @@ class SeriesFragment : Fragment() {
 
     private fun initObservers() {
         seriesViewModel.series.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                ResourceModel.State.SUCCESS -> {
-                    it.data?.let { listSeries ->
-                        showSeries(listSeries)
-                    }
+            when (it) {
+                is SeriesUiState.Success -> {
+                    showSeries(it.list)
                 }
-                ResourceModel.State.ERROR -> {
-                    it.message?.let { message ->
+                is SeriesUiState.Error -> {
+                    it.exception.message?.let { message ->
                         showError(message)
                     }
                 }
-                ResourceModel.State.LOADING -> {
+                is SeriesUiState.Loading -> {
                     showLoading()
-                }
-                else -> {
-
                 }
             }
         })

@@ -1,8 +1,19 @@
 package com.marvelcomics.brito.data.repository.series
 
-import com.marvelcomics.brito.data.handler.ResourceModel
+import com.marvelcomics.brito.data.datasource.remote.mapper.SeriesMapper
+import com.marvelcomics.brito.data.webservice.MarvelWebService
 import com.marvelcomics.brito.domain.entity.SeriesEntity
+import com.marvelcomics.brito.domain.repository.ISeriesRepository
+import com.marvelcomics.brito.infrastructure.exception.MarvelMapperException
 
-interface SeriesRepository {
-    suspend fun series(characterId: Int): ResourceModel<List<SeriesEntity>>
+class SeriesRepository(
+    private val webService: MarvelWebService,
+    private val seriesMapper: SeriesMapper
+) : ISeriesRepository {
+    override suspend fun series(characterId: Int): List<SeriesEntity> {
+        val listEntity = seriesMapper.transform(webService.series(characterId))
+        return listEntity ?: let {
+            throw MarvelMapperException("Error mapping series", null)
+        }
+    }
 }
