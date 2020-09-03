@@ -1,3 +1,4 @@
+include ':domain'
 rootProject.name='MarvelComicsApp'
 include ':app'
 include ':infrastructure'

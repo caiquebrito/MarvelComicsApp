@@ -1,0 +1,13 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Koin
+    implementation "org.koin:koin-android:2.1.0"
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"

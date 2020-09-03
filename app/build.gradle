@@ -47,6 +47,7 @@ dependencies {
     implementation project(path: ':infrastructure')
     implementation project(path: ':data')
     implementation project(path: ':viewmodel')
+    implementation project(path: ':domain')
 
     //Lottie
     implementation 'com.airbnb.android:lottie:3.4.0'

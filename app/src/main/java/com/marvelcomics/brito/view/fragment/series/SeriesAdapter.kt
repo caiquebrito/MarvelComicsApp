@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.circularProgressBar
-import com.marvelcomics.brito.data.entity.SeriesEntity
+import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 
 class SeriesAdapter(private val series: List<SeriesEntity>) :
@@ -44,7 +44,7 @@ class SeriesAdapter(private val series: List<SeriesEntity>) :
             imageView?.let {
                 Glide.with(it.context)
                     .load(seriesEntity.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL))
-                    .placeholder(view.context.circularProgressBar())
+//                    .placeholder(view.context.circularProgressBar())
                     .fitCenter()
                     .into(it)
             }

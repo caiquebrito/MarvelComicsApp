@@ -14,6 +14,7 @@ import com.marvelcomics.brito.replaceFragment
 import com.marvelcomics.brito.view.fragment.character.CharacterFragment
 import com.marvelcomics.brito.view.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.fragment.series.SeriesFragment
+import com.marvelcomics.brito.viewmodel.character.CharacterUiState
 import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -43,28 +44,22 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getCharacterNav(name: String) {
         characterViewModel.character.observe(this, Observer {
-            when (it.status) {
-                ResourceModel.State.SUCCESS -> {
+            when (it) {
+                is CharacterUiState.Success -> {
                     progressbar_loading_character.visibility = View.GONE
-                    it.data?.let { character ->
-                        val characterFragment = CharacterFragment.newInstance(character)
-                        replaceFragment(characterFragment, fragment_home_character.id)
-                        val comicsFragment = ComicsFragment.newInstance(character.id)
-                        replaceFragment(comicsFragment, fragment_home_comics.id)
-                        val seriesFragment = SeriesFragment.newInstance(character.id)
-                        replaceFragment(seriesFragment, fragment_home_series.id)
-                    } ?: let {
-                        //error
-                    }
+                    val characterFragment = CharacterFragment.newInstance(it.character)
+                    replaceFragment(characterFragment, fragment_home_character.id)
+                    val comicsFragment = ComicsFragment.newInstance(it.character.id)
+                    replaceFragment(comicsFragment, fragment_home_comics.id)
+                    val seriesFragment = SeriesFragment.newInstance(it.character.id)
+                    replaceFragment(seriesFragment, fragment_home_series.id)
                 }
-                ResourceModel.State.ERROR -> {
-                    Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
+                is CharacterUiState.Error -> {
+                    Toast.makeText(this, "Error: ${it.exception.message}", Toast.LENGTH_LONG).show()
                     progressbar_loading_character.visibility = View.GONE
                 }
-                ResourceModel.State.LOADING -> {
+                is CharacterUiState.Loading -> {
                     progressbar_loading_character.visibility = View.VISIBLE
-                }
-                else -> {
                 }
             }
         })

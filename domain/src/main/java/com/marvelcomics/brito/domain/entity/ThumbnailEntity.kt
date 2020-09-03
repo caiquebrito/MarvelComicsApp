@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.data.entity
+package com.marvelcomics.brito.domain.entity
 
 import java.io.Serializable
 

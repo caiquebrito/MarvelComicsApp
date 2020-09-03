@@ -1,8 +1,8 @@
-package com.marvelcomics.brito.data.entity
+package com.marvelcomics.brito.domain.entity
 
 import java.io.Serializable
 
-data class SeriesEntity(
+class ComicEntity(
     val id: Int = 0,
     val title: String? = null,
     val description: String? = null,

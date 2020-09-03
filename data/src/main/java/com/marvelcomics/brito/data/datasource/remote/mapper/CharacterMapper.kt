@@ -2,7 +2,7 @@ package com.marvelcomics.brito.data.datasource.remote.mapper
 
 import com.marvelcomics.brito.data.datasource.remote.response.CharacterResponse
 import com.marvelcomics.brito.data.datasource.remote.response.model.RemoteMarvelContainer
-import com.marvelcomics.brito.data.entity.CharacterEntity
+import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.infrastructure.exception.MarvelApiException
 
 class CharacterMapper(private val thumbnailMapper: ThumbnailMapper) {

@@ -2,7 +2,7 @@ package com.marvelcomics.brito.data.datasource.remote.mapper
 
 import com.marvelcomics.brito.data.datasource.remote.response.ComicResponse
 import com.marvelcomics.brito.data.datasource.remote.response.model.RemoteMarvelContainer
-import com.marvelcomics.brito.data.entity.ComicEntity
+import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.infrastructure.exception.MarvelApiException
 import java.util.*
 

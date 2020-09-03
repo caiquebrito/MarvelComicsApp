@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.circularProgressBar
-import com.marvelcomics.brito.data.entity.CharacterEntity
+import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 import kotlinx.android.synthetic.main.fragment_character.view.*
 
@@ -36,7 +35,7 @@ class CharacterFragment : Fragment() {
 
         Glide.with(this)
             .load(characterEntity?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.MEDIUM))
-            .placeholder(context.circularProgressBar())
+//            .placeholder(context.circularProgressBar())
             .apply(RequestOptions().centerCrop())
             .into(inflatedView.imageview_fragment_character)
 

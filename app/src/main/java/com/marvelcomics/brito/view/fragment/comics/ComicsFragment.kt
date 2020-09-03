@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.data.entity.ComicEntity
 import com.marvelcomics.brito.data.handler.ResourceModel
+import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.viewmodel.comic.ComicViewModel

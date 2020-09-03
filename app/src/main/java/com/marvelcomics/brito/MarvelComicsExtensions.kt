@@ -2,6 +2,10 @@ package com.marvelcomics.brito
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -38,7 +42,9 @@ fun Context?.circularProgressBar(): CircularProgressDrawable? {
     this?.let {
         circularProgressDrawable?.strokeWidth = 5f
         circularProgressDrawable?.centerRadius = 30F
-        circularProgressDrawable?.backgroundColor = ContextCompat.getColor(it, R.color.colorPrimary)
+        val colorFilter =
+            BlendModeColorFilter(ContextCompat.getColor(it, R.color.colorAccent), BlendMode.SRC_IN)
+        circularProgressDrawable?.colorFilter = colorFilter
         circularProgressDrawable?.start()
     }
     return circularProgressDrawable
