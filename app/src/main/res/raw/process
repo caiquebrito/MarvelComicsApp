@@ -1,0 +1,21 @@
+##################################################
+### This file contains instructions to extract ###
+### the sha256 pub hash to use as SSL Pinning ####
+##################################################
+
+## Extract pub key from .cer
+openssl x509 -inform der -in <file.cer> -pubkey -noout > pubkey.pem
+openssl x509 -inform der -in marvel.cer -pubkey -noout > pubkey.pem
+
+## Get sha256 from pubkey
+openssl rsa -in pubkey.pem -pubin -outform der | openssl dgst -sha256
+
+## output of this will be the public key to be used, sample:
+sha256/79127babc1d3625ae552c54b34fdb53217137cefbce66f506bc9831cac6b3c4f
+
+## and do not forget to get the domain pattern, sample:
+marvel.com
+
+##################################################
+############## Created by Caique ;) ##############
+##################################################

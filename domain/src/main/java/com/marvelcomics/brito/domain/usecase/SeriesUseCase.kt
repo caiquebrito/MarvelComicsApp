@@ -6,6 +6,6 @@ import com.marvelcomics.brito.domain.repository.ISeriesRepository
 class SeriesUseCase(private val iSeriesRepository: ISeriesRepository) {
 
     suspend fun getSeries(characterId: Int): List<SeriesEntity> {
-        return iSeriesRepository.series(characterId)
+        return iSeriesRepository.getSeries(characterId)
     }
 }

@@ -10,7 +10,7 @@ class SeriesRepository(
     private val webService: MarvelWebService,
     private val seriesMapper: SeriesMapper
 ) : ISeriesRepository {
-    override suspend fun series(characterId: Int): List<SeriesEntity> {
+    override suspend fun getSeries(characterId: Int): List<SeriesEntity> {
         val listEntity = seriesMapper.transform(webService.series(characterId))
         return listEntity ?: let {
             throw MarvelMapperException("Error mapping series", null)

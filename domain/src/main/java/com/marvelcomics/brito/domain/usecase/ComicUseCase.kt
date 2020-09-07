@@ -5,7 +5,7 @@ import com.marvelcomics.brito.domain.repository.IComicRepository
 
 class ComicUseCase(private val iComicRepository: IComicRepository) {
 
-    suspend fun getcomics(characterId: Int): List<ComicEntity> {
-        return iComicRepository.comics(characterId)
+    suspend fun getComics(characterId: Int): List<ComicEntity> {
+        return iComicRepository.getComics(characterId)
     }
 }

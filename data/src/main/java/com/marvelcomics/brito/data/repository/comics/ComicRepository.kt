@@ -10,7 +10,7 @@ class ComicRepository(
     private val webService: MarvelWebService,
     private val comicMapper: ComicMapper
 ) : IComicRepository {
-    override suspend fun comics(characterId: Int): List<ComicEntity> {
+    override suspend fun getComics(characterId: Int): List<ComicEntity> {
         val listEntity = comicMapper.transform(webService.comics(characterId))
         return listEntity ?: let {
             throw MarvelMapperException("Error mapping comics", null)

@@ -2,9 +2,10 @@ package com.marvelcomics.brito.viewmodel.character
 
 import androidx.lifecycle.*
 import com.marvelcomics.brito.data.repository.characters.CharacterRepository
+import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import kotlinx.coroutines.Dispatchers
 
-class CharacterViewModel(private val characterRepository: CharacterRepository) : ViewModel() {
+class CharacterViewModel(private val iCharacterRepository: ICharacterRepository) : ViewModel() {
 
     var characterName = MutableLiveData<String>()
 
@@ -13,7 +14,7 @@ class CharacterViewModel(private val characterRepository: CharacterRepository) :
             emit(CharacterUiState.Loading)
             try {
                 emit(
-                    CharacterUiState.Success(characterRepository.getCharacters(name))
+                    CharacterUiState.Success(iCharacterRepository.getCharacters(name))
                 )
             } catch (exception: Exception) {
                 emit(CharacterUiState.Error(exception))

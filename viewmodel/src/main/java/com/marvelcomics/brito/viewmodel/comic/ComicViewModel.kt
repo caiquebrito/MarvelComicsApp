@@ -12,7 +12,7 @@ class ComicViewModel(private val comicRepository: ComicRepository) : ViewModel()
         liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(ComicUiState.Loading)
             try {
-                emit(ComicUiState.Success(comicRepository.comics(id.toInt())))
+                emit(ComicUiState.Success(comicRepository.getComics(id.toInt())))
             } catch (exception: Exception) {
                 emit(ComicUiState.Error(exception))
             }

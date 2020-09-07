@@ -13,7 +13,7 @@ class SeriesViewModel(private val seriesRepository: SeriesRepository) : ViewMode
         liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(SeriesUiState.Loading)
             try {
-                emit(SeriesUiState.Success(seriesRepository.series(id.toInt())))
+                emit(SeriesUiState.Success(seriesRepository.getSeries(id.toInt())))
             } catch (exception: Exception) {
                 emit(SeriesUiState.Error(exception))
             }
