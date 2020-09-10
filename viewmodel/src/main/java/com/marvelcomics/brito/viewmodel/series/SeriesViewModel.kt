@@ -2,10 +2,11 @@ package com.marvelcomics.brito.viewmodel.series
 
 import androidx.lifecycle.*
 import com.marvelcomics.brito.data.repository.series.SeriesRepository
+import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import kotlinx.coroutines.Dispatchers
 import java.lang.Exception
 
-class SeriesViewModel(private val seriesRepository: SeriesRepository) : ViewModel() {
+class SeriesViewModel(private val seriesRepository: ISeriesRepository) : ViewModel() {
 
     val characterId = MutableLiveData<String>()
 
