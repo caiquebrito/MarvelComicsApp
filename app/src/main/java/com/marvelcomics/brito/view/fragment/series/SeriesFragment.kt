@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.R
@@ -16,6 +17,7 @@ import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.viewmodel.series.SeriesUiState
 import com.marvelcomics.brito.viewmodel.series.SeriesViewModel
 import kotlinx.android.synthetic.main.fragment_series.view.*
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 class SeriesFragment : Fragment() {
@@ -51,25 +53,30 @@ class SeriesFragment : Fragment() {
     }
 
     private fun initObservers() {
-        seriesViewModel.series.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is SeriesUiState.Success -> {
-                    showSeries(it.list)
-                }
-                is SeriesUiState.Error -> {
-                    it.exception.message?.let { message ->
-                        showError(message)
+        lifecycleScope.launchWhenStarted {
+            seriesViewModel.seriesUiState.collect {
+                when (it) {
+                    is SeriesUiState.Success -> {
+                        showSeries(it.list)
+                    }
+                    is SeriesUiState.Error -> {
+                        it.exception.message?.let { message ->
+                            showError(message)
+                        }
+                    }
+                    is SeriesUiState.Loading -> {
+                        showLoading()
+                    }
+                    else -> {
+                        //do nothing
                     }
                 }
-                is SeriesUiState.Loading -> {
-                    showLoading()
-                }
             }
-        })
+        }
     }
 
     private fun loadSeries() {
-        seriesViewModel.characterId.value = characterId.toString()
+        seriesViewModel.loadSeries(characterId ?: let { 0 })
     }
 
     private fun showSeries(series: List<SeriesEntity>) {

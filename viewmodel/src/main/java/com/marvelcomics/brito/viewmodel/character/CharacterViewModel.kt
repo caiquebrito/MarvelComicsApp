@@ -5,24 +5,25 @@ import com.marvelcomics.brito.data.repository.characters.CharacterRepository
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class CharacterViewModel(
     private val iCharacterRepository: ICharacterRepository,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    var characterName = MutableLiveData<String>()
+    private var _characterUiState = MutableStateFlow<CharacterUiState>(CharacterUiState.Empty)
+    var characterUiState: StateFlow<CharacterUiState> = _characterUiState
 
-    val character = characterName.switchMap { name ->
-        liveData(dispatcher) {
-            emit(CharacterUiState.Loading)
-            try {
-                emit(
-                    CharacterUiState.Success(iCharacterRepository.getCharacters(name))
-                )
-            } catch (exception: Exception) {
-                emit(CharacterUiState.Error(exception))
-            }
+    fun loadCharacter(name: String) = viewModelScope.launch(dispatcher) {
+        _characterUiState.value = CharacterUiState.Loading
+        try {
+            _characterUiState.value =
+                CharacterUiState.Success(iCharacterRepository.getCharacters(name))
+        } catch (exception: Exception) {
+            _characterUiState.value = CharacterUiState.Error(exception)
         }
     }
 }

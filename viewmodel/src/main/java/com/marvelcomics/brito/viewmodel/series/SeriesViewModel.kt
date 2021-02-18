@@ -4,20 +4,23 @@ import androidx.lifecycle.*
 import com.marvelcomics.brito.data.repository.series.SeriesRepository
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class SeriesViewModel(private val seriesRepository: ISeriesRepository) : ViewModel() {
 
-    val characterId = MutableLiveData<String>()
+    private var _seriesUiState = MutableStateFlow<SeriesUiState>(SeriesUiState.Empty)
+    var seriesUiState: StateFlow<SeriesUiState> = _seriesUiState
 
-    val series = characterId.switchMap { id ->
-        liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(SeriesUiState.Loading)
+    fun loadSeries(id: Int) =
+        viewModelScope.launch(context = viewModelScope.coroutineContext + Dispatchers.IO) {
+            _seriesUiState.value = SeriesUiState.Loading
             try {
-                emit(SeriesUiState.Success(seriesRepository.getSeries(id.toInt())))
+                _seriesUiState.value = SeriesUiState.Success(seriesRepository.getSeries(id))
             } catch (exception: Exception) {
-                emit(SeriesUiState.Error(exception))
+                _seriesUiState.value = SeriesUiState.Error(exception)
             }
         }
-    }
 }

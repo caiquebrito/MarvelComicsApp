@@ -6,4 +6,5 @@ sealed class SeriesUiState {
     class Success(val list: List<SeriesEntity>) : SeriesUiState()
     object Loading : SeriesUiState()
     class Error(val exception: Exception) : SeriesUiState()
+    object Empty : SeriesUiState()
 }
