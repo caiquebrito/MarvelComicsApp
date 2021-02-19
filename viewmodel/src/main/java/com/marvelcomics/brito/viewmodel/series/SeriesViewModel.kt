@@ -1,8 +1,10 @@
 package com.marvelcomics.brito.viewmodel.series
 
 import androidx.lifecycle.*
-import com.marvelcomics.brito.data.repository.series.SeriesRepository
+import com.marvelcomics.brito.domain.ResultWrapper
+import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
+import com.marvelcomics.brito.viewmodel.BaseUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,16 +13,22 @@ import java.lang.Exception
 
 class SeriesViewModel(private val seriesRepository: ISeriesRepository) : ViewModel() {
 
-    private var _seriesUiState = MutableStateFlow<SeriesUiState>(SeriesUiState.Empty)
-    var seriesUiState: StateFlow<SeriesUiState> = _seriesUiState
+    private var _seriesUiState = MutableStateFlow<BaseUiState<List<SeriesEntity>>>(BaseUiState.Empty)
+    var seriesUiState: StateFlow<BaseUiState<List<SeriesEntity>>> = _seriesUiState
 
     fun loadSeries(id: Int) =
         viewModelScope.launch(context = viewModelScope.coroutineContext + Dispatchers.IO) {
-            _seriesUiState.value = SeriesUiState.Loading
-            try {
-                _seriesUiState.value = SeriesUiState.Success(seriesRepository.getSeries(id))
-            } catch (exception: Exception) {
-                _seriesUiState.value = SeriesUiState.Error(exception)
+            _seriesUiState.value = BaseUiState.Loading
+            when (val response = seriesRepository.getSeries(id)) {
+                is ResultWrapper.Success -> {
+                    _seriesUiState.value = BaseUiState.Success(response.value)
+                }
+                is ResultWrapper.Failure -> {
+                    _seriesUiState.value = BaseUiState.Error(response.error)
+                }
+                is ResultWrapper.NetworkError -> {
+                    _seriesUiState.value = BaseUiState.NetworkError
+                }
             }
         }
 }

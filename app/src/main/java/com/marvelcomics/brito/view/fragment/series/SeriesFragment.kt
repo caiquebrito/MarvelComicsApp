@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +13,7 @@ import com.marvelcomics.brito.R
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
-import com.marvelcomics.brito.viewmodel.series.SeriesUiState
+import com.marvelcomics.brito.viewmodel.BaseUiState
 import com.marvelcomics.brito.viewmodel.series.SeriesViewModel
 import kotlinx.android.synthetic.main.fragment_series.view.*
 import kotlinx.coroutines.flow.collect
@@ -56,16 +55,19 @@ class SeriesFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             seriesViewModel.seriesUiState.collect {
                 when (it) {
-                    is SeriesUiState.Success -> {
-                        showSeries(it.list)
+                    is BaseUiState.Success -> {
+                        showSeries(it.`object`)
                     }
-                    is SeriesUiState.Error -> {
+                    is BaseUiState.Error -> {
                         it.exception.message?.let { message ->
                             showError(message)
                         }
                     }
-                    is SeriesUiState.Loading -> {
+                    is BaseUiState.Loading -> {
                         showLoading()
+                    }
+                    is BaseUiState.NetworkError -> {
+                        //do nothing
                     }
                     else -> {
                         //do nothing

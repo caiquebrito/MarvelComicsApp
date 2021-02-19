@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.hideKeyboard
@@ -12,7 +11,7 @@ import com.marvelcomics.brito.replaceFragment
 import com.marvelcomics.brito.view.fragment.character.CharacterFragment
 import com.marvelcomics.brito.view.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.fragment.series.SeriesFragment
-import com.marvelcomics.brito.viewmodel.character.CharacterUiState
+import com.marvelcomics.brito.viewmodel.BaseUiState
 import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -37,16 +36,16 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             characterViewModel.characterUiState.collect {
                 when (it) {
-                    is CharacterUiState.Success -> {
+                    is BaseUiState.Success -> {
                         progressbar_loading_character.visibility = View.GONE
-                        val characterFragment = CharacterFragment.newInstance(it.character)
+                        val characterFragment = CharacterFragment.newInstance(it.`object`)
                         replaceFragment(characterFragment, fragment_home_character.id)
-                        val comicsFragment = ComicsFragment.newInstance(it.character.id)
+                        val comicsFragment = ComicsFragment.newInstance(it.`object`.id)
                         replaceFragment(comicsFragment, fragment_home_comics.id)
-                        val seriesFragment = SeriesFragment.newInstance(it.character.id)
+                        val seriesFragment = SeriesFragment.newInstance(it.`object`.id)
                         replaceFragment(seriesFragment, fragment_home_series.id)
                     }
-                    is CharacterUiState.Error -> {
+                    is BaseUiState.Error -> {
                         Toast.makeText(
                             this@HomeActivity,
                             "Error: ${it.exception.message}",
@@ -54,8 +53,11 @@ class HomeActivity : AppCompatActivity() {
                         ).show()
                         progressbar_loading_character.visibility = View.GONE
                     }
-                    is CharacterUiState.Loading -> {
+                    is BaseUiState.Loading -> {
                         progressbar_loading_character.visibility = View.VISIBLE
+                    }
+                    is BaseUiState.NetworkError -> {
+                        //do nothing
                     }
                     else -> {
                         //do nothing

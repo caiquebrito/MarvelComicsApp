@@ -2,22 +2,17 @@ package com.marvelcomics.brito.viewmodel.character
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import com.marvelcomics.brito.viewmodel.MainCoroutineRule
-import com.marvelcomics.brito.viewmodel.getOrAwaitValue
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.concurrent.TimeUnit
 
 @ExperimentalCoroutinesApi
 class CharacterViewModelTest {

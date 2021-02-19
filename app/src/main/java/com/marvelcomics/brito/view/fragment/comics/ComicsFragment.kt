@@ -13,7 +13,7 @@ import com.marvelcomics.brito.R
 import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
-import com.marvelcomics.brito.viewmodel.comic.ComicUiState
+import com.marvelcomics.brito.viewmodel.BaseUiState
 import com.marvelcomics.brito.viewmodel.comic.ComicViewModel
 import kotlinx.android.synthetic.main.fragment_comics.view.*
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -55,18 +55,21 @@ class ComicsFragment : Fragment() {
 
     private fun initObservers() {
         lifecycleScope.launchWhenStarted {
-            comicViewModel.characterUiState.collect {
+            comicViewModel.comicUiState.collect {
                 when (it) {
-                    is ComicUiState.Success -> {
-                        showComics(it.list)
+                    is BaseUiState.Success -> {
+                        showComics(it.`object`)
                     }
-                    is ComicUiState.Error -> {
+                    is BaseUiState.Error -> {
                         it.exception.message?.let { message ->
                             showError(message)
                         }
                     }
-                    is ComicUiState.Loading -> {
+                    is BaseUiState.Loading -> {
                         showLoading()
+                    }
+                    is BaseUiState.NetworkError -> {
+                        //do nothing
                     }
                     else -> {
                         //do nothing
