@@ -2,7 +2,6 @@ package com.marvelcomics.brito.data.okhttp
 
 import com.marvelcomics.brito.domain.ResultWrapper
 import retrofit2.HttpException
-import java.io.IOException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException

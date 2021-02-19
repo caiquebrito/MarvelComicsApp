@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.domain.ResultWrapper
 import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 import kotlinx.android.synthetic.main.fragment_character.view.*

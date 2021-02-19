@@ -1,12 +1,12 @@
 package com.marvelcomics.brito.viewmodel.character
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.ResultWrapper
 import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import com.marvelcomics.brito.viewmodel.BaseUiState
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

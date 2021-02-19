@@ -1,7 +1,7 @@
 package com.marvelcomics.brito.infrastructure.utils
 
 class MarvelThumbnailAspectRatio {
-    //resolution at https://developer.marvel.com/documentation/images
+    // resolution at https://developer.marvel.com/documentation/images
     object Portrait {
         const val SMALL = "portrait_small"
         const val MEDIUM = "portrait_medium"

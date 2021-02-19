@@ -1,0 +1,13 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+    config = files("$rootDir/quality/detekt.yml")
+    input = files(
+            "app/src/",
+            "data/src",
+            "domain/src",
+            "infrastructure/src",
+            "viewmodel/src"
+    )
+    filters = ".*build.*,.*/resources/.*,.*/tmp/.*"
+}

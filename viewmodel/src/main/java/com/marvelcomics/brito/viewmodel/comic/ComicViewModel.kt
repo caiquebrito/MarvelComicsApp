@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.viewmodel.comic
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.ResultWrapper
 import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.domain.repository.IComicRepository

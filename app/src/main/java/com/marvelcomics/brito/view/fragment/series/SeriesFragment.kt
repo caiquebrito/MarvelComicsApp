@@ -67,10 +67,10 @@ class SeriesFragment : Fragment() {
                         showLoading()
                     }
                     is BaseUiState.NetworkError -> {
-                        //do nothing
+                        // do nothing
                     }
                     else -> {
-                        //do nothing
+                        // do nothing
                     }
                 }
             }

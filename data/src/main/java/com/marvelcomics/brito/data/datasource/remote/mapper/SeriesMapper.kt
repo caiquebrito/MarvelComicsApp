@@ -4,7 +4,6 @@ import com.marvelcomics.brito.data.datasource.remote.response.SeriesResponse
 import com.marvelcomics.brito.data.datasource.remote.response.model.RemoteMarvelContainer
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.exception.MarvelApiException
-import java.util.*
 
 class SeriesMapper(private val thumbnailMapper: ThumbnailMapper) {
 

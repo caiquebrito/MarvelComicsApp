@@ -57,10 +57,10 @@ class HomeActivity : AppCompatActivity() {
                         progressbar_loading_character.visibility = View.VISIBLE
                     }
                     is BaseUiState.NetworkError -> {
-                        //do nothing
+                        // do nothing
                     }
                     else -> {
-                        //do nothing
+                        // do nothing
                     }
                 }
             }

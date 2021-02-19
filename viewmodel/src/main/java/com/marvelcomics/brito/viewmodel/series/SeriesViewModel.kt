@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.viewmodel.series
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.ResultWrapper
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
@@ -9,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class SeriesViewModel(private val seriesRepository: ISeriesRepository) : ViewModel() {
 
