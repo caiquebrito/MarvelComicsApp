@@ -1,8 +1,8 @@
-package com.marvelcomics.brito.viewmodel.character
+package com.marvelcomics.brito.viewmodel.series
 
 import com.marvelcomics.brito.domain.ResultWrapper
-import com.marvelcomics.brito.domain.entity.CharacterEntity
-import com.marvelcomics.brito.domain.repository.ICharacterRepository
+import com.marvelcomics.brito.domain.entity.SeriesEntity
+import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import com.marvelcomics.brito.viewmodel.BaseUiState
 import com.marvelcomics.brito.viewmodel.MainCoroutineRule
 import io.mockk.MockKAnnotations
@@ -20,16 +20,16 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class CharacterViewModelTest {
+class SeriesViewModelTest {
 
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
     @RelaxedMockK
-    lateinit var characterEntityMock: CharacterEntity
+    lateinit var listSeriesMock: List<SeriesEntity>
 
     @RelaxedMockK
-    lateinit var resultWrapperSuccess: ResultWrapper.Success<CharacterEntity>
+    lateinit var resultWrapperSuccess: ResultWrapper.Success<List<SeriesEntity>>
 
     @RelaxedMockK
     lateinit var resultWrapperFailure: ResultWrapper.Failure
@@ -41,31 +41,31 @@ class CharacterViewModelTest {
     lateinit var runtimeException: RuntimeException
 
     @RelaxedMockK
-    lateinit var iCharacterRepositoryMock: ICharacterRepository
+    lateinit var iSeriesRepository: ISeriesRepository
 
-    lateinit var characterViewModel: CharacterViewModel
+    lateinit var seriesViewModel: SeriesViewModel
     private val testDispatcher = TestCoroutineDispatcher()
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        characterViewModel = CharacterViewModel(iCharacterRepositoryMock, testDispatcher)
+        seriesViewModel = SeriesViewModel(iSeriesRepository, testDispatcher)
     }
 
     @Test
     fun `when the result is sucess and validate object`() = mainCoroutineRule.runBlockingTest {
 
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperSuccess
-        coEvery { resultWrapperSuccess.value } returns characterEntityMock
+        coEvery { iSeriesRepository.getSeries(any()) } returns resultWrapperSuccess
+        coEvery { resultWrapperSuccess.value } returns listSeriesMock
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<BaseUiState<List<SeriesEntity>>>()
         val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
+            seriesViewModel.seriesUiState.toList(emissions)
         }
 
         assertEquals(BaseUiState.Empty, emissions[0])
 
-        characterViewModel.loadCharacter("Caique")
+        seriesViewModel.loadSeries(id = 99)
 
         assertEquals(BaseUiState.Loading, emissions[1])
 
@@ -82,17 +82,17 @@ class CharacterViewModelTest {
 
     @Test
     fun `when the result is failure and check the exception`() = mainCoroutineRule.runBlockingTest {
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperFailure
+        coEvery { iSeriesRepository.getSeries(any()) } returns resultWrapperFailure
         coEvery { resultWrapperFailure.error } returns runtimeException
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<BaseUiState<List<SeriesEntity>>>()
         val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
+            seriesViewModel.seriesUiState.toList(emissions)
         }
 
         assertEquals(BaseUiState.Empty, emissions[0])
 
-        characterViewModel.loadCharacter("Caique")
+        seriesViewModel.loadSeries(id = 99)
 
         assertEquals(BaseUiState.Loading, emissions[1])
 
@@ -109,16 +109,16 @@ class CharacterViewModelTest {
 
     @Test
     fun `when the result is network issue`() = mainCoroutineRule.runBlockingTest {
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperNetwork
+        coEvery { iSeriesRepository.getSeries(any()) } returns resultWrapperNetwork
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<BaseUiState<List<SeriesEntity>>>()
         val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
+            seriesViewModel.seriesUiState.toList(emissions)
         }
 
         assertEquals(BaseUiState.Empty, emissions[0])
 
-        characterViewModel.loadCharacter("Caique")
+        seriesViewModel.loadSeries(id = 99)
 
         assertEquals(BaseUiState.Loading, emissions[1])
 

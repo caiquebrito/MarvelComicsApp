@@ -1,14 +1,16 @@
-package com.marvelcomics.brito.viewmodel.character
+package com.marvelcomics.brito.viewmodel.comic
 
 import com.marvelcomics.brito.domain.ResultWrapper
-import com.marvelcomics.brito.domain.entity.CharacterEntity
-import com.marvelcomics.brito.domain.repository.ICharacterRepository
+import com.marvelcomics.brito.domain.entity.ComicEntity
+import com.marvelcomics.brito.domain.entity.SeriesEntity
+import com.marvelcomics.brito.domain.repository.IComicRepository
 import com.marvelcomics.brito.viewmodel.BaseUiState
 import com.marvelcomics.brito.viewmodel.MainCoroutineRule
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import java.lang.RuntimeException
+import junit.framework.Assert
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,16 +22,16 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class CharacterViewModelTest {
+class ComicViewModelTest {
 
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
     @RelaxedMockK
-    lateinit var characterEntityMock: CharacterEntity
+    lateinit var listComicsMock: List<ComicEntity>
 
     @RelaxedMockK
-    lateinit var resultWrapperSuccess: ResultWrapper.Success<CharacterEntity>
+    lateinit var resultWrapperSuccess: ResultWrapper.Success<List<ComicEntity>>
 
     @RelaxedMockK
     lateinit var resultWrapperFailure: ResultWrapper.Failure
@@ -41,31 +43,31 @@ class CharacterViewModelTest {
     lateinit var runtimeException: RuntimeException
 
     @RelaxedMockK
-    lateinit var iCharacterRepositoryMock: ICharacterRepository
+    lateinit var iComicRepository: IComicRepository
 
-    lateinit var characterViewModel: CharacterViewModel
+    lateinit var comicViewModel: ComicViewModel
     private val testDispatcher = TestCoroutineDispatcher()
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        characterViewModel = CharacterViewModel(iCharacterRepositoryMock, testDispatcher)
+        comicViewModel = ComicViewModel(iComicRepository, testDispatcher)
     }
 
     @Test
     fun `when the result is sucess and validate object`() = mainCoroutineRule.runBlockingTest {
 
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperSuccess
-        coEvery { resultWrapperSuccess.value } returns characterEntityMock
+        coEvery { iComicRepository.getComics(any()) } returns resultWrapperSuccess
+        coEvery { resultWrapperSuccess.value } returns listComicsMock
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<BaseUiState<List<ComicEntity>>>()
         val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
+            comicViewModel.comicUiState.toList(emissions)
         }
 
         assertEquals(BaseUiState.Empty, emissions[0])
 
-        characterViewModel.loadCharacter("Caique")
+        comicViewModel.loadComics(id = 99)
 
         assertEquals(BaseUiState.Loading, emissions[1])
 
@@ -82,17 +84,17 @@ class CharacterViewModelTest {
 
     @Test
     fun `when the result is failure and check the exception`() = mainCoroutineRule.runBlockingTest {
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperFailure
+        coEvery { iComicRepository.getComics(any()) } returns resultWrapperFailure
         coEvery { resultWrapperFailure.error } returns runtimeException
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<BaseUiState<List<ComicEntity>>>()
         val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
+            comicViewModel.comicUiState.toList(emissions)
         }
 
         assertEquals(BaseUiState.Empty, emissions[0])
 
-        characterViewModel.loadCharacter("Caique")
+        comicViewModel.loadComics(id = 99)
 
         assertEquals(BaseUiState.Loading, emissions[1])
 
@@ -109,16 +111,16 @@ class CharacterViewModelTest {
 
     @Test
     fun `when the result is network issue`() = mainCoroutineRule.runBlockingTest {
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperNetwork
+        coEvery { iComicRepository.getComics(any()) } returns resultWrapperNetwork
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<BaseUiState<List<ComicEntity>>>()
         val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
+            comicViewModel.comicUiState.toList(emissions)
         }
 
         assertEquals(BaseUiState.Empty, emissions[0])
 
-        characterViewModel.loadCharacter("Caique")
+        comicViewModel.loadComics(id = 99)
 
         assertEquals(BaseUiState.Loading, emissions[1])
 

@@ -10,7 +10,7 @@ import org.koin.dsl.module
 object ViewModelModules {
     val viewModels = module {
         viewModel { CharacterViewModel(get(), Dispatchers.IO) }
-        viewModel { ComicViewModel(get()) }
-        viewModel { SeriesViewModel(get()) }
+        viewModel { ComicViewModel(get(), Dispatchers.IO) }
+        viewModel { SeriesViewModel(get(), Dispatchers.IO) }
     }
 }
