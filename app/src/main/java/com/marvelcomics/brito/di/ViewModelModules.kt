@@ -4,7 +4,7 @@ import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
 import com.marvelcomics.brito.viewmodel.comic.ComicViewModel
 import com.marvelcomics.brito.viewmodel.series.SeriesViewModel
 import kotlinx.coroutines.Dispatchers
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 object ViewModelModules {
