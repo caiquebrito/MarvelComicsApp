@@ -7,7 +7,6 @@ import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import com.marvelcomics.brito.viewmodel.BaseUiState
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

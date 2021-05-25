@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.CoroutineTestRule
+import com.marvelcomics.brito.domain.ResultWrapper
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import io.mockk.MockKAnnotations
@@ -21,7 +22,7 @@ class SeriesUseCaseTest {
     var coroutinesTestRule = CoroutineTestRule()
 
     @RelaxedMockK
-    lateinit var listSeries: List<SeriesEntity>
+    lateinit var listSeries: ResultWrapper<List<SeriesEntity>>
     @RelaxedMockK
     lateinit var iSeriesRepository: ISeriesRepository
 
@@ -37,7 +38,7 @@ class SeriesUseCaseTest {
     fun test_getSeries() = runBlockingTest {
         coEvery { seriesUseCase.getSeries(any()) } returns listSeries
         val list = seriesUseCase.getSeries(0)
-        coVerify(exactly = 1) { iSeriesRepository.getSeries(any()) }
+        coVerify(exactly = 1) { iSeriesRepository.getSeries(0) }
         assertEquals("This should return the mock object", listSeries, list)
     }
 }

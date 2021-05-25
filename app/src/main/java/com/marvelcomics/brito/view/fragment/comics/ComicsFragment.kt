@@ -1,49 +1,33 @@
 package com.marvelcomics.brito.view.fragment.comics
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.R
+import com.marvelcomics.brito.databinding.FragmentComicsBinding
 import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
+import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.viewmodel.BaseUiState
 import com.marvelcomics.brito.viewmodel.comic.ComicViewModel
-import kotlinx.android.synthetic.main.fragment_comics.view.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 @InternalCoroutinesApi
-class ComicsFragment : Fragment() {
+class ComicsFragment : Fragment(R.layout.fragment_comics) {
 
+    private val binding by viewBinding(FragmentComicsBinding::bind)
     private val comicViewModel: ComicViewModel by inject()
 
     private var characterId: Int? = 0
 
-    private var progressbarLoadingComics: ProgressBar? = null
-    private var recyclerviewComics: RecyclerView? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         characterId = arguments?.getInt(ARGUMENT_CHARACTER_ID)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val inflatedView = inflater.inflate(R.layout.fragment_comics, null)
-        progressbarLoadingComics = inflatedView.progressbar_loading_comics
-        recyclerviewComics = inflatedView.recyclerview_fragment_comic
-        return inflatedView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,28 +68,30 @@ class ComicsFragment : Fragment() {
     }
 
     private fun showComics(comics: List<ComicEntity>) {
-        progressbarLoadingComics?.visibility = View.GONE
-        recyclerviewComics?.visibility = View.VISIBLE
+        binding.progressbarLoadingComics.visibility = View.GONE
+        binding.recyclerviewFragmentComic.visibility = View.VISIBLE
         createAdapter(comics)
     }
 
     private fun showLoading() {
-        progressbarLoadingComics?.visibility = View.VISIBLE
-        recyclerviewComics?.visibility = View.GONE
+        binding.progressbarLoadingComics.visibility = View.VISIBLE
+        binding.recyclerviewFragmentComic.visibility = View.GONE
     }
 
     private fun showError(message: String) {
-        progressbarLoadingComics?.visibility = View.GONE
-        recyclerviewComics?.visibility = View.VISIBLE
+        binding.progressbarLoadingComics.visibility = View.GONE
+        binding.recyclerviewFragmentComic.visibility = View.VISIBLE
         AlertDialogUtils.showSimpleDialog("Erro", message, requireContext())
     }
 
     private fun createAdapter(listComics: List<ComicEntity>) {
         val comicsAdapter = ComicsAdapter(listComics)
-        recyclerviewComics?.layoutManager =
+        binding.recyclerviewFragmentComic.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerviewComics?.adapter = comicsAdapter
-        recyclerviewComics?.addItemDecoration(ItemOffSetDecorationHorizontal(8))
+        binding.recyclerviewFragmentComic.adapter = comicsAdapter
+        binding.recyclerviewFragmentComic.addItemDecoration(
+            ItemOffSetDecorationHorizontal(8)
+        )
     }
 
     companion object {

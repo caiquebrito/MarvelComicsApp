@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "751164830035",
+    "project_id": "marvelcomics-brito",
+    "storage_bucket": "marvelcomics-brito.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751164830035:android:808a6bb43a6a8d134a31a6",
+        "android_client_info": {
+          "package_name": "com.marvelcomics.brito.marvelcomics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751164830035-7kfkiv5bqc8clr94tsg7o7ja3ih0k777.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2IFCl5UyoSf9fRtQ7nj7H8GzX6RXrqNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751164830035-7kfkiv5bqc8clr94tsg7o7ja3ih0k777.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

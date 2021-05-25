@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.CoroutineTestRule
+import com.marvelcomics.brito.domain.ResultWrapper
 import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import io.mockk.MockKAnnotations
@@ -16,12 +17,10 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class CharacterUseCaseTest {
-
     @get:Rule
     var coroutinesTestRule = CoroutineTestRule()
-
     @RelaxedMockK
-    lateinit var characterEntityMock: CharacterEntity
+    lateinit var characterEntityMock: ResultWrapper<CharacterEntity>
     @RelaxedMockK
     lateinit var iCharacterRepositoryMock: ICharacterRepository
 
@@ -37,7 +36,7 @@ class CharacterUseCaseTest {
     fun test_getCharacters() = runBlockingTest {
         coEvery { characterUseCase.getCharacters(any()) } returns characterEntityMock
         val character = characterUseCase.getCharacters("Caique")
-        coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters(any()) }
+        coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters("Caique") }
         assertEquals("This should return the mock object", characterEntityMock, character)
     }
 }

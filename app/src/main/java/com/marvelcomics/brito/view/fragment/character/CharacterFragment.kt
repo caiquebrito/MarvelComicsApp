@@ -1,19 +1,19 @@
 package com.marvelcomics.brito.view.fragment.character
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.marvelcomics.brito.R
+import com.marvelcomics.brito.databinding.FragmentCharacterBinding
 import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
-import kotlinx.android.synthetic.main.fragment_character.view.*
+import com.marvelcomics.brito.view.extensions.viewBinding
 
-class CharacterFragment : Fragment() {
+class CharacterFragment : Fragment(R.layout.fragment_character) {
 
+    private val binding by viewBinding(FragmentCharacterBinding::bind)
     private var characterEntity: CharacterEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,23 +22,19 @@ class CharacterFragment : Fragment() {
         characterEntity = args?.getSerializable(ARGUMENT_CHARACTER) as CharacterEntity
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val inflatedView = inflater.inflate(R.layout.fragment_character, null)
-        inflatedView.textview_fragment_character_name.text = characterEntity?.name
-        inflatedView.textview_fragment_character_description.text = characterEntity?.description
-
+        binding.textviewFragmentCharacterName.text = characterEntity?.name
+        binding.textviewFragmentCharacterDescription.text = characterEntity?.description
         Glide.with(this)
-            .load(characterEntity?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.MEDIUM))
-//            .placeholder(context.circularProgressBar())
+            .load(
+                characterEntity?.getFullUrlThumbnailWithAspect(
+                    MarvelThumbnailAspectRatio.Portrait.MEDIUM
+                )
+            )
             .apply(RequestOptions().centerCrop())
-            .into(inflatedView.imageview_fragment_character)
-
-        return inflatedView
+            .into(binding.imageviewFragmentCharacter)
     }
 
     companion object {

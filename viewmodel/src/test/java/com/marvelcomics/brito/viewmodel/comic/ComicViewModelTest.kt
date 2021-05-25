@@ -2,15 +2,12 @@ package com.marvelcomics.brito.viewmodel.comic
 
 import com.marvelcomics.brito.domain.ResultWrapper
 import com.marvelcomics.brito.domain.entity.ComicEntity
-import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.repository.IComicRepository
 import com.marvelcomics.brito.viewmodel.BaseUiState
 import com.marvelcomics.brito.viewmodel.MainCoroutineRule
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
-import java.lang.RuntimeException
-import junit.framework.Assert
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,6 +17,7 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.lang.RuntimeException
 
 @ExperimentalCoroutinesApi
 class ComicViewModelTest {
@@ -76,7 +74,7 @@ class ComicViewModelTest {
         emissions[2].let {
             assertTrue(
                 it is BaseUiState.Success &&
-                        resultWrapperSuccess.value == it.`object`
+                    resultWrapperSuccess.value == it.`object`
             )
         }
         job.cancel()
@@ -103,7 +101,7 @@ class ComicViewModelTest {
         emissions[2].let {
             assertTrue(
                 it is BaseUiState.Error &&
-                        resultWrapperFailure.error == it.exception
+                    resultWrapperFailure.error == it.exception
             )
         }
         job.cancel()
