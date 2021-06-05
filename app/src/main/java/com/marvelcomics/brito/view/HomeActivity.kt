@@ -1,10 +1,15 @@
 package com.marvelcomics.brito.view
 
+import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.marvelcomics.brito.databinding.ActivityMainBinding
 import com.marvelcomics.brito.hideKeyboard
 import com.marvelcomics.brito.replaceFragment
@@ -30,6 +35,26 @@ class HomeActivity : AppCompatActivity() {
 
         initUi()
         initObservers()
+        getFCMToken()
+    }
+
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.i(
+                        "FirebaseTest",
+                        "Fetching FCM registration token failed",
+                        task.exception
+                    )
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token: String? = task.result
+
+                Log.i("FirebaseTest", "Token get from FCM $token")
+            })
     }
 
     private fun initObservers() {

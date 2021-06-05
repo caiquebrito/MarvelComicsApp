@@ -3,25 +3,20 @@ package com.marvelcomics.brito.view
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.marvelcomics.brito.R
-import kotlinx.coroutines.Dispatchers
+import com.marvelcomics.brito.databinding.ActivitySplashBinding
+import com.marvelcomics.brito.view.extensions.viewBinding
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @InternalCoroutinesApi
 class SplashActivity : AppCompatActivity() {
 
+    private val binding by viewBinding(ActivitySplashBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        setContentView(binding.root)
 
-        runBlocking(Dispatchers.IO) {
-            Thread.sleep(3000L)
-            launch(Dispatchers.Main) {
-                startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
-                finish()
-            }
-        }
+        startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
+        finish()
     }
 }
