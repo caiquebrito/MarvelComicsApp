@@ -3,7 +3,7 @@ Simple app with Koin, Kotlin Coroutines, Retrofit, MVVM and Clean Architecture c
 
 ### Libraries Reference
 * [Insert Koin](https://insert-koin.io/)
-* [Anko](https://github.com/Kotlin/anko)
+* [Anko](https://github.com/Kotlin/anko) [DEPRECATED]
 * [Retrofit](https://github.com/square/retrofit)
 * [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 * [Glide](https://github.com/bumptech/glide)
