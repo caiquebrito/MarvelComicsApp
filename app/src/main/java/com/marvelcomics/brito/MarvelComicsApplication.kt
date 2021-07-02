@@ -8,7 +8,6 @@ import com.marvelcomics.brito.di.ViewModelModules
 import com.marvelcomics.brito.di.WebServiceModule
 import com.marvelcomics.brito.domain.DomainModules
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 class MarvelComicsApplication : Application() {
