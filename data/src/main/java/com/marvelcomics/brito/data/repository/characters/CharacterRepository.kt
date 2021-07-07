@@ -15,4 +15,3 @@ class CharacterRepository(
             ?: run { throw MarvelMapperException("Error mapping character", null) }
     }
 }
-

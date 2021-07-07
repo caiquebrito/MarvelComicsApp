@@ -71,7 +71,7 @@ class SeriesViewModelTest {
         emissions[2].let {
             assertTrue(
                 it is SeriesUiState.Success &&
-                        listSeriesMock == it.data
+                    listSeriesMock == it.data
             )
         }
         job.cancel()
@@ -99,7 +99,7 @@ class SeriesViewModelTest {
         emissions[2].let {
             assertTrue(
                 it is SeriesUiState.Error &&
-                        runtimeException == it.exception
+                    runtimeException == it.exception
             )
         }
         job.cancel()

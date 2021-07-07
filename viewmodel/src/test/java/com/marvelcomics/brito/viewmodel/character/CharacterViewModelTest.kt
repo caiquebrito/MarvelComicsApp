@@ -71,7 +71,7 @@ class CharacterViewModelTest {
         emissions[2].let {
             assertTrue(
                 it is CharacterUiState.Success &&
-                        characterEntityMock == it.data
+                    characterEntityMock == it.data
             )
         }
         job.cancel()
@@ -99,7 +99,7 @@ class CharacterViewModelTest {
         emissions[2].let {
             assertTrue(
                 it is CharacterUiState.Error &&
-                        runtimeException == it.exception
+                    runtimeException == it.exception
             )
         }
         job.cancel()

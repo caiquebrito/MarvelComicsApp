@@ -42,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
                         binding.progressbarLoadingCharacter.visibility = View.VISIBLE
                     }
                     is GlobalUiState.NetworkError -> {
-                        //do nothing
+                        // do nothing
                     }
                     is CharacterUiState.Success -> {
                         binding.progressbarLoadingCharacter.visibility = View.GONE
@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
                         binding.progressbarLoadingCharacter.visibility = View.GONE
                     }
                     else -> {
-                        //do nothing
+                        // do nothing
                     }
                 }
             }

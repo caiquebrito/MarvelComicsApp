@@ -71,7 +71,7 @@ class ComicViewModelTest {
         emissions[2].let {
             assertTrue(
                 it is ComicUiState.Success &&
-                        listComicsMock == it.data
+                    listComicsMock == it.data
             )
         }
         job.cancel()
@@ -99,7 +99,7 @@ class ComicViewModelTest {
         emissions[2].let {
             assertTrue(
                 it is ComicUiState.Error &&
-                        runtimeException == it.exception
+                    runtimeException == it.exception
             )
         }
         job.cancel()
