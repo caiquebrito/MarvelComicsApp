@@ -1,12 +1,13 @@
 package com.marvelcomics.brito
 
 import android.app.Application
+import com.marvelcomics.brito.data.ktor.NetworkModuleK
 import com.marvelcomics.brito.di.InterceptorModule
 import com.marvelcomics.brito.di.MapperModule
 import com.marvelcomics.brito.di.RepositoryModule
 import com.marvelcomics.brito.di.ViewModelModules
 import com.marvelcomics.brito.di.WebServiceModule
-import com.marvelcomics.brito.domain.DomainModules
+import com.marvelcomics.brito.domain.di.DomainModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -19,6 +20,7 @@ class MarvelComicsApplication : Application() {
             androidContext(this@MarvelComicsApplication)
             modules(
                 listOf(
+                    NetworkModuleK.ktorModule,
                     RepositoryModule.repositories,
                     InterceptorModule.interceptors,
                     WebServiceModule.webservices,

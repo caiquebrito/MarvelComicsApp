@@ -1,47 +1,43 @@
 package com.marvelcomics.brito.viewmodel.character
 
-import com.marvelcomics.brito.domain.ResultWrapper
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.marvelcomics.brito.domain.entity.CharacterEntity
-import com.marvelcomics.brito.domain.repository.ICharacterRepository
-import com.marvelcomics.brito.viewmodel.BaseUiState
-import com.marvelcomics.brito.viewmodel.MainCoroutineRule
+import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.usecase.CharacterUseCase
+import com.marvelcomics.brito.viewmodel.CharacterUiState
+import com.marvelcomics.brito.viewmodel.GlobalUiState
+import com.marvelcomics.brito.viewmodel.TestCoroutineRule
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.lang.RuntimeException
 
 @ExperimentalCoroutinesApi
 class CharacterViewModelTest {
 
     @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
+    val instantExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var testCoroutineRule = TestCoroutineRule()
 
     @RelaxedMockK
     lateinit var characterEntityMock: CharacterEntity
 
     @RelaxedMockK
-    lateinit var resultWrapperSuccess: ResultWrapper.Success<CharacterEntity>
-
-    @RelaxedMockK
-    lateinit var resultWrapperFailure: ResultWrapper.Failure
-
-    @RelaxedMockK
-    lateinit var resultWrapperNetwork: ResultWrapper.NetworkError
-
-    @RelaxedMockK
     lateinit var runtimeException: RuntimeException
 
     @RelaxedMockK
-    lateinit var iCharacterRepositoryMock: ICharacterRepository
+    lateinit var characterUseCaseMock: CharacterUseCase
 
     lateinit var characterViewModel: CharacterViewModel
     private val testDispatcher = TestCoroutineDispatcher()
@@ -49,82 +45,86 @@ class CharacterViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        characterViewModel = CharacterViewModel(iCharacterRepositoryMock, testDispatcher)
+        characterViewModel = CharacterViewModel(characterUseCaseMock, testDispatcher)
     }
 
     @Test
-    fun `when the result is sucess and validate object`() = mainCoroutineRule.runBlockingTest {
+    fun `when the result is sucess and validate object`() = testCoroutineRule.runBlockingTest {
 
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperSuccess
-        coEvery { resultWrapperSuccess.value } returns characterEntityMock
+        coEvery { characterUseCaseMock.getCharacters(any()) } returns flow {
+            emit(characterEntityMock)
+        }
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<Any>()
         val job = launch {
             characterViewModel.characterUiState.toList(emissions)
         }
 
-        assertEquals(BaseUiState.Empty, emissions[0])
+        assertEquals(GlobalUiState.Empty, emissions[0])
 
         characterViewModel.loadCharacter("Caique")
 
-        assertEquals(BaseUiState.Loading, emissions[1])
+        assertEquals(GlobalUiState.Loading, emissions[1])
 
         advanceTimeBy(2_000)
 
         emissions[2].let {
             assertTrue(
-                it is BaseUiState.Success &&
-                    resultWrapperSuccess.value == it.`object`
+                it is CharacterUiState.Success &&
+                        characterEntityMock == it.data
             )
         }
         job.cancel()
     }
 
     @Test
-    fun `when the result is failure and check the exception`() = mainCoroutineRule.runBlockingTest {
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperFailure
-        coEvery { resultWrapperFailure.error } returns runtimeException
+    fun `when the result is failure and check the exception`() = testCoroutineRule.runBlockingTest {
+        coEvery { characterUseCaseMock.getCharacters(any()) } returns flow {
+            throw runtimeException
+        }
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<Any>()
         val job = launch {
             characterViewModel.characterUiState.toList(emissions)
         }
 
-        assertEquals(BaseUiState.Empty, emissions[0])
+        assertEquals(GlobalUiState.Empty, emissions[0])
 
         characterViewModel.loadCharacter("Caique")
 
-        assertEquals(BaseUiState.Loading, emissions[1])
+        assertEquals(GlobalUiState.Loading, emissions[1])
 
         advanceTimeBy(2_000)
 
         emissions[2].let {
             assertTrue(
-                it is BaseUiState.Error &&
-                    resultWrapperFailure.error == it.exception
+                it is CharacterUiState.Error &&
+                        runtimeException == it.exception
             )
         }
         job.cancel()
     }
 
     @Test
-    fun `when the result is network issue`() = mainCoroutineRule.runBlockingTest {
-        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns resultWrapperNetwork
+    fun `when the result is network issue`() = testCoroutineRule.runBlockingTest {
+        coEvery { characterUseCaseMock.getCharacters(any()) } returns flow {
+            throw NetworkException()
+        }
 
-        val emissions = mutableListOf<BaseUiState<CharacterEntity>>()
+        val emissions = mutableListOf<Any>()
         val job = launch {
             characterViewModel.characterUiState.toList(emissions)
         }
 
-        assertEquals(BaseUiState.Empty, emissions[0])
+        assertEquals(GlobalUiState.Empty, emissions[0])
 
         characterViewModel.loadCharacter("Caique")
 
-        assertEquals(BaseUiState.Loading, emissions[1])
+        assertEquals(GlobalUiState.Loading, emissions[1])
 
         advanceTimeBy(2_000)
 
-        assertTrue(emissions[2] is BaseUiState.NetworkError)
+        assertTrue(emissions[2] is GlobalUiState.NetworkError)
 
         job.cancel()
     }

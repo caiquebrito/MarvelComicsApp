@@ -2,37 +2,36 @@ package com.marvelcomics.brito.viewmodel.comic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.marvelcomics.brito.domain.ResultWrapper
-import com.marvelcomics.brito.domain.entity.ComicEntity
-import com.marvelcomics.brito.domain.repository.IComicRepository
-import com.marvelcomics.brito.viewmodel.BaseUiState
+import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.usecase.ComicUseCase
+import com.marvelcomics.brito.viewmodel.ComicUiState
+import com.marvelcomics.brito.viewmodel.GlobalUiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ComicViewModel(
-    private val comicRepository: IComicRepository,
+    private val comicUseCase: ComicUseCase,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private var _comicUiState =
-        MutableStateFlow<BaseUiState<List<ComicEntity>>>(BaseUiState.Empty)
-    val comicUiState: StateFlow<BaseUiState<List<ComicEntity>>> = _comicUiState
+    private var _comicUiState = MutableStateFlow<Any>(GlobalUiState.Empty)
+    val comicUiState: StateFlow<Any> = _comicUiState
 
     fun loadComics(id: Int) =
         viewModelScope.launch(dispatcher) {
-            _comicUiState.value = BaseUiState.Loading
-            when (val response = comicRepository.getComics(id)) {
-                is ResultWrapper.Success -> {
-                    _comicUiState.value = BaseUiState.Success(response.value)
+            _comicUiState.value = GlobalUiState.Loading
+            comicUseCase.getComics(id).catch {
+                if (it is NetworkException) {
+                    _comicUiState.value = GlobalUiState.NetworkError
+                } else {
+                    _comicUiState.value = ComicUiState.Error(it)
                 }
-                is ResultWrapper.Failure -> {
-                    _comicUiState.value = BaseUiState.Error(response.error)
-                }
-                is ResultWrapper.NetworkError -> {
-                    _comicUiState.value = BaseUiState.NetworkError
-                }
+            }.collect {
+                _comicUiState.value = ComicUiState.Success(it)
             }
         }
 }

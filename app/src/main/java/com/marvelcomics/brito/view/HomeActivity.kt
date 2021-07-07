@@ -6,13 +6,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.marvelcomics.brito.databinding.ActivityMainBinding
+import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.hideKeyboard
 import com.marvelcomics.brito.replaceFragment
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.fragment.character.CharacterFragment
 import com.marvelcomics.brito.view.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.fragment.series.SeriesFragment
-import com.marvelcomics.brito.viewmodel.BaseUiState
+import com.marvelcomics.brito.viewmodel.CharacterUiState
+import com.marvelcomics.brito.viewmodel.GlobalUiState
 import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -36,16 +38,23 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             characterViewModel.characterUiState.collect {
                 when (it) {
-                    is BaseUiState.Success -> {
+                    is GlobalUiState.Loading -> {
+                        binding.progressbarLoadingCharacter.visibility = View.VISIBLE
+                    }
+                    is GlobalUiState.NetworkError -> {
+                        //do nothing
+                    }
+                    is CharacterUiState.Success -> {
                         binding.progressbarLoadingCharacter.visibility = View.GONE
-                        val characterFragment = CharacterFragment.newInstance(it.`object`)
+                        val character = it.data as CharacterEntity
+                        val characterFragment = CharacterFragment.newInstance(character)
                         replaceFragment(characterFragment, binding.fragmentHomeCharacter.id)
-                        val comicsFragment = ComicsFragment.newInstance(it.`object`.id)
+                        val comicsFragment = ComicsFragment.newInstance(character.id)
                         replaceFragment(comicsFragment, binding.fragmentHomeComics.id)
-                        val seriesFragment = SeriesFragment.newInstance(it.`object`.id)
+                        val seriesFragment = SeriesFragment.newInstance(character.id)
                         replaceFragment(seriesFragment, binding.fragmentHomeSeries.id)
                     }
-                    is BaseUiState.Error -> {
+                    is CharacterUiState.Error -> {
                         Toast.makeText(
                             this@HomeActivity,
                             "Error: ${it.exception.message}",
@@ -53,14 +62,8 @@ class HomeActivity : AppCompatActivity() {
                         ).show()
                         binding.progressbarLoadingCharacter.visibility = View.GONE
                     }
-                    is BaseUiState.Loading -> {
-                        binding.progressbarLoadingCharacter.visibility = View.VISIBLE
-                    }
-                    is BaseUiState.NetworkError -> {
-                        // do nothing
-                    }
                     else -> {
-                        // do nothing
+                        //do nothing
                     }
                 }
             }

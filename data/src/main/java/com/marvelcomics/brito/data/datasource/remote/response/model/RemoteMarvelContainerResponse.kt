@@ -2,7 +2,7 @@ package com.marvelcomics.brito.data.datasource.remote.response.model
 
 import com.google.gson.annotations.SerializedName
 
-class RemoteMarvelContainer<Type> {
+class RemoteMarvelContainerResponse<Type> {
     @SerializedName("code")
     private val code = 0
     @SerializedName("status")
@@ -16,5 +16,5 @@ class RemoteMarvelContainer<Type> {
     @SerializedName("etag")
     private val etag: String? = null
     @SerializedName("data")
-    val remoteMarvelData: RemoteMarvelData<Type>? = null
+    val remoteMarvelDataResponse: RemoteMarvelDataResponse<Type>? = null
 }

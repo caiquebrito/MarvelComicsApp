@@ -2,7 +2,7 @@ package com.marvelcomics.brito.data.datasource.remote.response.model
 
 import com.google.gson.annotations.SerializedName
 
-class RemoteMarvelData<Type> {
+class RemoteMarvelDataResponse<Type> {
     @SerializedName("offset")
     private val offset = 0
     @SerializedName("limit")

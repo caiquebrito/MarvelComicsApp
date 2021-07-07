@@ -1,7 +1,6 @@
 package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.CoroutineTestRule
-import com.marvelcomics.brito.domain.ResultWrapper
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import io.mockk.MockKAnnotations

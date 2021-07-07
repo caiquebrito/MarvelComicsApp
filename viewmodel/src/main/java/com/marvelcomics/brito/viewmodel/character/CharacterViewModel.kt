@@ -2,35 +2,37 @@ package com.marvelcomics.brito.viewmodel.character
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.marvelcomics.brito.domain.ResultWrapper
-import com.marvelcomics.brito.domain.entity.CharacterEntity
-import com.marvelcomics.brito.domain.repository.ICharacterRepository
-import com.marvelcomics.brito.viewmodel.BaseUiState
+import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.usecase.CharacterUseCase
+import com.marvelcomics.brito.viewmodel.CharacterUiState
+import com.marvelcomics.brito.viewmodel.GlobalUiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CharacterViewModel(
-    private val iCharacterRepository: ICharacterRepository,
+    private val characterUseCase: CharacterUseCase,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private var _characterUiState = MutableStateFlow<BaseUiState<CharacterEntity>>(BaseUiState.Empty)
-    var characterUiState: StateFlow<BaseUiState<CharacterEntity>> = _characterUiState
+    private var _characterUiState = MutableStateFlow<Any>(GlobalUiState.Empty)
+    var characterUiState: StateFlow<Any> = _characterUiState
 
     fun loadCharacter(name: String) = viewModelScope.launch(dispatcher) {
-        _characterUiState.value = BaseUiState.Loading
-        when (val response = iCharacterRepository.getCharacters(name)) {
-            is ResultWrapper.Success -> {
-                _characterUiState.value = BaseUiState.Success(response.value)
+        _characterUiState.value = GlobalUiState.Loading
+        characterUseCase.getCharacters(name)
+            .catch {
+                if (it is NetworkException) {
+                    _characterUiState.value = GlobalUiState.NetworkError
+                } else {
+                    _characterUiState.value = CharacterUiState.Error(it)
+                }
             }
-            is ResultWrapper.Failure -> {
-                _characterUiState.value = BaseUiState.Error(response.error)
+            .collect {
+                _characterUiState.value = CharacterUiState.Success(it)
             }
-            is ResultWrapper.NetworkError -> {
-                _characterUiState.value = BaseUiState.NetworkError
-            }
-        }
     }
 }
