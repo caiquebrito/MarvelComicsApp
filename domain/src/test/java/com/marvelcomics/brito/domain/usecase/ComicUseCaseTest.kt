@@ -8,15 +8,15 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import junit.framework.Assert
+import java.net.UnknownHostException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.net.UnknownHostException
 
 @ExperimentalCoroutinesApi
 class ComicUseCaseTest {
@@ -57,7 +57,7 @@ class ComicUseCaseTest {
 
         coVerify(exactly = 1) { iComicRepositoryMock.getComics(any()) }
 
-        Assert.assertEquals(listComics, emissions[0])
+        assertEquals(listComics, emissions[0])
         job.cancel()
     }
 
