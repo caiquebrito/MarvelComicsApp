@@ -17,6 +17,7 @@ import com.marvelcomics.brito.viewmodel.CharacterUiState
 import com.marvelcomics.brito.viewmodel.GlobalUiState
 import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -26,16 +27,38 @@ class HomeActivity : AppCompatActivity() {
     private val binding by viewBinding(ActivityMainBinding::inflate)
     private val characterViewModel: CharacterViewModel by viewModel()
 
+    private var uiStateJob: Job? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initUi()
+    }
+
+    override fun onStart() {
+        super.onStart()
         initObservers()
     }
 
+    override fun onStop() {
+        super.onStop()
+        uiStateJob?.cancel()
+    }
+
+    private fun initUi() {
+        binding.buttonSearchMarvelCharacter.setOnClickListener {
+            binding.edittextMarvelCharacter.text.toString().apply {
+                if (this.isNotBlank()) {
+                    getCharacterNav(this)
+                    hideKeyboard()
+                }
+            }
+        }
+    }
+
     private fun initObservers() {
-        lifecycleScope.launchWhenStarted {
+        uiStateJob = lifecycleScope.launchWhenStarted {
             characterViewModel.characterUiState.collect {
                 when (it) {
                     is GlobalUiState.Loading -> {
@@ -65,17 +88,6 @@ class HomeActivity : AppCompatActivity() {
                     else -> {
                         // do nothing
                     }
-                }
-            }
-        }
-    }
-
-    private fun initUi() {
-        binding.buttonSearchMarvelCharacter.setOnClickListener {
-            binding.edittextMarvelCharacter.text.toString().apply {
-                if (this.isNotBlank()) {
-                    getCharacterNav(this)
-                    hideKeyboard()
                 }
             }
         }

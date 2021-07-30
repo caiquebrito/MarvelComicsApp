@@ -14,6 +14,7 @@ import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.viewmodel.GlobalUiState
 import com.marvelcomics.brito.viewmodel.SeriesUiState
 import com.marvelcomics.brito.viewmodel.series.SeriesViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -23,6 +24,7 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
     private val seriesViewModel: SeriesViewModel by inject()
 
     private var characterId: Int? = 0
+    private var uiStateJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +34,21 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initObservers()
         loadSeries()
     }
 
+    override fun onStart() {
+        super.onStart()
+        initObservers()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        uiStateJob?.cancel()
+    }
+
     private fun initObservers() {
-        lifecycleScope.launchWhenStarted {
+        uiStateJob = lifecycleScope.launchWhenStarted {
             seriesViewModel.seriesUiState.collect {
                 when (it) {
                     is SeriesUiState.Success -> {

@@ -15,6 +15,7 @@ import com.marvelcomics.brito.viewmodel.ComicUiState
 import com.marvelcomics.brito.viewmodel.GlobalUiState
 import com.marvelcomics.brito.viewmodel.comic.ComicViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -25,6 +26,7 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
     private val comicViewModel: ComicViewModel by inject()
 
     private var characterId: Int? = 0
+    private var uiStateJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +35,21 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initObservers()
         loadComics()
     }
 
+    override fun onStart() {
+        super.onStart()
+        initObservers()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        uiStateJob?.cancel()
+    }
+
     private fun initObservers() {
-        lifecycleScope.launchWhenStarted {
+        uiStateJob = lifecycleScope.launchWhenStarted {
             comicViewModel.comicUiState.collect {
                 when (it) {
                     is ComicUiState.Success -> {
