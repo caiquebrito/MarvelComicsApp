@@ -1,7 +1,6 @@
 package com.marvelcomics.brito
 
 import android.app.Application
-import com.marvelcomics.brito.data.ktor.NetworkModuleK
 import com.marvelcomics.brito.di.InterceptorModule
 import com.marvelcomics.brito.di.MapperModule
 import com.marvelcomics.brito.di.RepositoryModule
@@ -20,7 +19,6 @@ class MarvelComicsApplication : Application() {
             androidContext(this@MarvelComicsApplication)
             modules(
                 listOf(
-                    NetworkModuleK.ktorModule,
                     RepositoryModule.repositories,
                     InterceptorModule.interceptors,
                     WebServiceModule.webservices,
