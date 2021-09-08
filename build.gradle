@@ -5,18 +5,17 @@ buildscript {
     ext.ktlint_version = '9.2.1'
     ext.detekt_version = '1.9.1'
     ext.gradle_version = '4.2.1'
-    ext.gms_version = '4.3.8'
     repositories {
         jcenter()
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlint_version"
-        classpath "com.google.gms:google-services:$gms_version"
     }
 }
 
@@ -33,6 +32,7 @@ allprojects {
         jcenter()
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 
     ktlint {

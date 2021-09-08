@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply from: '../dependencies.gradle'
 
 android {
     compileSdkVersion 30
@@ -20,7 +21,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -49,37 +50,31 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':infrastructure')
     implementation project(path: ':data')
-    implementation project(path: ':viewmodel')
+    implementation project(path: ':presentation')
     implementation project(path: ':domain')
 
-    //Experimental
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01"
+    //Android
+    implementation androidDependencies.lifecycleScope
+    implementation androidDependencies.recyclerView
+    implementation androidDependencies.appcompat
+    implementation androidDependencies.coreKtx
+    implementation androidDependencies.constraintLayout
+    implementation androidDependencies.lifecycleCommon
 
     //Koin
-    implementation "org.koin:koin-android:2.1.0"
-    implementation "org.koin:koin-android-viewmodel:2.1.0"
-
+    implementation customLibDependencies.koinAndroid
     //OkHttp
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
-
-    //Recycler
-    implementation "androidx.recyclerview:recyclerview:1.2.0"
-
+    implementation customLibDependencies.okhttp
+    implementation customLibDependencies.loggingInterceptor
+    implementation customLibDependencies.canarinho
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
+    implementation customLibDependencies.glide
+    annotationProcessor annotationProcessor.glide
     //Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
+    implementation jetbrainsDependencies.stdlib
+    implementation jetbrainsDependencies.core
 
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation testDependencies.junit
+    androidTestImplementation androidTestDependencies.junit
+    androidTestImplementation androidTestDependencies.espressoCore
 }
-apply plugin: 'com.google.gms.google-services'

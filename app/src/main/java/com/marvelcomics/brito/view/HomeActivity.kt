@@ -13,13 +13,13 @@ import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.fragment.character.CharacterFragment
 import com.marvelcomics.brito.view.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.fragment.series.SeriesFragment
-import com.marvelcomics.brito.viewmodel.CharacterUiState
-import com.marvelcomics.brito.viewmodel.GlobalUiState
-import com.marvelcomics.brito.viewmodel.character.CharacterViewModel
+import com.marvelcomics.brito.presentation.CharacterUiState
+import com.marvelcomics.brito.presentation.GlobalUiState
+import com.marvelcomics.brito.presentation.character.CharacterViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @InternalCoroutinesApi
 class HomeActivity : AppCompatActivity() {

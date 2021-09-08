@@ -11,9 +11,9 @@ import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
-import com.marvelcomics.brito.viewmodel.GlobalUiState
-import com.marvelcomics.brito.viewmodel.SeriesUiState
-import com.marvelcomics.brito.viewmodel.series.SeriesViewModel
+import com.marvelcomics.brito.presentation.GlobalUiState
+import com.marvelcomics.brito.presentation.SeriesUiState
+import com.marvelcomics.brito.presentation.series.SeriesViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
