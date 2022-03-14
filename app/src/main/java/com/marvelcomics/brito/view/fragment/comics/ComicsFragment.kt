@@ -9,11 +9,11 @@ import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentComicsBinding
 import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
-import com.marvelcomics.brito.view.extensions.viewBinding
-import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.presentation.ComicUiState
 import com.marvelcomics.brito.presentation.GlobalUiState
 import com.marvelcomics.brito.presentation.comic.ComicViewModel
+import com.marvelcomics.brito.view.extensions.viewBinding
+import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect

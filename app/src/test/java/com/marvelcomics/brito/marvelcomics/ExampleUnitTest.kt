@@ -1,13 +1,12 @@
 package com.marvelcomics.brito.marvelcomics
 
 import br.com.concrete.canarinho.formatador.FormatadorValor
-import java.math.BigDecimal
-import java.math.RoundingMode
 import junit.framework.Assert.assertEquals
-import junit.framework.Assert.format
-import kotlin.math.roundToInt
 import org.junit.Assert
 import org.junit.Test
+import java.math.BigDecimal
+import java.math.RoundingMode
+import kotlin.math.roundToInt
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -22,7 +21,7 @@ class ExampleUnitTest {
 
     @Test
     fun zeroTest() {
-        listOf(431536,28696,6760,482944,13745,216968,13739,64618,25796,258799,103859,13742,61868,29134,118661,206993,4080,64993,14120,438840,59867,113284,64280,16239,27684,255945,30759,28153,1999,218472,130786,32215,113187,213524,31815,7732,29990,460319,30534,13245,118460,103335,16039,935822,26396,6999,14939,13648,32203,14698)
+        listOf(431536, 28696, 6760, 482944, 13745, 216968, 13739, 64618, 25796, 258799, 103859, 13742, 61868, 29134, 118661, 206993, 4080, 64993, 14120, 438840, 59867, 113284, 64280, 16239, 27684, 255945, 30759, 28153, 1999, 218472, 130786, 32215, 113187, 213524, 31815, 7732, 29990, 460319, 30534, 13245, 118460, 103335, 16039, 935822, 26396, 6999, 14939, 13648, 32203, 14698)
             .map { amount ->
                 val bigDecimalResult =
                     BigDecimal(amount)
@@ -39,7 +38,7 @@ class ExampleUnitTest {
 
     @Test
     fun zeroTestCanarinho() {
-        listOf(431536,28696,6760,482944,13745,216968,13739,64618,25796,258799,103859,13742,61868,29134,118661,206993,4080,64993,14120,438840,59867,113284,64280,16239,27684,255945,30759,28153,1999,218472,130786,32215,113187,213524,31815,7732,29990,460319,30534,13245,118460,103335,16039,935822,26396,6999,14939,13648,32203,14698)
+        listOf(431536, 28696, 6760, 482944, 13745, 216968, 13739, 64618, 25796, 258799, 103859, 13742, 61868, 29134, 118661, 206993, 4080, 64993, 14120, 438840, 59867, 113284, 64280, 16239, 27684, 255945, 30759, 28153, 1999, 218472, 130786, 32215, 113187, 213524, 31815, 7732, 29990, 460319, 30534, 13245, 118460, 103335, 16039, 935822, 26396, 6999, 14939, 13648, 32203, 14698)
             .map { amount ->
                 val amountDividedByHundred = amount / 100.0
                 val formattedWithSymbol = FormatadorValor.VALOR_COM_SIMBOLO.formata(amountDividedByHundred.toString())

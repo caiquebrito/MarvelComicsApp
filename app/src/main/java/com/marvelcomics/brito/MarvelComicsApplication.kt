@@ -2,8 +2,8 @@ package com.marvelcomics.brito
 
 import android.app.Application
 import com.marvelcomics.brito.data.di.DataModule
-import com.marvelcomics.brito.presentation.di.PresentationModules
 import com.marvelcomics.brito.domain.di.DomainModules
+import com.marvelcomics.brito.presentation.di.PresentationModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
