@@ -1,17 +1,17 @@
 package com.marvelcomics.brito.data.datasource.remote.mapper
 
 import com.marvelcomics.brito.data.datasource.remote.response.ComicResponse
-import com.marvelcomics.brito.data.datasource.remote.response.model.RemoteMarvelContainer
+import com.marvelcomics.brito.data.datasource.remote.response.model.RemoteMarvelContainerResponse
 import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.infrastructure.exception.MarvelApiException
 
 class ComicMapper(private val thumbnailMapper: ThumbnailMapper?) {
 
     @Throws(MarvelApiException::class)
-    fun transform(remoteMarvelData: RemoteMarvelContainer<ComicResponse>): List<ComicEntity>? {
+    fun transform(remoteMarvelDataResponse: RemoteMarvelContainerResponse<ComicResponse>): List<ComicEntity>? {
         try {
             val comicEntityList = ArrayList<ComicEntity>()
-            remoteMarvelData.remoteMarvelData?.results?.let {
+            remoteMarvelDataResponse.remoteMarvelDataResponse?.results?.let {
                 for (comicResponse in it) {
                     val comicEntity = ComicEntity(
                         comicResponse.id,

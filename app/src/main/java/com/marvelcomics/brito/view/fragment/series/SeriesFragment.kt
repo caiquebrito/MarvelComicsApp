@@ -9,10 +9,12 @@ import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentSeriesBinding
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
+import com.marvelcomics.brito.presentation.GlobalUiState
+import com.marvelcomics.brito.presentation.SeriesUiState
+import com.marvelcomics.brito.presentation.series.SeriesViewModel
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
-import com.marvelcomics.brito.viewmodel.BaseUiState
-import com.marvelcomics.brito.viewmodel.series.SeriesViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -22,6 +24,7 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
     private val seriesViewModel: SeriesViewModel by inject()
 
     private var characterId: Int? = 0
+    private var uiStateJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,26 +34,35 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initObservers()
         loadSeries()
     }
 
+    override fun onStart() {
+        super.onStart()
+        initObservers()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        uiStateJob?.cancel()
+    }
+
     private fun initObservers() {
-        lifecycleScope.launchWhenStarted {
+        uiStateJob = lifecycleScope.launchWhenStarted {
             seriesViewModel.seriesUiState.collect {
                 when (it) {
-                    is BaseUiState.Success -> {
-                        showSeries(it.`object`)
+                    is SeriesUiState.Success -> {
+                        showSeries(it.data as List<SeriesEntity>)
                     }
-                    is BaseUiState.Error -> {
+                    is SeriesUiState.Error -> {
                         it.exception.message?.let { message ->
                             showError(message)
                         }
                     }
-                    is BaseUiState.Loading -> {
+                    is GlobalUiState.Loading -> {
                         showLoading()
                     }
-                    is BaseUiState.NetworkError -> {
+                    is GlobalUiState.NetworkError -> {
                         // do nothing
                     }
                     else -> {

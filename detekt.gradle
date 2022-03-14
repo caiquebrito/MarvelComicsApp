@@ -7,7 +7,7 @@ detekt {
             "data/src",
             "domain/src",
             "infrastructure/src",
-            "viewmodel/src"
+            "presentation/src"
     )
     filters = ".*build.*,.*/resources/.*,.*/tmp/.*"
 }

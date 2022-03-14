@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.marvelcomics.brito.databinding.ActivitySplashBinding
 import com.marvelcomics.brito.view.extensions.viewBinding
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.launch
 
 @InternalCoroutinesApi
 class SplashActivity : AppCompatActivity() {
@@ -16,7 +18,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
-        finish()
+        GlobalScope.launch {
+            Thread.sleep(3000L)
+            startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
+            finish()
+        }
     }
 }

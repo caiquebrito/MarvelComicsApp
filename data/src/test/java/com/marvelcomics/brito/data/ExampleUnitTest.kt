@@ -1,6 +1,5 @@
 package com.marvelcomics.brito.data
 
-import junit.framework.Assert.assertEquals
 import org.junit.Test
 
 /**
