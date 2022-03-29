@@ -5,9 +5,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.marvelcomics.brito.databinding.ActivitySplashBinding
 import com.marvelcomics.brito.view.extensions.viewBinding
-import kotlinx.coroutines.GlobalScope
+import com.marvelcomics.brito.view.home.HomeActivity
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @InternalCoroutinesApi
 class SplashActivity : AppCompatActivity() {
@@ -18,10 +20,12 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        GlobalScope.launch {
-            Thread.sleep(3000L)
-            startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
-            finish()
+        runBlocking {
+            launch {
+                delay(3000L)
+                startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
+                finish()
+            }
         }
     }
 }

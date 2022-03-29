@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.fragment.series
+package com.marvelcomics.brito.view.home.fragment.series
 
 import android.os.Bundle
 import android.view.View
@@ -9,11 +9,11 @@ import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentSeriesBinding
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
-import com.marvelcomics.brito.presentation.GlobalUiState
+import com.marvelcomics.brito.presentation.HomeState
 import com.marvelcomics.brito.presentation.SeriesUiState
 import com.marvelcomics.brito.presentation.series.SeriesViewModel
 import com.marvelcomics.brito.view.extensions.viewBinding
-import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
+import com.marvelcomics.brito.view.home.fragment.ItemOffSetDecorationHorizontal
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
@@ -59,10 +59,10 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
                             showError(message)
                         }
                     }
-                    is GlobalUiState.Loading -> {
+                    is HomeState.Loading -> {
                         showLoading()
                     }
-                    is GlobalUiState.NetworkError -> {
+                    is HomeState.NetworkError -> {
                         // do nothing
                     }
                     else -> {

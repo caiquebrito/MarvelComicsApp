@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.SeriesUseCase
-import com.marvelcomics.brito.presentation.GlobalUiState
+import com.marvelcomics.brito.presentation.HomeState
 import com.marvelcomics.brito.presentation.SeriesUiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,15 +19,15 @@ class SeriesViewModel(
 ) : ViewModel() {
 
     private var _seriesUiState =
-        MutableStateFlow<Any>(GlobalUiState.Empty)
+        MutableStateFlow<Any>(HomeState.Empty)
     var seriesUiState: StateFlow<Any> = _seriesUiState
 
     fun loadSeries(id: Int) =
         viewModelScope.launch(dispatcher) {
-            _seriesUiState.value = GlobalUiState.Loading
+            _seriesUiState.value = HomeState.Loading
             seriesUseCase.getSeries(id).catch {
                 if (it is NetworkException) {
-                    _seriesUiState.value = GlobalUiState.NetworkError
+                    _seriesUiState.value = HomeState.NetworkError
                 } else {
                     _seriesUiState.value = SeriesUiState.Error(it)
                 }

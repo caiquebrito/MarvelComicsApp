@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.CharacterUseCase
-import com.marvelcomics.brito.presentation.CharacterUiState
+import com.marvelcomics.brito.presentation.HomeState
 import com.marvelcomics.brito.presentation.GlobalUiState
 import com.marvelcomics.brito.presentation.TestCoroutineRule
 import io.mockk.MockKAnnotations
@@ -70,7 +70,7 @@ class CharacterViewModelTest {
 
         emissions[2].let {
             assertTrue(
-                it is CharacterUiState.Success &&
+                it is HomeState.Success &&
                     characterEntityMock == it.data
             )
         }
@@ -98,7 +98,7 @@ class CharacterViewModelTest {
 
         emissions[2].let {
             assertTrue(
-                it is CharacterUiState.Error &&
+                it is HomeState.Error &&
                     runtimeException == it.exception
             )
         }

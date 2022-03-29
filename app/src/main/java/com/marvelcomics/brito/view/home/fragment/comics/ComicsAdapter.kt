@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.fragment.series
+package com.marvelcomics.brito.view.home.fragment.comics
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,24 +8,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.domain.entity.SeriesEntity
+import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 
-class SeriesAdapter(private val series: List<SeriesEntity>) :
-    RecyclerView.Adapter<SeriesAdapter.ViewHolder?>() {
+class ComicsAdapter(private val comics: List<ComicEntity>) :
+    RecyclerView.Adapter<ComicsAdapter.ViewHolder?>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.item_series, null)
+        val view = layoutInflater.inflate(R.layout.item_comic, null)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(series[position])
+        holder.bind(comics[position])
     }
 
     override fun getItemCount(): Int {
-        return series.size
+        return comics.size
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -34,15 +34,15 @@ class SeriesAdapter(private val series: List<SeriesEntity>) :
         private var imageView: ImageView? = null
 
         init {
-            title = view.findViewById(R.id.textview_title_series)
-            imageView = view.findViewById(R.id.imageview_series)
+            title = view.findViewById(R.id.textview_title_comic)
+            imageView = view.findViewById(R.id.imageview_comic)
         }
 
-        fun bind(seriesEntity: SeriesEntity) {
-            title?.text = seriesEntity.title
+        fun bind(comicEntity: ComicEntity) {
+            title?.text = comicEntity.title
             imageView?.let {
                 Glide.with(it.context)
-                    .load(seriesEntity.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL))
+                    .load(comicEntity.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL))
 //                    .placeholder(view.context.circularProgressBar())
                     .fitCenter()
                     .into(it)
