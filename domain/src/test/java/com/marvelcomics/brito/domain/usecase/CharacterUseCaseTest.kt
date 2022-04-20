@@ -54,10 +54,13 @@ class CharacterUseCaseTest {
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-            characterUseCase.getCharacters("Caique").toList(emissions)
+            characterUseCase.invoke("Caique").let {
+                it
+            }
+            characterUseCase.invoke("Caique").toList(emissions)
         }
 
-        characterUseCase.getCharacters("Caique")
+        characterUseCase.invoke("Caique")
 
         coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters(any()) }
 
@@ -71,10 +74,10 @@ class CharacterUseCaseTest {
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-            characterUseCase.getCharacters("Caique").toList(emissions)
+            characterUseCase.invoke("Caique").toList(emissions)
         }
 
-        characterUseCase.getCharacters("Caique")
+        characterUseCase.invoke("Caique")
 
         coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters(any()) }
         job.cancel()
@@ -86,10 +89,10 @@ class CharacterUseCaseTest {
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-            characterUseCase.getCharacters("Caique").toList(emissions)
+            characterUseCase.invoke("Caique").toList(emissions)
         }
 
-        characterUseCase.getCharacters("Caique")
+        characterUseCase.invoke("Caique")
 
         coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters(any()) }
         job.cancel()

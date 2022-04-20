@@ -17,6 +17,7 @@ import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.home.fragment.character.CharacterFragment
 import com.marvelcomics.brito.view.home.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.home.fragment.series.SeriesFragment
+import java.lang.Exception
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -26,52 +27,101 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeActivity : AppCompatActivity() {
 
     private val characterViewModel: CharacterViewModel by viewModel()
-    private val screen = WrapperHomeScreen()
-
-    private val delegate by lazy {
-        object : HomeScreen.Delegate {
-            override fun openSuccessFragments() {
-                TODO("Not yet implemented")
-            }
-
-            override fun onBackPressed() {
-                onBackPressed()
-            }
-
-            override fun getCharacterNav(name: String) {
-                characterViewModel.loadCharacter(name)
-            }
-
-            override fun trackEvent(eventName: String) {
-                TODO("Not yet implemented")
-            }
-        }
-    }
+    private val bindings by viewBinding(ActivityMainBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(screen.link(this, delegate))
-        initUi()
-    }
-
-    override fun onStart() {
-        super.onStart()
+        setContentView(bindings.root)
         initObservers()
-    }
-
-    private fun initUi() {
-
+        setupViews()
     }
 
     private fun initObservers() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                characterViewModel.characterUiState.collect {
-                    when (it) {
-
+                characterViewModel.characterUiState.collect { newState ->
+                    when (newState) {
+                        is HomeState.Idle -> {
+                            setupViews()
+                        }
+                        is HomeState.Loading -> {
+                            showLoading()
+                        }
+                        is HomeState.Success -> {
+                            buildSuccessScreen(newState as CharacterEntity)
+                        }
+                        is HomeState.Error -> {
+                            showError(newState as Exception)
+                        }
+                        is HomeState.Empty -> {
+                            // do nothing
+                        }
+                        is HomeState.NetworkError -> {
+                            showNetworkError()
+                        }
+                        else -> {
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Error Not Identified - ${newState}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun setupViews() {
+        bindings.apply {
+            buttonSearchMarvelCharacter.setOnClickListener {
+                edittextMarvelCharacter.text.toString().apply {
+                    if (this.isNotBlank()) {
+                        characterViewModel.loadCharacter(this)
+                        hideKeyboard()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showLoading() {
+        bindings.apply {
+            progressbarLoadingCharacter.visibility = View.VISIBLE
+        }
+    }
+
+    private fun buildSuccessScreen(character: CharacterEntity) {
+        bindings.apply {
+            progressbarLoadingCharacter.visibility = View.GONE
+            val characterFragment = CharacterFragment.newInstance(character)
+            replaceFragment(characterFragment, fragmentHomeCharacter.id)
+            val comicsFragment = ComicsFragment.newInstance(character.id)
+            replaceFragment(comicsFragment, fragmentHomeComics.id)
+            val seriesFragment = SeriesFragment.newInstance(character.id)
+            replaceFragment(seriesFragment, fragmentHomeSeries.id)
+        }
+    }
+
+    private fun showError(exception: Throwable) {
+        bindings.apply {
+            progressbarLoadingCharacter.visibility = View.GONE
+        }
+        Toast.makeText(
+            this,
+            "Error: ${exception.message}",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun showNetworkError() {
+        bindings.apply {
+            progressbarLoadingCharacter.visibility = View.GONE
+        }
+        Toast.makeText(
+            this,
+            "Error: Verifique sua conexão com a internet",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
