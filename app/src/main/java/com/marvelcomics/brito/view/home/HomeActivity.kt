@@ -9,8 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.marvelcomics.brito.databinding.ActivityMainBinding
 import com.marvelcomics.brito.domain.entity.CharacterEntity
+import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.hideKeyboard
-import com.marvelcomics.brito.presentation.HomeState
+import com.marvelcomics.brito.presentation.character.CharacterInteraction
+import com.marvelcomics.brito.presentation.character.CharacterScreenState
 import com.marvelcomics.brito.presentation.character.CharacterViewModel
 import com.marvelcomics.brito.replaceFragment
 import com.marvelcomics.brito.view.extensions.viewBinding
@@ -19,7 +21,6 @@ import com.marvelcomics.brito.view.home.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.home.fragment.series.SeriesFragment
 import java.lang.Exception
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,28 +42,28 @@ class HomeActivity : AppCompatActivity() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 characterViewModel.characterUiState.collect { newState ->
                     when (newState) {
-                        is HomeState.Idle -> {
+                        is CharacterScreenState.Idle -> {
                             setupViews()
                         }
-                        is HomeState.Loading -> {
+                        is CharacterScreenState.Loading -> {
                             showLoading()
                         }
-                        is HomeState.Success -> {
-                            buildSuccessScreen(newState as CharacterEntity)
+                        is CharacterScreenState.Success -> {
+                            buildSuccessScreen((newState.data as CoroutineUseCase.Result.Success<CharacterEntity>).result)
                         }
-                        is HomeState.Error -> {
-                            showError(newState as Exception)
+                        is CharacterScreenState.Error -> {
+                            showError(newState.exception as Exception)
                         }
-                        is HomeState.Empty -> {
+                        is CharacterScreenState.Empty -> {
                             // do nothing
                         }
-                        is HomeState.NetworkError -> {
+                        is CharacterScreenState.NetworkError -> {
                             showNetworkError()
                         }
                         else -> {
                             Toast.makeText(
                                 this@HomeActivity,
-                                "Error Not Identified - ${newState}",
+                                "Error Not Identified - $newState",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -73,11 +74,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        bindings.apply {
+        with(bindings) {
             buttonSearchMarvelCharacter.setOnClickListener {
-                edittextMarvelCharacter.text.toString().apply {
+                with(edittextMarvelCharacter.text.toString()) {
                     if (this.isNotBlank()) {
-                        characterViewModel.loadCharacter(this)
+                        characterViewModel.handle(CharacterInteraction.SearchCharacter(this))
                         hideKeyboard()
                     }
                 }
@@ -86,13 +87,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showLoading() {
-        bindings.apply {
+        with(bindings) {
             progressbarLoadingCharacter.visibility = View.VISIBLE
         }
     }
 
     private fun buildSuccessScreen(character: CharacterEntity) {
-        bindings.apply {
+        with(bindings) {
             progressbarLoadingCharacter.visibility = View.GONE
             val characterFragment = CharacterFragment.newInstance(character)
             replaceFragment(characterFragment, fragmentHomeCharacter.id)
@@ -104,7 +105,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showError(exception: Throwable) {
-        bindings.apply {
+        with(bindings) {
             progressbarLoadingCharacter.visibility = View.GONE
         }
         Toast.makeText(
@@ -115,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showNetworkError() {
-        bindings.apply {
+        with(bindings) {
             progressbarLoadingCharacter.visibility = View.GONE
         }
         Toast.makeText(

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.ComicUseCase
 import com.marvelcomics.brito.presentation.ComicUiState
-import com.marvelcomics.brito.presentation.HomeState
+import com.marvelcomics.brito.presentation.character.CharacterScreenState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,15 +18,15 @@ class ComicViewModel(
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private var _comicUiState = MutableStateFlow<Any>(HomeState.Empty)
+    private var _comicUiState = MutableStateFlow<Any>(CharacterScreenState.Empty)
     val comicUiState: StateFlow<Any> = _comicUiState
 
     fun loadComics(id: Int) =
         viewModelScope.launch(dispatcher) {
-            _comicUiState.value = HomeState.Loading
+            _comicUiState.value = CharacterScreenState.Loading
             comicUseCase.getComics(id).catch {
                 if (it is NetworkException) {
-                    _comicUiState.value = HomeState.NetworkError
+                    _comicUiState.value = CharacterScreenState.NetworkError
                 } else {
                     _comicUiState.value = ComicUiState.Error(it)
                 }
