@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.SeriesUseCase
-import com.marvelcomics.brito.presentation.character.CharacterScreenState
 import com.marvelcomics.brito.presentation.SeriesUiState
+import com.marvelcomics.brito.presentation.character.CharacterScreenState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

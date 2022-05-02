@@ -19,10 +19,10 @@ import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.home.fragment.character.CharacterFragment
 import com.marvelcomics.brito.view.home.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.home.fragment.series.SeriesFragment
-import java.lang.Exception
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Exception
 
 @InternalCoroutinesApi
 class HomeActivity : AppCompatActivity() {

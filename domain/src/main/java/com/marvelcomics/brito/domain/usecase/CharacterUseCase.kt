@@ -3,11 +3,10 @@ package com.marvelcomics.brito.domain.usecase
 import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.CoroutineDispatcher
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import kotlinx.coroutines.CoroutineDispatcher
 
 class CharacterUseCase(
     private val iCharacterRepository: ICharacterRepository,

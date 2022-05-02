@@ -9,8 +9,8 @@ import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentSeriesBinding
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
-import com.marvelcomics.brito.presentation.character.CharacterScreenState
 import com.marvelcomics.brito.presentation.SeriesUiState
+import com.marvelcomics.brito.presentation.character.CharacterScreenState
 import com.marvelcomics.brito.presentation.series.SeriesViewModel
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.home.fragment.ItemOffSetDecorationHorizontal
