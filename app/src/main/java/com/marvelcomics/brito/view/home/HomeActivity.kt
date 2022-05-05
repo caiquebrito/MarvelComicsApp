@@ -41,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initObservers() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                characterViewModel.characterUiState.collect { newState ->
+                characterViewModel.bind().collect { newState ->
                     when (newState) {
                         is CharacterScreenState.Idle -> {
                             setupViews()

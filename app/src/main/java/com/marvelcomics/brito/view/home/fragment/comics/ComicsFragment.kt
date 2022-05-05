@@ -46,14 +46,14 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
     private fun initObservers() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                comicViewModel.comicUiState.collect {
+                comicViewModel.bind().collect {
                     when (it) {
                         is ComicScreenState.Loading -> {
                             showLoading()
                         }
                         is ComicScreenState.Success -> {
                             showComics(
-                                CoroutineUseCase.castSuccess<List<ComicEntity>>(it.data).result
+                                CoroutineUseCase.castSuccess(it.data)
                             )
                         }
                         is ComicScreenState.Error -> it.exception.message?.let { message ->

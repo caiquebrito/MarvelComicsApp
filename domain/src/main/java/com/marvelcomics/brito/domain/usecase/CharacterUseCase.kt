@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.entity.CharacterEntity
+import com.marvelcomics.brito.domain.exception.EmptyInputException
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,7 +16,7 @@ class CharacterUseCase(
 
     override suspend fun performAction(param: String?): Result<CharacterEntity> {
         if (param == null) {
-            throw Exception("Empty Param Character")
+            throw EmptyInputException()
         }
         return try {
             iCharacterRepository.getCharacters(param).first().let { Result.fromNullable(it) }

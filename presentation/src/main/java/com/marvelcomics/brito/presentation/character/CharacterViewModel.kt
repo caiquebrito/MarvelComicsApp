@@ -5,12 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.CharacterUseCase
 import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
@@ -20,9 +18,10 @@ class CharacterViewModel(
 ) : ViewModel() {
 
     private val interactions = Channel<CharacterInteraction>()
-    private var _characterUiState =
+    private var characterUiState =
         MutableStateFlow<CharacterScreenState>(CharacterScreenState.Empty)
-    var characterUiState: StateFlow<CharacterScreenState> = _characterUiState
+
+    fun bind() = characterUiState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -35,21 +34,23 @@ class CharacterViewModel(
     private suspend fun handleInteraction(interaction: CharacterInteraction) {
         when (interaction) {
             is CharacterInteraction.SearchCharacter -> {
+                characterUiState.emit(CharacterScreenState.Loading)
                 characterUseCase.invoke(interaction.name).let {
                     when (it) {
                         is CoroutineUseCase.Result.Success -> {
-                            _characterUiState.value = CharacterScreenState.Success(it)
+                            characterUiState.emit(CharacterScreenState.Success(it))
                         }
                         is CoroutineUseCase.Result.Failure -> {
                             it.error?.let { throwable ->
                                 if (throwable is NetworkException) {
-                                    _characterUiState.value = CharacterScreenState.NetworkError
+                                    characterUiState.emit(CharacterScreenState.NetworkError)
                                 } else {
-                                    _characterUiState.value = CharacterScreenState.Error(throwable)
+                                    characterUiState.emit(CharacterScreenState.Error(throwable))
                                 }
                             } ?: apply {
-                                _characterUiState.value =
+                                characterUiState.emit(
                                     CharacterScreenState.Error(Exception("Not Mapped Error"))
+                                )
                             }
                         }
                     }

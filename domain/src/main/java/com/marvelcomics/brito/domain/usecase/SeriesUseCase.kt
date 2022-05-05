@@ -4,8 +4,6 @@ import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException

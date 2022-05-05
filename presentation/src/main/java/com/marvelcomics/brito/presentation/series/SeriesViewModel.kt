@@ -8,7 +8,7 @@ import com.marvelcomics.brito.domain.usecase.SeriesUseCase
 import com.marvelcomics.brito.presentation.character.CharacterScreenState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
@@ -18,9 +18,9 @@ class SeriesViewModel(
 ) : ViewModel() {
 
     private val interactions = Channel<SeriesInteraction>()
-    private var _seriesUiState =
-        MutableStateFlow<Any>(CharacterScreenState.Empty)
-    var seriesUiState: StateFlow<Any> = _seriesUiState
+    private var _seriesUiState = MutableStateFlow<Any>(CharacterScreenState.Empty)
+
+    fun bind() = _seriesUiState.asStateFlow()
 
     init {
         viewModelScope.launch {

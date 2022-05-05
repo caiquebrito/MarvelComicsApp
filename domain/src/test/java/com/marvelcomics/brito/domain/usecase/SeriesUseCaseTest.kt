@@ -67,10 +67,8 @@ class SeriesUseCaseTest {
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-            seriesUseCase.getSeries(99).toList(emissions)
+            seriesUseCase.invoke(99).toList(emissions)
         }
-
-        seriesUseCase.getSeries(99)
 
         coVerify(exactly = 1) { iSeriesRepositoryMock.getSeries(any()) }
         job.cancel()

@@ -1,130 +1,97 @@
 package com.marvelcomics.brito.presentation.character
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.CharacterUseCase
-import com.marvelcomics.brito.presentation.GlobalUiState
-import com.marvelcomics.brito.presentation.TestCoroutineRule
+import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
+import com.marvelcomics.brito.presentation.BaseViewModelTest
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.InternalCoroutinesApi
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class CharacterViewModelTest {
+@InternalCoroutinesApi
+class CharacterViewModelTest : BaseViewModelTest() {
 
-    @get:Rule
-    val instantExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    var testCoroutineRule = TestCoroutineRule()
-
-    @RelaxedMockK
+    @MockK
     lateinit var characterEntityMock: CharacterEntity
 
-    @RelaxedMockK
-    lateinit var runtimeException: RuntimeException
+    @MockK
+    lateinit var runtimeExceptionMock: RuntimeException
 
-    @RelaxedMockK
-    lateinit var characterUseCaseMock: CharacterUseCase
+    @MockK
+    lateinit var useCaseMock: CharacterUseCase
 
-    lateinit var characterViewModel: CharacterViewModel
-    private val testDispatcher = TestCoroutineDispatcher()
+    lateinit var viewModel: CharacterViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        characterViewModel = CharacterViewModel(characterUseCaseMock, testDispatcher)
+        viewModel = CharacterViewModel(useCaseMock)
     }
 
     @Test
-    fun `when the result is sucess and validate object`() = testCoroutineRule.runBlockingTest {
+    fun `when the result is sucess and validate object`() {
+        executeOnBlockingTestScope(viewModel.bind()) { emissions ->
+            coEvery { useCaseMock.invoke(any()) } returns
+                CoroutineUseCase.Result.Success(characterEntityMock)
 
-        coEvery { characterUseCaseMock.getCharacters(any()) } returns flow {
-            emit(characterEntityMock)
+            assertEquals(CharacterScreenState.Empty, emissions[0])
+
+            viewModel.handle(CharacterInteraction.SearchCharacter(""))
+
+            assertEquals(CharacterScreenState.Loading, emissions[1])
+
+            emissions[2].let {
+                assertTrue(
+                    "Object are not same",
+                    it is CharacterScreenState.Success &&
+                        characterEntityMock == CoroutineUseCase.castSuccess(it.data)
+                )
+            }
         }
-
-        val emissions = mutableListOf<Any>()
-        val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
-        }
-
-        assertEquals(GlobalUiState.Empty, emissions[0])
-
-        characterViewModel.loadCharacter("Caique")
-
-        assertEquals(GlobalUiState.Loading, emissions[1])
-
-        advanceTimeBy(2_000)
-
-        emissions[2].let {
-            assertTrue(
-                it is CharacterScreenState.Success &&
-                    characterEntityMock == it.data
-            )
-        }
-        job.cancel()
     }
 
     @Test
-    fun `when the result is failure and check the exception`() = testCoroutineRule.runBlockingTest {
-        coEvery { characterUseCaseMock.getCharacters(any()) } returns flow {
-            throw runtimeException
+    fun `when the result is failure and check the exception`() {
+        executeOnBlockingTestScope(viewModel.bind()) { emissions ->
+            coEvery { useCaseMock.invoke(any()) } returns
+                CoroutineUseCase.Result.Failure(runtimeExceptionMock)
+
+            assertEquals(CharacterScreenState.Empty, emissions[0])
+
+            viewModel.handle(CharacterInteraction.SearchCharacter("Caique"))
+
+            assertEquals(CharacterScreenState.Loading, emissions[1])
+
+            emissions[2].let {
+                assertTrue(
+                    it is CharacterScreenState.Error &&
+                        runtimeExceptionMock == it.exception
+                )
+            }
         }
-
-        val emissions = mutableListOf<Any>()
-        val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
-        }
-
-        assertEquals(GlobalUiState.Empty, emissions[0])
-
-        characterViewModel.loadCharacter("Caique")
-
-        assertEquals(GlobalUiState.Loading, emissions[1])
-
-        advanceTimeBy(2_000)
-
-        emissions[2].let {
-            assertTrue(
-                it is CharacterScreenState.Error &&
-                    runtimeException == it.exception
-            )
-        }
-        job.cancel()
     }
 
     @Test
-    fun `when the result is network issue`() = testCoroutineRule.runBlockingTest {
-        coEvery { characterUseCaseMock.getCharacters(any()) } returns flow {
-            throw NetworkException()
+    fun `when the result is network issue`() {
+        executeOnBlockingTestScope(viewModel.bind()) { emissions ->
+            coEvery { useCaseMock.invoke(any()) } returns
+                CoroutineUseCase.Result.Failure(NetworkException())
+
+            assertEquals(CharacterScreenState.Empty, emissions[0])
+
+            viewModel.handle(CharacterInteraction.SearchCharacter("Caique"))
+
+            assertEquals(CharacterScreenState.Loading, emissions[1])
+
+            assertTrue(emissions[2] is CharacterScreenState.NetworkError)
         }
-
-        val emissions = mutableListOf<Any>()
-        val job = launch {
-            characterViewModel.characterUiState.toList(emissions)
-        }
-
-        assertEquals(GlobalUiState.Empty, emissions[0])
-
-        characterViewModel.loadCharacter("Caique")
-
-        assertEquals(GlobalUiState.Loading, emissions[1])
-
-        advanceTimeBy(2_000)
-
-        assertTrue(emissions[2] is GlobalUiState.NetworkError)
-
-        job.cancel()
     }
 }

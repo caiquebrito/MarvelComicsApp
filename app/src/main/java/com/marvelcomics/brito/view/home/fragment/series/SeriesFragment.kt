@@ -46,11 +46,11 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
     private fun initObservers() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                seriesViewModel.seriesUiState.collect {
+                seriesViewModel.bind().collect {
                     when (it) {
                         is SeriesScreenState.Success -> {
                             showSeries(
-                                CoroutineUseCase.castSuccess<List<SeriesEntity>>(it.data).result
+                                CoroutineUseCase.castSuccess(it.data)
                             )
                         }
                         is SeriesScreenState.Error -> {
