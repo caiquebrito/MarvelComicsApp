@@ -3,36 +3,63 @@ package com.marvelcomics.brito.presentation.series
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.domain.usecase.SeriesUseCase
-import com.marvelcomics.brito.presentation.SeriesUiState
 import com.marvelcomics.brito.presentation.character.CharacterScreenState
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 class SeriesViewModel(
-    private val seriesUseCase: SeriesUseCase,
-    private val dispatcher: CoroutineDispatcher
+    private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 
+    private val interactions = Channel<SeriesInteraction>()
     private var _seriesUiState =
         MutableStateFlow<Any>(CharacterScreenState.Empty)
     var seriesUiState: StateFlow<Any> = _seriesUiState
 
-    fun loadSeries(id: Int) =
-        viewModelScope.launch(dispatcher) {
-            _seriesUiState.value = CharacterScreenState.Loading
-            seriesUseCase.getSeries(id).catch {
-                if (it is NetworkException) {
-                    _seriesUiState.value = CharacterScreenState.NetworkError
-                } else {
-                    _seriesUiState.value = SeriesUiState.Error(it)
-                }
-            }.collect {
-                _seriesUiState.value = SeriesUiState.Success(it)
+    init {
+        viewModelScope.launch {
+            interactions.consumeAsFlow().collect {
+                handleInteractions(it)
             }
         }
+    }
+
+    private suspend fun handleInteractions(interaction: SeriesInteraction) {
+        when (interaction) {
+            is SeriesInteraction.LoadSeriesById -> {
+                _seriesUiState.value = SeriesScreenState.Loading
+                seriesUseCase.invoke(interaction.id).let {
+                    when (it) {
+                        is CoroutineUseCase.Result.Success -> {
+                            _seriesUiState.value = SeriesScreenState.Success(it)
+                        }
+                        is CoroutineUseCase.Result.Failure -> {
+                            it.error?.let { throwable ->
+                                if (throwable is NetworkException) {
+                                    _seriesUiState.value = SeriesScreenState.NetworkError
+                                } else {
+                                    _seriesUiState.value = SeriesScreenState.Error(throwable)
+                                }
+                            } ?: apply {
+                                _seriesUiState.value =
+                                    SeriesScreenState.Error(Exception("Not Mapped Error"))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun handle(interaction: SeriesInteraction) {
+        viewModelScope.launch {
+            interactions.send(interaction)
+        }
+    }
 }

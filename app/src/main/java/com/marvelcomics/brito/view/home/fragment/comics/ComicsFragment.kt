@@ -3,18 +3,22 @@ package com.marvelcomics.brito.view.home.fragment.comics
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentComicsBinding
 import com.marvelcomics.brito.domain.entity.ComicEntity
+import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
-import com.marvelcomics.brito.presentation.ComicUiState
+import com.marvelcomics.brito.presentation.comic.ComicInteraction
+import com.marvelcomics.brito.presentation.comic.ComicScreenState
 import com.marvelcomics.brito.presentation.comic.ComicViewModel
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.home.fragment.ItemOffSetDecorationHorizontal
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class ComicsFragment : Fragment(R.layout.fragment_comics) {
@@ -23,7 +27,6 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
     private val comicViewModel: ComicViewModel by inject()
 
     private var characterId: Int? = 0
-    private var uiStateJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,25 +43,22 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
         initObservers()
     }
 
-    override fun onStop() {
-        super.onStop()
-        uiStateJob?.cancel()
-    }
-
     private fun initObservers() {
-        uiStateJob = lifecycleScope.launchWhenStarted {
-            comicViewModel.comicUiState.collect {
-                when (it) {
-                    is ComicUiState.Success -> {
-                        showComics(it.data as List<ComicEntity>)
-                    }
-                    is ComicUiState.Error -> {
-                        it.exception.message?.let { message ->
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                comicViewModel.comicUiState.collect {
+                    when (it) {
+                        is ComicScreenState.Loading -> {
+                            showLoading()
+                        }
+                        is ComicScreenState.Success -> {
+                            showComics(
+                                CoroutineUseCase.castSuccess<List<ComicEntity>>(it.data).result
+                            )
+                        }
+                        is ComicScreenState.Error -> it.exception.message?.let { message ->
                             showError(message)
                         }
-                    }
-                    else -> {
-                        // do nothing
                     }
                 }
             }
@@ -66,7 +66,7 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
     }
 
     private fun loadComics() {
-        comicViewModel.loadComics(characterId ?: let { 0 })
+        comicViewModel.handle(ComicInteraction.LoadComicsById(characterId ?: let { 0 }))
     }
 
     private fun showComics(comics: List<ComicEntity>) {

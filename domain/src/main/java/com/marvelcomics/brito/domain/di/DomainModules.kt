@@ -9,7 +9,7 @@ import org.koin.dsl.module
 object DomainModules {
     val usesCases = module {
         factory { CharacterUseCase(get(), Dispatchers.IO) }
-        factory { ComicUseCase(get()) }
-        factory { SeriesUseCase(get()) }
+        factory { ComicUseCase(get(), Dispatchers.IO) }
+        factory { SeriesUseCase(get(), Dispatchers.IO) }
     }
 }

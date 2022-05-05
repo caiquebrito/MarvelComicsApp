@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.ComicUseCase
-import com.marvelcomics.brito.presentation.ComicUiState
 import com.marvelcomics.brito.presentation.GlobalUiState
 import com.marvelcomics.brito.presentation.TestCoroutineRule
 import io.mockk.MockKAnnotations
@@ -60,7 +59,7 @@ class ComicViewModelTest {
             comicViewModel.comicUiState.toList(emissions)
         }
 
-        assertEquals(GlobalUiState.Empty, emissions[0])
+        assertEquals(Character.Empty, emissions[0])
 
         comicViewModel.loadComics(id = 99)
 
@@ -70,7 +69,7 @@ class ComicViewModelTest {
 
         emissions[2].let {
             assertTrue(
-                it is ComicUiState.Success &&
+                it is ComicScreenState.Success &&
                     listComicsMock == it.data
             )
         }
@@ -98,7 +97,7 @@ class ComicViewModelTest {
 
         emissions[2].let {
             assertTrue(
-                it is ComicUiState.Error &&
+                it is ComicScreenState.Error &&
                     runtimeException == it.exception
             )
         }

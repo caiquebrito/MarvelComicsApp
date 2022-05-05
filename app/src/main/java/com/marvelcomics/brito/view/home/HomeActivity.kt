@@ -20,6 +20,7 @@ import com.marvelcomics.brito.view.home.fragment.character.CharacterFragment
 import com.marvelcomics.brito.view.home.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.home.fragment.series.SeriesFragment
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.lang.Exception
@@ -49,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
                             showLoading()
                         }
                         is CharacterScreenState.Success -> {
-                            buildSuccessScreen((newState.data as CoroutineUseCase.Result.Success<CharacterEntity>).result)
+                            buildSuccessScreen(CoroutineUseCase.castSuccess(newState.data))
                         }
                         is CharacterScreenState.Error -> {
                             showError(newState.exception as Exception)

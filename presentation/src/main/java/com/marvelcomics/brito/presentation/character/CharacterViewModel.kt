@@ -10,13 +10,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 @InternalCoroutinesApi
 class CharacterViewModel(
-    private val characterUseCase: CharacterUseCase,
-    private val dispatcher: CoroutineDispatcher
+    private val characterUseCase: CharacterUseCase
 ) : ViewModel() {
 
     private val interactions = Channel<CharacterInteraction>()
