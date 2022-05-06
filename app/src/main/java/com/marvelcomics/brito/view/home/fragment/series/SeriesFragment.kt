@@ -17,10 +17,11 @@ import com.marvelcomics.brito.presentation.series.SeriesScreenState
 import com.marvelcomics.brito.presentation.series.SeriesViewModel
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.home.fragment.ItemOffSetDecorationHorizontal
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
+@InternalCoroutinesApi
 class SeriesFragment : Fragment(R.layout.fragment_series) {
 
     private val binding by viewBinding(FragmentSeriesBinding::bind)

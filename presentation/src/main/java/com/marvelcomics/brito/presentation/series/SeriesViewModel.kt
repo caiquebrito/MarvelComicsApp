@@ -6,6 +6,7 @@ import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.domain.usecase.SeriesUseCase
 import com.marvelcomics.brito.presentation.character.CharacterScreenState
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
+@InternalCoroutinesApi
 class SeriesViewModel(
     private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {

@@ -1,34 +1,36 @@
 package com.marvelcomics.brito.presentation.comic
 
+import com.marvelcomics.brito.domain.entity.ComicEntity
+import com.marvelcomics.brito.domain.usecase.ComicUseCase
+import com.marvelcomics.brito.presentation.BaseViewModelTest
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import org.junit.Before
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class ComicViewModelTest {
+@InternalCoroutinesApi
+class ComicViewModelTest : BaseViewModelTest() {
 
-//    @get:Rule
-//    val instantExecutorRule = InstantTaskExecutorRule()
-//
-//    @get:Rule
-//    var mainCoroutineRule = TestCoroutineRule()
-//
-//    @RelaxedMockK
-//    lateinit var listComicsMock: List<ComicEntity>
-//
-//    @RelaxedMockK
-//    lateinit var runtimeException: RuntimeException
-//
-//    @RelaxedMockK
-//    lateinit var comicUseCaseMock: ComicUseCase
-//
-//    lateinit var comicViewModel: ComicViewModel
-//    private val testDispatcher = TestCoroutineDispatcher()
-//
-//    @Before
-//    fun setup() {
-//        MockKAnnotations.init(this)
-//        comicViewModel = ComicViewModel(comicUseCaseMock, testDispatcher)
-//    }
-//
+    @MockK
+    lateinit var listComicsMock: List<ComicEntity>
+
+    @MockK
+    lateinit var runtimeException: RuntimeException
+
+    @MockK
+    lateinit var comicUseCaseMock: ComicUseCase
+
+    lateinit var viewModel: ComicViewModel
+
+    @Before
+    fun setup() {
+        MockKAnnotations.init(this)
+        viewModel = ComicViewModel(comicUseCaseMock)
+    }
+
 //    @Test
 //    fun `when the result is sucess and validate object`() = mainCoroutineRule.runBlockingTest {
 //
@@ -38,12 +40,12 @@ class ComicViewModelTest {
 //
 //        val emissions = mutableListOf<Any>()
 //        val job = launch {
-//            comicViewModel.comicUiState.toList(emissions)
+//            viewModel.comicUiState.toList(emissions)
 //        }
 //
 //        assertEquals(Character.Empty, emissions[0])
 //
-//        comicViewModel.loadComics(id = 99)
+//        viewModel.loadComics(id = 99)
 //
 //        assertEquals(GlobalUiState.Loading, emissions[1])
 //
@@ -66,12 +68,12 @@ class ComicViewModelTest {
 //
 //        val emissions = mutableListOf<Any>()
 //        val job = launch {
-//            comicViewModel.comicUiState.toList(emissions)
+//            viewModel.comicUiState.toList(emissions)
 //        }
 //
 //        assertEquals(GlobalUiState.Empty, emissions[0])
 //
-//        comicViewModel.loadComics(id = 99)
+//        viewModel.loadComics(id = 99)
 //
 //        assertEquals(GlobalUiState.Loading, emissions[1])
 //
@@ -94,12 +96,12 @@ class ComicViewModelTest {
 //
 //        val emissions = mutableListOf<Any>()
 //        val job = launch {
-//            comicViewModel.comicUiState.toList(emissions)
+//            viewModel.comicUiState.toList(emissions)
 //        }
 //
 //        assertEquals(GlobalUiState.Empty, emissions[0])
 //
-//        comicViewModel.loadComics(id = 99)
+//        viewModel.loadComics(id = 99)
 //
 //        assertEquals(GlobalUiState.Loading, emissions[1])
 //

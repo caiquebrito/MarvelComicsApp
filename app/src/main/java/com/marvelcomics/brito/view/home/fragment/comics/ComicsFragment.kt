@@ -17,10 +17,11 @@ import com.marvelcomics.brito.presentation.comic.ComicScreenState
 import com.marvelcomics.brito.presentation.comic.ComicViewModel
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.home.fragment.ItemOffSetDecorationHorizontal
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
+@InternalCoroutinesApi
 class ComicsFragment : Fragment(R.layout.fragment_comics) {
 
     private val binding by viewBinding(FragmentComicsBinding::bind)
