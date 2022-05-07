@@ -1,6 +1,5 @@
 package com.marvelcomics.brito.data
 
-import junit.framework.Assert.assertEquals
 import org.junit.Test
 
 /**
@@ -11,6 +10,13 @@ import org.junit.Test
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val hashmapOne = HashMap<String, String>()
+        val mapTwo = HashMap<String, String>() as Map<String, String>
+
+        hashmapOne["item_teste"] = "teste"
+        val mapOne = hashmapOne as Map<String, String>
+
+        println(mapOne["item_teste"])
+        println(mapTwo["item_teste"])
     }
 }

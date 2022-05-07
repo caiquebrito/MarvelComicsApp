@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:contentDescription="@null"
         android:src="@drawable/ironmanblueprint"
-        android:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@android:color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

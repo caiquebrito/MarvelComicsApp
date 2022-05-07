@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlinx-serialization'
+apply from: '../dependencies.gradle'
 
 android {
     compileSdkVersion 30
@@ -33,16 +34,17 @@ dependencies {
     implementation project(path: ':infrastructure')
     implementation project(path: ':domain')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation jetbrainsDependencies.stdlib
 
-    implementation "com.squareup.retrofit2:retrofit:2.6.2"
-    implementation "com.squareup.retrofit2:converter-gson:2.6.2"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.2.0"
+    implementation androidDependencies.appcompat
+    implementation androidDependencies.coreKtx
+
+    implementation customLibDependencies.retrofit
+    implementation customLibDependencies.retrofitGson
+    implementation customLibDependencies.loggingInterceptor
 
     //Koin
-    implementation "org.koin:koin-android:2.1.0"
+    implementation customLibDependencies.koinAndroid
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation testDependencies.junit
 }

@@ -8,7 +8,6 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import java.net.UnknownHostException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -17,6 +16,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.net.UnknownHostException
 
 @ExperimentalCoroutinesApi
 class SeriesUseCaseTest {
@@ -67,10 +67,8 @@ class SeriesUseCaseTest {
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-            seriesUseCase.getSeries(99).toList(emissions)
+            seriesUseCase.invoke(99).toList(emissions)
         }
-
-        seriesUseCase.getSeries(99)
 
         coVerify(exactly = 1) { iSeriesRepositoryMock.getSeries(any()) }
         job.cancel()
