@@ -28,8 +28,24 @@ abstract class CoroutineUseCase<in TParam, out TResult>(private val dispatcher: 
     protected abstract suspend fun performAction(param: TParam?): Result<TResult>
 
     companion object {
-        inline fun <reified T> castSuccess(anything: Any): T {
-            return (anything as Result.Success<T>).result
+        fun <TResultModel> castSuccess(data: TResultModel): TResultModel {
+            return (data as Result.Success<TResultModel>).result
         }
     }
 }
+
+fun <TResultModel> CoroutineUseCase.Result<TResultModel>.onSuccess(callback: (TResultModel) -> Unit):
+    CoroutineUseCase.Result<TResultModel> {
+        if (this is CoroutineUseCase.Result.Success) {
+            callback.invoke(this.result)
+        }
+        return this
+    }
+
+fun <TResultModel> CoroutineUseCase.Result<TResultModel>.onFailure(callback: (Throwable) -> Unit):
+    CoroutineUseCase.Result<TResultModel> {
+        if (this is CoroutineUseCase.Result.Failure) {
+            callback.invoke(this.error ?: Exception())
+        }
+        return this
+    }

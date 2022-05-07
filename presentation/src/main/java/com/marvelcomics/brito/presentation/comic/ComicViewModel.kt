@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.ComicUseCase
-import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
-import com.marvelcomics.brito.presentation.character.CharacterScreenState
+import com.marvelcomics.brito.domain.usecase.onFailure
+import com.marvelcomics.brito.domain.usecase.onSuccess
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ class ComicViewModel(
 ) : ViewModel() {
 
     private val interactions = Channel<ComicInteraction>()
-    private var comicUiState = MutableStateFlow<Any>(CharacterScreenState.Empty)
+    private var comicUiState = MutableStateFlow<Any>(ComicScreenState.Empty)
 
     fun bind() = comicUiState.asStateFlow()
 
@@ -34,25 +34,18 @@ class ComicViewModel(
     private suspend fun handleInteraction(interaction: ComicInteraction) {
         when (interaction) {
             is ComicInteraction.LoadComicsById -> {
-                comicUiState.emit(CharacterScreenState.Loading)
-                comicUseCase.invoke(interaction.id).let {
-                    when (it) {
-                        is CoroutineUseCase.Result.Success -> {
-                            comicUiState.emit(ComicScreenState.Success(it))
-                        }
-                        is CoroutineUseCase.Result.Failure -> {
-                            it.error?.let { throwable ->
-                                if (throwable is NetworkException) {
-                                    comicUiState.emit(ComicScreenState.NetworkError)
-                                } else {
-                                    comicUiState.emit(ComicScreenState.Error(throwable))
-                                }
-                            } ?: apply {
-                                comicUiState.emit(CharacterScreenState.Error(Exception("Not Mapped Error")))
-                            }
+                comicUiState.emit(ComicScreenState.Loading)
+                comicUseCase.invoke(interaction.id)
+                    .onSuccess {
+                        comicUiState.value = ComicScreenState.Success(it)
+                    }
+                    .onFailure { throwable ->
+                        if (throwable is NetworkException) {
+                            comicUiState.value = ComicScreenState.NetworkError
+                        } else {
+                            comicUiState.value = ComicScreenState.Error(throwable)
                         }
                     }
-                }
             }
         }
     }

@@ -9,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.marvelcomics.brito.databinding.ActivityMainBinding
 import com.marvelcomics.brito.domain.entity.CharacterEntity
-import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.hideKeyboard
 import com.marvelcomics.brito.presentation.character.CharacterInteraction
 import com.marvelcomics.brito.presentation.character.CharacterScreenState
@@ -50,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
                             showLoading()
                         }
                         is CharacterScreenState.Success -> {
-                            buildSuccessScreen(CoroutineUseCase.castSuccess(newState.data))
+                            buildSuccessScreen(newState.data as CharacterEntity)
                         }
                         is CharacterScreenState.Error -> {
                             showError(newState.exception as Exception)

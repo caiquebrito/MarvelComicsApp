@@ -3,14 +3,13 @@ package com.marvelcomics.brito.presentation.series
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
-import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.domain.usecase.SeriesUseCase
-import com.marvelcomics.brito.presentation.character.CharacterScreenState
+import com.marvelcomics.brito.domain.usecase.onFailure
+import com.marvelcomics.brito.domain.usecase.onSuccess
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
@@ -20,9 +19,9 @@ class SeriesViewModel(
 ) : ViewModel() {
 
     private val interactions = Channel<SeriesInteraction>()
-    private var _seriesUiState = MutableStateFlow<Any>(CharacterScreenState.Empty)
+    private var seriesUiState = MutableStateFlow<Any>(SeriesScreenState.Empty)
 
-    fun bind() = _seriesUiState.asStateFlow()
+    fun bind() = seriesUiState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -35,26 +34,17 @@ class SeriesViewModel(
     private suspend fun handleInteractions(interaction: SeriesInteraction) {
         when (interaction) {
             is SeriesInteraction.LoadSeriesById -> {
-                _seriesUiState.value = SeriesScreenState.Loading
-                seriesUseCase.invoke(interaction.id).let {
-                    when (it) {
-                        is CoroutineUseCase.Result.Success -> {
-                            _seriesUiState.value = SeriesScreenState.Success(it)
-                        }
-                        is CoroutineUseCase.Result.Failure -> {
-                            it.error?.let { throwable ->
-                                if (throwable is NetworkException) {
-                                    _seriesUiState.value = SeriesScreenState.NetworkError
-                                } else {
-                                    _seriesUiState.value = SeriesScreenState.Error(throwable)
-                                }
-                            } ?: apply {
-                                _seriesUiState.value =
-                                    SeriesScreenState.Error(Exception("Not Mapped Error"))
-                            }
+                seriesUiState.value = SeriesScreenState.Loading
+                seriesUseCase.invoke(interaction.id)
+                    .onSuccess {
+                        seriesUiState.value = SeriesScreenState.Success(it)
+                    }.onFailure { throwable ->
+                        if (throwable is NetworkException) {
+                            seriesUiState.value = SeriesScreenState.NetworkError
+                        } else {
+                            seriesUiState.value = SeriesScreenState.Error(throwable)
                         }
                     }
-                }
             }
         }
     }

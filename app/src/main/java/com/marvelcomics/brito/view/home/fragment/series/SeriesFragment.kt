@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentSeriesBinding
 import com.marvelcomics.brito.domain.entity.SeriesEntity
-import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.presentation.series.SeriesInteraction
 import com.marvelcomics.brito.presentation.series.SeriesScreenState
@@ -50,9 +49,7 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
                 seriesViewModel.bind().collect {
                     when (it) {
                         is SeriesScreenState.Success -> {
-                            showSeries(
-                                CoroutineUseCase.castSuccess(it.data)
-                            )
+                            showSeries(it.data as List<SeriesEntity>)
                         }
                         is SeriesScreenState.Error -> {
                             it.exception.message?.let { message ->

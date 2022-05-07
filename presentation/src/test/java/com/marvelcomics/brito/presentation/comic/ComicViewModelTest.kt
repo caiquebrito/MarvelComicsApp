@@ -1,10 +1,16 @@
 package com.marvelcomics.brito.presentation.comic
 
 import com.marvelcomics.brito.domain.entity.ComicEntity
+import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.ComicUseCase
+import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.presentation.BaseViewModelTest
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.junit.Before
@@ -21,94 +27,71 @@ class ComicViewModelTest : BaseViewModelTest() {
     lateinit var runtimeException: RuntimeException
 
     @MockK
-    lateinit var comicUseCaseMock: ComicUseCase
+    lateinit var useCaseMock: ComicUseCase
 
+    @InjectMockKs
     lateinit var viewModel: ComicViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        viewModel = ComicViewModel(comicUseCaseMock)
     }
 
-//    @Test
-//    fun `when the result is sucess and validate object`() = mainCoroutineRule.runBlockingTest {
-//
-//        coEvery { comicUseCaseMock.getComics(any()) } returns flow {
-//            emit(listComicsMock)
-//        }
-//
-//        val emissions = mutableListOf<Any>()
-//        val job = launch {
-//            viewModel.comicUiState.toList(emissions)
-//        }
-//
-//        assertEquals(Character.Empty, emissions[0])
-//
-//        viewModel.loadComics(id = 99)
-//
-//        assertEquals(GlobalUiState.Loading, emissions[1])
-//
-//        advanceTimeBy(2_000)
-//
-//        emissions[2].let {
-//            assertTrue(
-//                it is ComicScreenState.Success &&
-//                    listComicsMock == it.data
-//            )
-//        }
-//        job.cancel()
-//    }
-//
-//    @Test
-//    fun `when the result is failure and check the exception`() = mainCoroutineRule.runBlockingTest {
-//        coEvery { comicUseCaseMock.getComics(any()) } returns flow {
-//            throw runtimeException
-//        }
-//
-//        val emissions = mutableListOf<Any>()
-//        val job = launch {
-//            viewModel.comicUiState.toList(emissions)
-//        }
-//
-//        assertEquals(GlobalUiState.Empty, emissions[0])
-//
-//        viewModel.loadComics(id = 99)
-//
-//        assertEquals(GlobalUiState.Loading, emissions[1])
-//
-//        advanceTimeBy(2_000)
-//
-//        emissions[2].let {
-//            assertTrue(
-//                it is ComicScreenState.Error &&
-//                    runtimeException == it.exception
-//            )
-//        }
-//        job.cancel()
-//    }
-//
-//    @Test
-//    fun `when the result is network issue`() = mainCoroutineRule.runBlockingTest {
-//        coEvery { comicUseCaseMock.getComics(any()) } returns flow {
-//            throw NetworkException()
-//        }
-//
-//        val emissions = mutableListOf<Any>()
-//        val job = launch {
-//            viewModel.comicUiState.toList(emissions)
-//        }
-//
-//        assertEquals(GlobalUiState.Empty, emissions[0])
-//
-//        viewModel.loadComics(id = 99)
-//
-//        assertEquals(GlobalUiState.Loading, emissions[1])
-//
-//        advanceTimeBy(2_000)
-//
-//        assertTrue(emissions[2] is GlobalUiState.NetworkError)
-//
-//        job.cancel()
-//    }
+    @Test
+    fun `when the result is sucess and validate object`() {
+        executeOnBlockingTestScope(viewModel.bind()) { emissions ->
+            coEvery { useCaseMock.invoke(any()) } returns
+                CoroutineUseCase.Result.Success(listComicsMock)
+
+            assertEquals(ComicScreenState.Empty, emissions[0])
+
+            viewModel.handle(ComicInteraction.LoadComicsById(0))
+
+            assertEquals(ComicScreenState.Loading, emissions[1])
+
+            emissions[2].let {
+                assertTrue(
+                    it is ComicScreenState.Success &&
+                        listComicsMock == it.data
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `when the result is failure and check the exception`() {
+        executeOnBlockingTestScope(viewModel.bind()) { emissions ->
+            coEvery { useCaseMock.invoke(any()) } returns
+                CoroutineUseCase.Result.Failure(runtimeException)
+
+            assertEquals(ComicScreenState.Empty, emissions[0])
+
+            viewModel.handle(ComicInteraction.LoadComicsById(0))
+
+            assertEquals(ComicScreenState.Loading, emissions[1])
+
+            emissions[2].let {
+                assertTrue(
+                    it is ComicScreenState.Error &&
+                        runtimeException == it.exception
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `when the result is network issue`() {
+        executeOnBlockingTestScope(viewModel.bind()) { emissions ->
+            coEvery { useCaseMock.invoke(any()) } returns
+                CoroutineUseCase.Result.Failure(NetworkException())
+
+            assertEquals(ComicScreenState.Empty, emissions[0])
+
+            viewModel.handle(ComicInteraction.LoadComicsById(0))
+
+            assertEquals(ComicScreenState.Loading, emissions[1])
+
+            assertTrue(emissions[2] is ComicScreenState.NetworkError)
+        }
+    }
 }

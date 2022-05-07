@@ -104,23 +104,23 @@ class AppTest {
     @Test
     fun `extract from dependencies gradle to update all`() {
         val varsFull = "appcompat          : \"androidx.appcompat:appcompat:1.4.1\",\n" +
-                "            coreKtx            : \"androidx.core:core-ktx:1.5.0\",\n" +
-                "            constraintLayout   : \"androidx.constraintlayout:constraintlayout:2.0.4\",\n" +
-                "            cardView           : \"androidx.cardview:cardview:1.0.0\",\n" +
-                "            recyclerView       : \"androidx.recyclerview:recyclerview:1.2.0\",\n" +
-                "            lifecycleViewModel : \"androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1\",\n" +
-                "            lifecycleScope     : \"androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01\",\n" +
-                "            lifecycleExtensions: \"androidx.lifecycle:lifecycle-extensions:2.2.0\",\n" +
-                "            lifecycleCommon    : \"androidx.lifecycle:lifecycle-common-java8:2.3.1\",\n" +
-                "            viewpager2         : \"androidx.viewpager2:viewpager2:1.0.0\",\n" +
-                "            exifInterface      : \"androidx.exifinterface:exifinterface:1.3.2\",\n" +
-                "            roomRuntine        : \"androidx.room:room-runtime:2.3.0\",\n" +
-                "            roomRxJava         : \"androidx.room:room-rxjava2:2.2.0\",\n" +
-                "            browser            : \"androidx.browser:browser:1.3.0\",\n" +
-                "            dynamicAnimation   : \"androidx.dynamicanimation:dynamicanimation:1.0.0\",\n" +
-                "            cameraCore         : \"androidx.camera:camera-core:1.0.0-beta04\",\n" +
-                "            camera2            : \"androidx.camera:camera-camera2:1.0.0-beta04\",\n" +
-                "            installReferrer    : \"com.android.installreferrer:installreferrer:2.2\""
+            "            coreKtx            : \"androidx.core:core-ktx:1.5.0\",\n" +
+            "            constraintLayout   : \"androidx.constraintlayout:constraintlayout:2.0.4\",\n" +
+            "            cardView           : \"androidx.cardview:cardview:1.0.0\",\n" +
+            "            recyclerView       : \"androidx.recyclerview:recyclerview:1.2.0\",\n" +
+            "            lifecycleViewModel : \"androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1\",\n" +
+            "            lifecycleScope     : \"androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01\",\n" +
+            "            lifecycleExtensions: \"androidx.lifecycle:lifecycle-extensions:2.2.0\",\n" +
+            "            lifecycleCommon    : \"androidx.lifecycle:lifecycle-common-java8:2.3.1\",\n" +
+            "            viewpager2         : \"androidx.viewpager2:viewpager2:1.0.0\",\n" +
+            "            exifInterface      : \"androidx.exifinterface:exifinterface:1.3.2\",\n" +
+            "            roomRuntine        : \"androidx.room:room-runtime:2.3.0\",\n" +
+            "            roomRxJava         : \"androidx.room:room-rxjava2:2.2.0\",\n" +
+            "            browser            : \"androidx.browser:browser:1.3.0\",\n" +
+            "            dynamicAnimation   : \"androidx.dynamicanimation:dynamicanimation:1.0.0\",\n" +
+            "            cameraCore         : \"androidx.camera:camera-core:1.0.0-beta04\",\n" +
+            "            camera2            : \"androidx.camera:camera-camera2:1.0.0-beta04\",\n" +
+            "            installReferrer    : \"com.android.installreferrer:installreferrer:2.2\""
         val varsFullSpllitPrefix = varsFull.replace(",", ":").split(":")
         var organizeSpllittedVersion = StringBuilder()
         for (i in varsFullSpllitPrefix.indices) {

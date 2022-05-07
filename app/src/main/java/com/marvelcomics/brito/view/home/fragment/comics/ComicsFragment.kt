@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentComicsBinding
 import com.marvelcomics.brito.domain.entity.ComicEntity
-import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.presentation.comic.ComicInteraction
 import com.marvelcomics.brito.presentation.comic.ComicScreenState
@@ -53,9 +52,7 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
                             showLoading()
                         }
                         is ComicScreenState.Success -> {
-                            showComics(
-                                CoroutineUseCase.castSuccess(it.data)
-                            )
+                            showComics(it.data as List<ComicEntity>)
                         }
                         is ComicScreenState.Error -> it.exception.message?.let { message ->
                             showError(message)

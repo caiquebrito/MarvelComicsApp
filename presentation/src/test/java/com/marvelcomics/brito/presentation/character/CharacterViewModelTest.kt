@@ -7,6 +7,7 @@ import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.presentation.BaseViewModelTest
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
@@ -28,19 +29,19 @@ class CharacterViewModelTest : BaseViewModelTest() {
     @MockK
     lateinit var useCaseMock: CharacterUseCase
 
+    @InjectMockKs
     lateinit var viewModel: CharacterViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        viewModel = CharacterViewModel(useCaseMock)
     }
 
     @Test
     fun `when the result is sucess and validate object`() {
         executeOnBlockingTestScope(viewModel.bind()) { emissions ->
             coEvery { useCaseMock.invoke(any()) } returns
-                    CoroutineUseCase.Result.Success(characterEntityMock)
+                CoroutineUseCase.Result.Success(characterEntityMock)
 
             assertEquals(CharacterScreenState.Empty, emissions[0])
 
@@ -52,7 +53,7 @@ class CharacterViewModelTest : BaseViewModelTest() {
                 assertTrue(
                     "Object are not same",
                     it is CharacterScreenState.Success &&
-                            characterEntityMock == CoroutineUseCase.castSuccess(it.data)
+                        characterEntityMock == it.data
                 )
             }
         }
@@ -62,7 +63,7 @@ class CharacterViewModelTest : BaseViewModelTest() {
     fun `when the result is failure and check the exception`() {
         executeOnBlockingTestScope(viewModel.bind()) { emissions ->
             coEvery { useCaseMock.invoke(any()) } returns
-                    CoroutineUseCase.Result.Failure(runtimeExceptionMock)
+                CoroutineUseCase.Result.Failure(runtimeExceptionMock)
 
             assertEquals(CharacterScreenState.Empty, emissions[0])
 
@@ -73,7 +74,7 @@ class CharacterViewModelTest : BaseViewModelTest() {
             emissions[2].let {
                 assertTrue(
                     it is CharacterScreenState.Error &&
-                            runtimeExceptionMock == it.exception
+                        runtimeExceptionMock == it.exception
                 )
             }
         }
@@ -83,7 +84,7 @@ class CharacterViewModelTest : BaseViewModelTest() {
     fun `when the result is network issue`() {
         executeOnBlockingTestScope(viewModel.bind()) { emissions ->
             coEvery { useCaseMock.invoke(any()) } returns
-                    CoroutineUseCase.Result.Failure(NetworkException())
+                CoroutineUseCase.Result.Failure(NetworkException())
 
             assertEquals(CharacterScreenState.Empty, emissions[0])
 
