@@ -1,5 +1,5 @@
 # MarvelComicsApp
-Simple app with Koin, Kotlin Coroutines, Retrofit, MVVM and Clean Architecture concepts integrated with MarvelAPI.
+Simple app with Koin, Kotlin Coroutines, Retrofit, MVI / MVVM and Clean Architecture concepts integrated with MarvelAPI.
 
 ### Libraries Reference
 * [Insert Koin](https://insert-koin.io/)
