@@ -4,35 +4,55 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.CharacterUseCase
-import com.marvelcomics.brito.presentation.CharacterUiState
-import com.marvelcomics.brito.presentation.GlobalUiState
-import kotlinx.coroutines.CoroutineDispatcher
+import com.marvelcomics.brito.domain.usecase.onFailure
+import com.marvelcomics.brito.domain.usecase.onSuccess
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
+@InternalCoroutinesApi
 class CharacterViewModel(
-    private val characterUseCase: CharacterUseCase,
-    private val dispatcher: CoroutineDispatcher
+    private val characterUseCase: CharacterUseCase
 ) : ViewModel() {
 
-    private var _characterUiState = MutableStateFlow<Any>(GlobalUiState.Empty)
-    var characterUiState: StateFlow<Any> = _characterUiState
+    private val interactions = Channel<CharacterInteraction>()
+    private var characterUiState =
+        MutableStateFlow<CharacterScreenState>(CharacterScreenState.Empty)
 
-    fun loadCharacter(name: String) = viewModelScope.launch(dispatcher) {
-        _characterUiState.value = GlobalUiState.Loading
-        characterUseCase.getCharacters(name)
-            .catch {
-                if (it is NetworkException) {
-                    _characterUiState.value = GlobalUiState.NetworkError
-                } else {
-                    _characterUiState.value = CharacterUiState.Error(it)
-                }
+    fun bind() = characterUiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            interactions.consumeAsFlow().collect {
+                handleInteraction(it)
             }
-            .collect {
-                _characterUiState.value = CharacterUiState.Success(it)
+        }
+    }
+
+    private suspend fun handleInteraction(interaction: CharacterInteraction) {
+        when (interaction) {
+            is CharacterInteraction.SearchCharacter -> {
+                characterUiState.emit(CharacterScreenState.Loading)
+                characterUseCase.invoke(interaction.name)
+                    .onSuccess {
+                        characterUiState.value = CharacterScreenState.Success(it)
+                    }.onFailure { throwable ->
+                        if (throwable is NetworkException) {
+                            characterUiState.value = CharacterScreenState.NetworkError
+                        } else {
+                            characterUiState.value = CharacterScreenState.Error(throwable)
+                        }
+                    }
             }
+        }
+    }
+
+    fun handle(interaction: CharacterInteraction) {
+        viewModelScope.launch {
+            interactions.send(interaction)
+        }
     }
 }

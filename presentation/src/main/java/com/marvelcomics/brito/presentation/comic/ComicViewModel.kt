@@ -4,34 +4,55 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.ComicUseCase
-import com.marvelcomics.brito.presentation.ComicUiState
-import com.marvelcomics.brito.presentation.GlobalUiState
-import kotlinx.coroutines.CoroutineDispatcher
+import com.marvelcomics.brito.domain.usecase.onFailure
+import com.marvelcomics.brito.domain.usecase.onSuccess
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
+@InternalCoroutinesApi
 class ComicViewModel(
-    private val comicUseCase: ComicUseCase,
-    private val dispatcher: CoroutineDispatcher
+    private val comicUseCase: ComicUseCase
 ) : ViewModel() {
 
-    private var _comicUiState = MutableStateFlow<Any>(GlobalUiState.Empty)
-    val comicUiState: StateFlow<Any> = _comicUiState
+    private val interactions = Channel<ComicInteraction>()
+    private var comicUiState = MutableStateFlow<Any>(ComicScreenState.Empty)
 
-    fun loadComics(id: Int) =
-        viewModelScope.launch(dispatcher) {
-            _comicUiState.value = GlobalUiState.Loading
-            comicUseCase.getComics(id).catch {
-                if (it is NetworkException) {
-                    _comicUiState.value = GlobalUiState.NetworkError
-                } else {
-                    _comicUiState.value = ComicUiState.Error(it)
-                }
-            }.collect {
-                _comicUiState.value = ComicUiState.Success(it)
+    fun bind() = comicUiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            interactions.consumeAsFlow().collect {
+                handleInteraction(it)
             }
         }
+    }
+
+    private suspend fun handleInteraction(interaction: ComicInteraction) {
+        when (interaction) {
+            is ComicInteraction.LoadComicsById -> {
+                comicUiState.emit(ComicScreenState.Loading)
+                comicUseCase.invoke(interaction.id)
+                    .onSuccess {
+                        comicUiState.value = ComicScreenState.Success(it)
+                    }
+                    .onFailure { throwable ->
+                        if (throwable is NetworkException) {
+                            comicUiState.value = ComicScreenState.NetworkError
+                        } else {
+                            comicUiState.value = ComicScreenState.Error(throwable)
+                        }
+                    }
+            }
+        }
+    }
+
+    fun handle(interaction: ComicInteraction) {
+        viewModelScope.launch {
+            interactions.send(interaction)
+        }
+    }
 }

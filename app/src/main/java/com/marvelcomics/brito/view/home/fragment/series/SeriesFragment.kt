@@ -1,30 +1,32 @@
-package com.marvelcomics.brito.view.fragment.series
+package com.marvelcomics.brito.view.home.fragment.series
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentSeriesBinding
 import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
-import com.marvelcomics.brito.presentation.GlobalUiState
-import com.marvelcomics.brito.presentation.SeriesUiState
+import com.marvelcomics.brito.presentation.series.SeriesInteraction
+import com.marvelcomics.brito.presentation.series.SeriesScreenState
 import com.marvelcomics.brito.presentation.series.SeriesViewModel
 import com.marvelcomics.brito.view.extensions.viewBinding
-import com.marvelcomics.brito.view.fragment.ItemOffSetDecorationHorizontal
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
+import com.marvelcomics.brito.view.home.fragment.ItemOffSetDecorationHorizontal
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
+@InternalCoroutinesApi
 class SeriesFragment : Fragment(R.layout.fragment_series) {
 
     private val binding by viewBinding(FragmentSeriesBinding::bind)
     private val seriesViewModel: SeriesViewModel by inject()
 
     private var characterId: Int? = 0
-    private var uiStateJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,6 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadSeries()
     }
 
@@ -42,31 +43,25 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
         initObservers()
     }
 
-    override fun onStop() {
-        super.onStop()
-        uiStateJob?.cancel()
-    }
-
     private fun initObservers() {
-        uiStateJob = lifecycleScope.launchWhenStarted {
-            seriesViewModel.seriesUiState.collect {
-                when (it) {
-                    is SeriesUiState.Success -> {
-                        showSeries(it.data as List<SeriesEntity>)
-                    }
-                    is SeriesUiState.Error -> {
-                        it.exception.message?.let { message ->
-                            showError(message)
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                seriesViewModel.bind().collect {
+                    when (it) {
+                        is SeriesScreenState.Success -> {
+                            showSeries(it.data as List<SeriesEntity>)
                         }
-                    }
-                    is GlobalUiState.Loading -> {
-                        showLoading()
-                    }
-                    is GlobalUiState.NetworkError -> {
-                        // do nothing
-                    }
-                    else -> {
-                        // do nothing
+                        is SeriesScreenState.Error -> {
+                            it.exception.message?.let { message ->
+                                showError(message)
+                            }
+                        }
+                        is SeriesScreenState.Loading -> {
+                            showLoading()
+                        }
+                        is SeriesScreenState.NetworkError -> {
+                            // do nothing
+                        }
                     }
                 }
             }
@@ -74,7 +69,7 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
     }
 
     private fun loadSeries() {
-        seriesViewModel.loadSeries(characterId ?: let { 0 })
+        seriesViewModel.handle(SeriesInteraction.LoadSeriesById(characterId ?: let { 0 }))
     }
 
     private fun showSeries(series: List<SeriesEntity>) {

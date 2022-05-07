@@ -4,35 +4,54 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.SeriesUseCase
-import com.marvelcomics.brito.presentation.GlobalUiState
-import com.marvelcomics.brito.presentation.SeriesUiState
-import kotlinx.coroutines.CoroutineDispatcher
+import com.marvelcomics.brito.domain.usecase.onFailure
+import com.marvelcomics.brito.domain.usecase.onSuccess
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
+@InternalCoroutinesApi
 class SeriesViewModel(
-    private val seriesUseCase: SeriesUseCase,
-    private val dispatcher: CoroutineDispatcher
+    private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 
-    private var _seriesUiState =
-        MutableStateFlow<Any>(GlobalUiState.Empty)
-    var seriesUiState: StateFlow<Any> = _seriesUiState
+    private val interactions = Channel<SeriesInteraction>()
+    private var seriesUiState = MutableStateFlow<Any>(SeriesScreenState.Empty)
 
-    fun loadSeries(id: Int) =
-        viewModelScope.launch(dispatcher) {
-            _seriesUiState.value = GlobalUiState.Loading
-            seriesUseCase.getSeries(id).catch {
-                if (it is NetworkException) {
-                    _seriesUiState.value = GlobalUiState.NetworkError
-                } else {
-                    _seriesUiState.value = SeriesUiState.Error(it)
-                }
-            }.collect {
-                _seriesUiState.value = SeriesUiState.Success(it)
+    fun bind() = seriesUiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            interactions.consumeAsFlow().collect {
+                handleInteractions(it)
             }
         }
+    }
+
+    private suspend fun handleInteractions(interaction: SeriesInteraction) {
+        when (interaction) {
+            is SeriesInteraction.LoadSeriesById -> {
+                seriesUiState.value = SeriesScreenState.Loading
+                seriesUseCase.invoke(interaction.id)
+                    .onSuccess {
+                        seriesUiState.value = SeriesScreenState.Success(it)
+                    }.onFailure { throwable ->
+                        if (throwable is NetworkException) {
+                            seriesUiState.value = SeriesScreenState.NetworkError
+                        } else {
+                            seriesUiState.value = SeriesScreenState.Error(throwable)
+                        }
+                    }
+            }
+        }
+    }
+
+    fun handle(interaction: SeriesInteraction) {
+        viewModelScope.launch {
+            interactions.send(interaction)
+        }
+    }
 }
