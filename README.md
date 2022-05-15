@@ -10,7 +10,6 @@ Simple app with Koin, Kotlin Coroutines, Kotlin Flows, Retrofit, MVI / MVVM and 
 
 ### Pic from the application
 ![alt text](https://imgur.com/vaOJCPz.png "Hulk Smash!!!")
-![alt text](https://imgur.com/8hs15c3.png "Hulk Smash!!!")
 
 ### CI Integration
 * [Bitrise](https://app.bitrise.io/)
