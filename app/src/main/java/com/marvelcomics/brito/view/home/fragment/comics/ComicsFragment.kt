@@ -81,7 +81,7 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
     private fun showError(message: String) {
         binding.progressbarLoadingComics.visibility = View.GONE
         binding.recyclerviewFragmentComic.visibility = View.VISIBLE
-        AlertDialogUtils.showSimpleDialog("Erro", message, requireContext())
+        AlertDialogUtils.showSimpleDialog("Erro!", message, requireContext())
     }
 
     private fun createAdapter(listComics: List<ComicDomain>) {
