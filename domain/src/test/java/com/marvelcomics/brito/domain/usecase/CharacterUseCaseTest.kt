@@ -1,8 +1,7 @@
 package com.marvelcomics.brito.domain.usecase
 
-import com.marvelcomics.brito.domain.CoroutineTestRule
-import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -10,7 +9,6 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
@@ -25,10 +23,10 @@ class CharacterUseCaseTest {
     var coroutinesTestRule = CoroutineTestRule()
 
     @RelaxedMockK
-    lateinit var characterEntityMock: CharacterEntity
+    lateinit var characterDomainMock: CharacterDomain
 
     @RelaxedMockK
-    lateinit var listCharacterMock: List<CharacterEntity>
+    lateinit var listCharacterMock: List<CharacterDomain>
 
     @RelaxedMockK
     lateinit var runtimeException: RuntimeException
@@ -50,7 +48,7 @@ class CharacterUseCaseTest {
     @Test
     fun `when the result is sucess and validate object`() = runBlockingTest {
         coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns listCharacterMock
-        coEvery { listCharacterMock.first() } returns characterEntityMock
+        coEvery { listCharacterMock.first() } returns characterDomainMock
 
         val emissions = mutableListOf<Any>()
         val job = launch {
@@ -64,7 +62,7 @@ class CharacterUseCaseTest {
 
         coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters(any()) }
 
-        assertEquals(characterEntityMock, emissions[0])
+        assertEquals(characterDomainMock, emissions[0])
         job.cancel()
     }
 

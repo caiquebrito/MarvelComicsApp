@@ -8,7 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.marvelcomics.brito.databinding.ActivityMainBinding
-import com.marvelcomics.brito.domain.entity.CharacterEntity
+import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.hideKeyboard
 import com.marvelcomics.brito.presentation.character.CharacterInteraction
 import com.marvelcomics.brito.presentation.character.CharacterScreenState
@@ -18,8 +18,8 @@ import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.home.fragment.character.CharacterFragment
 import com.marvelcomics.brito.view.home.fragment.comics.ComicsFragment
 import com.marvelcomics.brito.view.home.fragment.series.SeriesFragment
+import com.marvelcomics.brito.view.mapper.CharacterViewMapper
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.lang.Exception
@@ -49,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
                             showLoading()
                         }
                         is CharacterScreenState.Success -> {
-                            buildSuccessScreen(newState.data as CharacterEntity)
+                            buildSuccessScreen(newState.data as CharacterDomain)
                         }
                         is CharacterScreenState.Error -> {
                             showError(newState.exception as Exception)
@@ -92,14 +92,17 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun buildSuccessScreen(character: CharacterEntity) {
+    private fun buildSuccessScreen(characterDomain: CharacterDomain) {
         with(bindings) {
             progressbarLoadingCharacter.visibility = View.GONE
-            val characterFragment = CharacterFragment.newInstance(character)
+
+            val characterSerializable = CharacterViewMapper().fromDomain(characterDomain)
+            val characterFragment = CharacterFragment.newInstance(characterSerializable)
+
             replaceFragment(characterFragment, fragmentHomeCharacter.id)
-            val comicsFragment = ComicsFragment.newInstance(character.id)
+            val comicsFragment = ComicsFragment.newInstance(characterDomain.id)
             replaceFragment(comicsFragment, fragmentHomeComics.id)
-            val seriesFragment = SeriesFragment.newInstance(character.id)
+            val seriesFragment = SeriesFragment.newInstance(characterDomain.id)
             replaceFragment(seriesFragment, fragmentHomeSeries.id)
         }
     }
