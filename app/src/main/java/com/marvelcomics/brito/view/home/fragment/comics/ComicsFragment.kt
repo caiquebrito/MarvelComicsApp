@@ -9,7 +9,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentComicsBinding
-import com.marvelcomics.brito.domain.entity.ComicEntity
+import com.marvelcomics.brito.domain.models.ComicDomain
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.presentation.comic.ComicInteraction
 import com.marvelcomics.brito.presentation.comic.ComicScreenState
@@ -52,7 +52,7 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
                             showLoading()
                         }
                         is ComicScreenState.Success -> {
-                            showComics(it.data as List<ComicEntity>)
+                            showComics(it.data as List<ComicDomain>)
                         }
                         is ComicScreenState.Error -> it.exception.message?.let { message ->
                             showError(message)
@@ -67,7 +67,7 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
         comicViewModel.handle(ComicInteraction.LoadComicsById(characterId ?: let { 0 }))
     }
 
-    private fun showComics(comics: List<ComicEntity>) {
+    private fun showComics(comics: List<ComicDomain>) {
         binding.progressbarLoadingComics.visibility = View.GONE
         binding.recyclerviewFragmentComic.visibility = View.VISIBLE
         createAdapter(comics)
@@ -84,7 +84,7 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
         AlertDialogUtils.showSimpleDialog("Erro", message, requireContext())
     }
 
-    private fun createAdapter(listComics: List<ComicEntity>) {
+    private fun createAdapter(listComics: List<ComicDomain>) {
         val comicsAdapter = ComicsAdapter(listComics)
         binding.recyclerviewFragmentComic.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

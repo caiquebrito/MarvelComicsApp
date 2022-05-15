@@ -2,26 +2,26 @@ package com.marvelcomics.brito.data.datasource.remote.mapper
 
 import com.marvelcomics.brito.data.datasource.remote.response.CharacterResponse
 import com.marvelcomics.brito.data.datasource.remote.response.model.RemoteMarvelContainerResponse
-import com.marvelcomics.brito.domain.entity.CharacterEntity
+import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.infrastructure.exception.MarvelApiException
 
 class CharacterMapper(private val thumbnailMapper: ThumbnailMapper) {
 
     @Throws(MarvelApiException::class)
-    fun transform(remoteMarvelContainerResponse: RemoteMarvelContainerResponse<CharacterResponse>): List<CharacterEntity>? {
+    fun transform(remoteMarvelContainerResponse: RemoteMarvelContainerResponse<CharacterResponse>): List<CharacterDomain>? {
         try {
-            val characterEntityList: MutableList<CharacterEntity> = ArrayList()
+            val characterDomainList: MutableList<CharacterDomain> = ArrayList()
             remoteMarvelContainerResponse.remoteMarvelDataResponse?.results?.let {
                 for (characterResponse in it) {
-                    val characterEntity = CharacterEntity(
+                    val characterEntity = CharacterDomain(
                         characterResponse.id,
                         characterResponse.name,
                         characterResponse.description,
                         thumbnailMapper.transform(characterResponse.thumbnailResponse)
                     )
-                    characterEntityList.add(characterEntity)
+                    characterDomainList.add(characterEntity)
                 }
-                return characterEntityList
+                return characterDomainList
             } ?: let {
                 throw MarvelApiException("Result from server return nulls")
             }

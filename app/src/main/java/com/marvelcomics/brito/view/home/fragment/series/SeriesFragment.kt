@@ -9,7 +9,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentSeriesBinding
-import com.marvelcomics.brito.domain.entity.SeriesEntity
+import com.marvelcomics.brito.domain.models.SeriesDomain
 import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.presentation.series.SeriesInteraction
 import com.marvelcomics.brito.presentation.series.SeriesScreenState
@@ -49,7 +49,7 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
                 seriesViewModel.bind().collect {
                     when (it) {
                         is SeriesScreenState.Success -> {
-                            showSeries(it.data as List<SeriesEntity>)
+                            showSeries(it.data as List<SeriesDomain>)
                         }
                         is SeriesScreenState.Error -> {
                             it.exception.message?.let { message ->
@@ -72,7 +72,7 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
         seriesViewModel.handle(SeriesInteraction.LoadSeriesById(characterId ?: let { 0 }))
     }
 
-    private fun showSeries(series: List<SeriesEntity>) {
+    private fun showSeries(series: List<SeriesDomain>) {
         binding.progressbarLoadingSeries.visibility = View.GONE
         binding.recyclerviewFragmentSeries.visibility = View.VISIBLE
         createAdapter(series)
@@ -89,7 +89,7 @@ class SeriesFragment : Fragment(R.layout.fragment_series) {
         AlertDialogUtils.showSimpleDialog("Erro", message, requireContext())
     }
 
-    private fun createAdapter(listSeries: List<SeriesEntity>) {
+    private fun createAdapter(listSeries: List<SeriesDomain>) {
         val seriesAdapter = SeriesAdapter(listSeries)
         binding.recyclerviewFragmentSeries.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

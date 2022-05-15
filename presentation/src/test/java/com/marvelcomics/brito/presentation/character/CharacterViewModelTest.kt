@@ -1,7 +1,7 @@
 package com.marvelcomics.brito.presentation.character
 
-import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.usecase.CharacterUseCase
 import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.presentation.BaseViewModelTest
@@ -21,7 +21,7 @@ import org.junit.Test
 class CharacterViewModelTest : BaseViewModelTest() {
 
     @MockK
-    lateinit var characterEntityMock: CharacterEntity
+    lateinit var characterDomainMock: CharacterDomain
 
     @MockK
     lateinit var runtimeExceptionMock: RuntimeException
@@ -41,7 +41,7 @@ class CharacterViewModelTest : BaseViewModelTest() {
     fun `when the result is sucess and validate object`() {
         executeOnBlockingTestScope(viewModel.bind()) { emissions ->
             coEvery { useCaseMock.invoke(any()) } returns
-                CoroutineUseCase.Result.Success(characterEntityMock)
+                CoroutineUseCase.Result.Success(characterDomainMock)
 
             assertEquals(CharacterScreenState.Empty, emissions[0])
 
@@ -53,7 +53,7 @@ class CharacterViewModelTest : BaseViewModelTest() {
                 assertTrue(
                     "Object are not same",
                     it is CharacterScreenState.Success &&
-                        characterEntityMock == it.data
+                        characterDomainMock == it.data
                 )
             }
         }

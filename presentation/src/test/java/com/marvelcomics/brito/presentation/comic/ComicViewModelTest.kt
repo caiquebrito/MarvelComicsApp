@@ -1,7 +1,7 @@
 package com.marvelcomics.brito.presentation.comic
 
-import com.marvelcomics.brito.domain.entity.ComicEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.models.ComicDomain
 import com.marvelcomics.brito.domain.usecase.ComicUseCase
 import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.presentation.BaseViewModelTest
@@ -21,7 +21,7 @@ import org.junit.Test
 class ComicViewModelTest : BaseViewModelTest() {
 
     @MockK
-    lateinit var listComicsMock: List<ComicEntity>
+    lateinit var listComicsMock: List<ComicDomain>
 
     @MockK
     lateinit var runtimeException: RuntimeException

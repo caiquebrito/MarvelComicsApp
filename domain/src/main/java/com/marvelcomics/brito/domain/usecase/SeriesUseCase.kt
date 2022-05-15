@@ -1,7 +1,7 @@
 package com.marvelcomics.brito.domain.usecase
 
-import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.models.SeriesDomain
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import java.net.SocketException
@@ -11,9 +11,9 @@ import java.net.UnknownHostException
 class SeriesUseCase(
     private val iSeriesRepository: ISeriesRepository,
     dispatcher: CoroutineDispatcher
-) : CoroutineUseCase<Int, List<SeriesEntity>>(dispatcher) {
+) : CoroutineUseCase<Int, List<SeriesDomain>>(dispatcher) {
 
-    override suspend fun performAction(param: Int?): Result<List<SeriesEntity>> {
+    override suspend fun performAction(param: Int?): Result<List<SeriesDomain>> {
         if (param == null) {
             throw Exception("Empty Param Character")
         }

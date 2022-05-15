@@ -1,7 +1,7 @@
 package com.marvelcomics.brito.domain.repository
 
-import com.marvelcomics.brito.domain.entity.ComicEntity
+import com.marvelcomics.brito.domain.models.ComicDomain
 
 interface IComicRepository {
-    suspend fun getComics(characterId: Int): List<ComicEntity>
+    suspend fun getComics(characterId: Int): List<ComicDomain>
 }
