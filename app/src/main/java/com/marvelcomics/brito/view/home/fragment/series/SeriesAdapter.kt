@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.domain.entity.SeriesEntity
+import com.marvelcomics.brito.domain.models.SeriesDomain
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 
-class SeriesAdapter(private val series: List<SeriesEntity>) :
+class SeriesAdapter(private val series: List<SeriesDomain>) :
     RecyclerView.Adapter<SeriesAdapter.ViewHolder?>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,12 +38,11 @@ class SeriesAdapter(private val series: List<SeriesEntity>) :
             imageView = view.findViewById(R.id.imageview_series)
         }
 
-        fun bind(seriesEntity: SeriesEntity) {
-            title?.text = seriesEntity.title
+        fun bind(seriesDomain: SeriesDomain) {
+            title?.text = seriesDomain.title
             imageView?.let {
                 Glide.with(it.context)
-                    .load(seriesEntity.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL))
-//                    .placeholder(view.context.circularProgressBar())
+                    .load(seriesDomain.thumbnailDomain?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL))
                     .fitCenter()
                     .into(it)
             }

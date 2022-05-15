@@ -1,15 +1,13 @@
 package com.marvelcomics.brito.domain.usecase
 
-import com.marvelcomics.brito.domain.CoroutineTestRule
-import com.marvelcomics.brito.domain.entity.SeriesEntity
 import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.models.SeriesDomain
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
@@ -25,7 +23,7 @@ class SeriesUseCaseTest {
     var coroutinesTestRule = CoroutineTestRule()
 
     @RelaxedMockK
-    lateinit var listSeries: List<SeriesEntity>
+    lateinit var listSeries: List<SeriesDomain>
 
     @RelaxedMockK
     lateinit var runtimeException: RuntimeException

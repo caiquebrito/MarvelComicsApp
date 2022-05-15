@@ -1,8 +1,8 @@
 package com.marvelcomics.brito.domain.usecase
 
-import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.domain.exception.EmptyInputException
 import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import java.net.SocketException
@@ -12,9 +12,9 @@ import java.net.UnknownHostException
 class CharacterUseCase(
     private val iCharacterRepository: ICharacterRepository,
     dispatcher: CoroutineDispatcher
-) : CoroutineUseCase<String, CharacterEntity>(dispatcher) {
+) : CoroutineUseCase<String, CharacterDomain>(dispatcher) {
 
-    override suspend fun performAction(param: String?): Result<CharacterEntity> {
+    override suspend fun performAction(param: String?): Result<CharacterDomain> {
         if (param == null) {
             throw EmptyInputException()
         }

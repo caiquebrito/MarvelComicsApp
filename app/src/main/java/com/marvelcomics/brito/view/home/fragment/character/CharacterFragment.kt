@@ -7,9 +7,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentCharacterBinding
-import com.marvelcomics.brito.domain.entity.CharacterEntity
 import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.view.extensions.viewBinding
+import com.marvelcomics.brito.view.models.CharacterEntity
 
 class CharacterFragment : Fragment(R.layout.fragment_character) {
 
@@ -19,7 +19,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val args = arguments
-        characterEntity = args?.getSerializable(ARGUMENT_CHARACTER) as CharacterEntity
+        characterEntity = args?.getParcelable(ARGUMENT_CHARACTER)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
         binding.textviewFragmentCharacterDescription.text = characterEntity?.description
         Glide.with(this)
             .load(
-                characterEntity?.getFullUrlThumbnailWithAspect(
+                characterEntity?.thumbnailEntity?.getFullUrlThumbnailWithAspect(
                     MarvelThumbnailAspectRatio.Portrait.MEDIUM
                 )
             )
@@ -40,10 +40,10 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
     companion object {
         const val ARGUMENT_CHARACTER = "character_args"
 
-        fun newInstance(characterEntity: CharacterEntity): CharacterFragment {
+        fun newInstance(character: CharacterEntity): CharacterFragment {
             val fragment = CharacterFragment()
             val args = Bundle()
-            args.putSerializable(ARGUMENT_CHARACTER, characterEntity)
+            args.putParcelable(ARGUMENT_CHARACTER, character)
             fragment.arguments = args
             return fragment
         }
