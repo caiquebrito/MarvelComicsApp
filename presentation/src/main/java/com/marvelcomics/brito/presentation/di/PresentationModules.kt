@@ -10,7 +10,7 @@ import org.koin.dsl.module
 @InternalCoroutinesApi
 object PresentationModules {
     val viewModels = module {
-        viewModel { CharacterViewModel(get()) }
+        viewModel { CharacterViewModel(get(), null) }
         viewModel { ComicViewModel(get()) }
         viewModel { SeriesViewModel(get()) }
     }

@@ -1,8 +1,8 @@
 package com.marvelcomics.brito
 
 import android.app.Application
-import com.marvelcomics.brito.data.di.DataModule
-import com.marvelcomics.brito.domain.di.DomainModules
+import com.marvelcomics.brito.di.DataModule
+import com.marvelcomics.brito.di.DomainModules
 import com.marvelcomics.brito.presentation.di.PresentationModules
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
@@ -19,11 +19,11 @@ class MarvelComicsApplication : Application() {
             androidContext(this@MarvelComicsApplication)
             modules(
                 listOf(
-                    DomainModules.usesCases,
-                    DataModule.interceptors,
-                    DataModule.mappers,
-                    DataModule.repositories,
-                    DataModule.webservices,
+                    com.marvelcomics.brito.di.DomainModules.usesCases,
+                    com.marvelcomics.brito.di.DataModule.interceptors,
+                    com.marvelcomics.brito.di.DataModule.mappers,
+                    com.marvelcomics.brito.di.DataModule.repositories,
+                    com.marvelcomics.brito.di.DataModule.webservices,
                     PresentationModules.viewModels,
                 )
             )

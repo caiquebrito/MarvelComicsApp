@@ -1,50 +1,19 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlinx-serialization'
+apply plugin: 'kotlin'
 apply from: '../dependencies.gradle'
-
-android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
-
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
-
-        buildConfigField("String", "MARVEL_API_PUB_KEY", "\"e2d714ad0eec8dd9251fb6e340d1d20d\"")
-        buildConfigField("String", "MARVEL_API_PRI_KEY", "\"a8265201786d1e2ba7888cc2a3f7aaae22efd3ea\"")
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':infrastructure')
     implementation project(path: ':domain')
 
     implementation jetbrainsDependencies.stdlib
 
-    implementation androidDependencies.appcompat
-    implementation androidDependencies.coreKtx
-
-    implementation customLibDependencies.retrofit
-    implementation customLibDependencies.retrofitGson
-    implementation customLibDependencies.loggingInterceptor
-
     //Koin
-    implementation customLibDependencies.koinAndroid
+    implementation customLibDependencies.koinCore
 
     testImplementation testDependencies.junit
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
 }

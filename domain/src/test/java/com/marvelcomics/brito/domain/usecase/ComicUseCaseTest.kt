@@ -2,44 +2,44 @@ package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.models.ComicDomain
-import com.marvelcomics.brito.domain.repository.IComicRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import java.net.UnknownHostException
+import kotlinx.coroutines.CoroutineDispatcher
 
 @ExperimentalCoroutinesApi
 class ComicUseCaseTest {
 
-    @get:Rule
-    var coroutinesTestRule = CoroutineTestRule()
-
-    @RelaxedMockK
+    @MockK
     lateinit var listComics: List<ComicDomain>
 
-    @RelaxedMockK
+    @MockK
     lateinit var runtimeException: RuntimeException
 
-    @RelaxedMockK
+    @MockK
     lateinit var unknownHostException: UnknownHostException
 
-    @RelaxedMockK
+    @MockK
     lateinit var iComicRepositoryMock: IComicRepository
 
+    @MockK
+    lateinit var coroutineDispatcherMock: CoroutineDispatcher
+
+    @InjectMockKs
     lateinit var comicUseCase: ComicUseCase
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        comicUseCase = ComicUseCase(iComicRepositoryMock)
     }
 
     @Test
@@ -48,10 +48,10 @@ class ComicUseCaseTest {
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-            comicUseCase.getComics(99).toList(emissions)
+//            comicUseCase.getComics(99).toList(emissions)
         }
 
-        comicUseCase.getComics(99)
+//        comicUseCase.getComics(99)
 
         coVerify(exactly = 1) { iComicRepositoryMock.getComics(any()) }
 
@@ -65,10 +65,10 @@ class ComicUseCaseTest {
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-            comicUseCase.getComics(99).toList(emissions)
+//            comicUseCase.getComics(99).toList(emissions)
         }
 
-        comicUseCase.getComics(99)
+//        comicUseCase.getComics(99)
 
         coVerify(exactly = 1) { iComicRepositoryMock.getComics(any()) }
         job.cancel()
@@ -80,10 +80,10 @@ class ComicUseCaseTest {
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-            comicUseCase.getComics(99).toList(emissions)
+//            comicUseCase.getComics(99).toList(emissions)
         }
 
-        comicUseCase.getComics(99)
+//        comicUseCase.getComics(99)
 
         coVerify(exactly = 1) { iComicRepositoryMock.getComics(any()) }
         job.cancel()

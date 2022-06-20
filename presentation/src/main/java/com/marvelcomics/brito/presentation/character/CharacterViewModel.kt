@@ -6,26 +6,32 @@ import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.usecase.CharacterUseCase
 import com.marvelcomics.brito.domain.usecase.onFailure
 import com.marvelcomics.brito.domain.usecase.onSuccess
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 @InternalCoroutinesApi
 class CharacterViewModel(
-    private val characterUseCase: CharacterUseCase
+    private val characterUseCase: CharacterUseCase,
+    private val scope: CoroutineScope?
 ) : ViewModel() {
 
+    private var mainScope = scope ?: viewModelScope
     private val interactions = Channel<CharacterInteraction>()
     private var characterUiState =
-        MutableStateFlow<CharacterScreenState>(CharacterScreenState.Empty)
+        MutableSharedFlow<CharacterScreenState>()
 
-    fun bind() = characterUiState.asStateFlow()
+    fun bind() = characterUiState.asSharedFlow()
 
     init {
-        viewModelScope.launch {
+        mainScope.launch {
             interactions.consumeAsFlow().collect {
                 handleInteraction(it)
             }
@@ -38,12 +44,22 @@ class CharacterViewModel(
                 characterUiState.emit(CharacterScreenState.Loading)
                 characterUseCase.invoke(interaction.name)
                     .onSuccess {
-                        characterUiState.value = CharacterScreenState.Success(it)
+                        mainScope.launch {
+                            characterUiState.emitOnScope(
+                                mainScope, CharacterScreenState.Success(it)
+                            )
+                        }
                     }.onFailure { throwable ->
-                        if (throwable is NetworkException) {
-                            characterUiState.value = CharacterScreenState.NetworkError
-                        } else {
-                            characterUiState.value = CharacterScreenState.Error(throwable)
+                        mainScope.launch {
+                            if (throwable is NetworkException) {
+                                characterUiState.emitOnScope(
+                                    mainScope, CharacterScreenState.NetworkError
+                                )
+                            } else {
+                                characterUiState.emitOnScope(
+                                    mainScope, CharacterScreenState.Error(throwable)
+                                )
+                            }
                         }
                     }
             }
@@ -51,8 +67,15 @@ class CharacterViewModel(
     }
 
     fun handle(interaction: CharacterInteraction) {
-        viewModelScope.launch {
+        mainScope.launch {
             interactions.send(interaction)
         }
+    }
+}
+
+fun <T> MutableSharedFlow<T>.emitOnScope(scope: CoroutineScope, value: T) {
+    val mutable = this
+    scope.launch {
+        mutable.emit(value)
     }
 }

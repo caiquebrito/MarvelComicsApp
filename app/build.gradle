@@ -49,8 +49,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':infrastructure')
     implementation project(path: ':data')
+    implementation project(path: ':data-remote')
     implementation project(path: ':presentation')
     implementation project(path: ':domain')
 
