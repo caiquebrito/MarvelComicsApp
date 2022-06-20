@@ -7,7 +7,8 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class KeyHashInterceptor(
-    private val publicKey: String, private val privateKey: String
+    private val publicKey: String,
+    private val privateKey: String
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val timestamp = TimeProvider().currentTimeMillis().toString()
