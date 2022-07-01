@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @InternalCoroutinesApi
 class CharacterViewModel(
     private val characterUseCase: CharacterUseCase,
-    private val scope: CoroutineScope?
+    scope: CoroutineScope?
 ) : ViewModel() {
 
     private var mainScope = scope ?: viewModelScope

@@ -19,11 +19,11 @@ class MarvelComicsApplication : Application() {
             androidContext(this@MarvelComicsApplication)
             modules(
                 listOf(
-                    com.marvelcomics.brito.di.DomainModules.usesCases,
-                    com.marvelcomics.brito.di.DataModule.interceptors,
-                    com.marvelcomics.brito.di.DataModule.mappers,
-                    com.marvelcomics.brito.di.DataModule.repositories,
-                    com.marvelcomics.brito.di.DataModule.webservices,
+                    DomainModules.usesCases,
+                    DataModule.interceptors,
+                    DataModule.mappers,
+                    DataModule.repositories,
+                    DataModule.webservices,
                     PresentationModules.viewModels,
                 )
             )

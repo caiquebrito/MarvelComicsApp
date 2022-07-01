@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.data_remote.webservice
+package com.marvelcomics.brito.data_remote.api
 
 import com.marvelcomics.brito.data_remote.datasource.response.CharacterResponse
 import com.marvelcomics.brito.data_remote.datasource.response.ComicResponse
@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface MarvelWebService {
+interface MarvelAPI {
 
     @GET("characters")
     suspend fun characters(@Query("name") name: String): RemoteMarvelContainerResponse<CharacterResponse>

@@ -8,8 +8,8 @@ import com.marvelcomics.brito.data_remote.okhttp.KeyHashInterceptor
 import com.marvelcomics.brito.data_remote.repository.characters.CharacterRepository
 import com.marvelcomics.brito.data_remote.repository.comics.ComicRepository
 import com.marvelcomics.brito.data_remote.repository.series.SeriesRepository
-import com.marvelcomics.brito.data_remote.webservice.MarvelWebService
-import com.marvelcomics.brito.data_remote.webservice.MarvelWebServiceImpl
+import com.marvelcomics.brito.data_remote.api.MarvelAPI
+import com.marvelcomics.brito.data_remote.webservice.MarvelAPIImpl
 import com.marvelcomics.brito.domain.repository.ICharacterRepository
 import com.marvelcomics.brito.domain.repository.IComicRepository
 import com.marvelcomics.brito.domain.repository.ISeriesRepository
@@ -34,9 +34,9 @@ object DataModule {
     }
 
     val webservices = module {
-        single<MarvelWebService> {
-            MarvelWebServiceImpl(
-                MarvelWebService.BASE_URL, get(named(Interceptors.KEY_HASH))
+        single<MarvelAPI> {
+            MarvelAPIImpl(
+                MarvelAPI.BASE_URL, get(named(Interceptors.KEY_HASH))
             )
         }
     }

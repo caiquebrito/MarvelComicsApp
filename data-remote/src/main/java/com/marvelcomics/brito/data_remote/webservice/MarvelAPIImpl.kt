@@ -2,13 +2,14 @@ package com.marvelcomics.brito.data_remote.webservice
 
 import com.marvelcomics.brito.data_remote.OkHttpClientFactory
 import com.marvelcomics.brito.data_remote.WebServiceFactory
+import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.datasource.response.CharacterResponse
 import com.marvelcomics.brito.data_remote.datasource.response.ComicResponse
 import com.marvelcomics.brito.data_remote.datasource.response.SeriesResponse
 import com.marvelcomics.brito.data_remote.datasource.response.model.RemoteMarvelContainerResponse
 import okhttp3.Interceptor
 
-class MarvelWebServiceImpl(baseUrl: String, vararg interceptors: Interceptor) : MarvelWebService {
+class MarvelAPIImpl(baseUrl: String, vararg interceptors: Interceptor) : MarvelAPI {
 
     private val okHttpClient = OkHttpClientFactory.createHttpClient(*interceptors)
     private val marvelWebService = WebServiceFactory.createWebService(okHttpClient, baseUrl)
