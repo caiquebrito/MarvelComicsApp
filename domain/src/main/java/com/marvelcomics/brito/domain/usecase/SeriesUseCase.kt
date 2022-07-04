@@ -2,14 +2,14 @@ package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.models.SeriesDomain
-import com.marvelcomics.brito.domain.repository.ISeriesRepository
+import com.marvelcomics.brito.domain.repository.MarvelRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class SeriesUseCase(
-    private val iSeriesRepository: ISeriesRepository,
+    private val marvelRepository: MarvelRepository,
     dispatcher: CoroutineDispatcher
 ) : CoroutineUseCase<Int, List<SeriesDomain>>(dispatcher) {
 
@@ -18,7 +18,7 @@ class SeriesUseCase(
             throw Exception("Empty Param Character")
         }
         return try {
-            iSeriesRepository.getSeries(param).let { Result.fromNullable(it) }
+            marvelRepository.getSeries(param).let { Result.fromNullable(it) }
         } catch (exception: Exception) {
             when (exception) {
                 is UnknownHostException, is SocketException, is SocketTimeoutException -> {
