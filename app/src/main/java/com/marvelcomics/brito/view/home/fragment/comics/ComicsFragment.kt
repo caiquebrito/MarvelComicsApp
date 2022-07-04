@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentComicsBinding
 import com.marvelcomics.brito.domain.models.ComicDomain
-import com.marvelcomics.brito.infrastructure.utils.AlertDialogUtils
 import com.marvelcomics.brito.presentation.comic.ComicInteraction
 import com.marvelcomics.brito.presentation.comic.ComicScreenState
 import com.marvelcomics.brito.presentation.comic.ComicViewModel
+import com.marvelcomics.brito.view.extensions.AlertDialogUtils
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.home.fragment.ItemOffSetDecorationHorizontal
 import kotlinx.coroutines.InternalCoroutinesApi

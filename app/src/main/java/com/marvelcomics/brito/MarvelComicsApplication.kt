@@ -23,7 +23,7 @@ class MarvelComicsApplication : Application() {
                     DataModule.interceptors,
                     DataModule.mappers,
                     DataModule.repositories,
-                    DataModule.webservices,
+                    DataModule.api,
                     PresentationModules.viewModels,
                 )
             )

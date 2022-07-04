@@ -7,9 +7,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentCharacterBinding
-import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.view.extensions.viewBinding
 import com.marvelcomics.brito.view.models.CharacterEntity
+import com.marvelcomics.brito.view.models.MarvelThumbnailAspectRatio
 
 class CharacterFragment : Fragment(R.layout.fragment_character) {
 

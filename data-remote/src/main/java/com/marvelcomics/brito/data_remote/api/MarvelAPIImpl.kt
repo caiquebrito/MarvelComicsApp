@@ -1,8 +1,7 @@
-package com.marvelcomics.brito.data_remote.webservice
+package com.marvelcomics.brito.data_remote.api
 
 import com.marvelcomics.brito.data_remote.OkHttpClientFactory
 import com.marvelcomics.brito.data_remote.WebServiceFactory
-import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.datasource.response.CharacterResponse
 import com.marvelcomics.brito.data_remote.datasource.response.ComicResponse
 import com.marvelcomics.brito.data_remote.datasource.response.SeriesResponse

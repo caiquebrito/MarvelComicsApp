@@ -1,9 +1,9 @@
 package com.marvelcomics.brito.data_local
 
 import android.content.Context
-import com.marvelcomics.brito.domain.repository.ILastFoundCharacterRepository
+import com.marvelcomics.brito.data.local.MarvelLocalDataSource
 
-class LastFoundCharacterRepository(context: Context) : ILastFoundCharacterRepository {
+class MarvelLocalRepository(context: Context) : MarvelLocalDataSource {
 
     private val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 

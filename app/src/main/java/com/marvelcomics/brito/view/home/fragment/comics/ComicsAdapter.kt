@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.domain.models.ComicDomain
-import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
+import com.marvelcomics.brito.view.models.MarvelThumbnailAspectRatio
 
 class ComicsAdapter(private val comics: List<ComicDomain>) :
     RecyclerView.Adapter<ComicsAdapter.ViewHolder?>() {

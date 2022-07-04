@@ -1,19 +1,20 @@
 package com.marvelcomics.brito.di
 
+import com.marvelcomics.brito.data.local.MarvelLocalDataSource
+import com.marvelcomics.brito.data.remote.MarvelRemoteDataSource
+import com.marvelcomics.brito.data.repo.MarvelRepo
+import com.marvelcomics.brito.data_local.MarvelLocalRepository
+import com.marvelcomics.brito.data_remote.api.MarvelAPI
+import com.marvelcomics.brito.data_remote.api.MarvelAPIImpl
 import com.marvelcomics.brito.data_remote.datasource.mapper.CharacterMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.ThumbnailMapper
 import com.marvelcomics.brito.data_remote.okhttp.KeyHashInterceptor
-import com.marvelcomics.brito.data_remote.repository.characters.CharacterRepository
-import com.marvelcomics.brito.data_remote.repository.comics.ComicRepository
-import com.marvelcomics.brito.data_remote.repository.series.SeriesRepository
-import com.marvelcomics.brito.data_remote.api.MarvelAPI
-import com.marvelcomics.brito.data_remote.webservice.MarvelAPIImpl
-import com.marvelcomics.brito.domain.repository.ICharacterRepository
-import com.marvelcomics.brito.domain.repository.IComicRepository
-import com.marvelcomics.brito.domain.repository.ISeriesRepository
+import com.marvelcomics.brito.data_remote.repository.MarvelRemoteRepository
+import com.marvelcomics.brito.domain.repository.MarvelRepository
 import okhttp3.Interceptor
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -21,22 +22,30 @@ object DataModule {
 
     object Interceptors {
         const val KEY_HASH = "KeyHashInterceptor"
+        const val LOGGING = "LoggingInterceptor"
     }
 
     val interceptors = module {
         factory<Interceptor>(named(Interceptors.KEY_HASH)) { KeyHashInterceptor(pubKey, prvKey) }
+        factory<Interceptor>(named(Interceptors.LOGGING)) {
+            HttpLoggingInterceptor().setLevel(
+                HttpLoggingInterceptor.Level.BODY
+            )
+        }
     }
 
     val repositories = module {
-        factory<ICharacterRepository> { CharacterRepository(get(), get()) }
-        factory<IComicRepository> { ComicRepository(get(), get()) }
-        factory<ISeriesRepository> { SeriesRepository(get(), get()) }
+        single<MarvelRemoteDataSource> { MarvelRemoteRepository(get(), get(), get(), get()) }
+        single<MarvelLocalDataSource> { MarvelLocalRepository(get()) }
+        single<MarvelRepository> { MarvelRepo(get(), get()) }
     }
 
-    val webservices = module {
+    val api = module {
         single<MarvelAPI> {
             MarvelAPIImpl(
-                MarvelAPI.BASE_URL, get(named(Interceptors.KEY_HASH))
+                MarvelAPI.BASE_URL,
+                get(named(Interceptors.KEY_HASH)),
+                get(named(Interceptors.LOGGING))
             )
         }
     }

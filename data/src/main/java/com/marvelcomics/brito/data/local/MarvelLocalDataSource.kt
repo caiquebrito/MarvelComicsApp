@@ -1,6 +1,6 @@
-package com.marvelcomics.brito.domain.repository
+package com.marvelcomics.brito.data.local
 
-interface ILastFoundCharacterRepository {
+interface MarvelLocalDataSource {
     suspend fun getLastCharacterName(): String
     suspend fun setLastCharacterName(name: String)
 }

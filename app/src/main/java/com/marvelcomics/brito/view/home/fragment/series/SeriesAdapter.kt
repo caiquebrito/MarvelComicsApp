@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.domain.models.SeriesDomain
-import com.marvelcomics.brito.infrastructure.utils.MarvelThumbnailAspectRatio
+import com.marvelcomics.brito.view.models.MarvelThumbnailAspectRatio
 
 class SeriesAdapter(private val series: List<SeriesDomain>) :
     RecyclerView.Adapter<SeriesAdapter.ViewHolder?>() {
@@ -42,7 +42,11 @@ class SeriesAdapter(private val series: List<SeriesDomain>) :
             title?.text = seriesDomain.title
             imageView?.let {
                 Glide.with(it.context)
-                    .load(seriesDomain.thumbnailDomain?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL))
+                    .load(
+                        seriesDomain.thumbnailDomain?.getFullUrlThumbnailWithAspect(
+                            MarvelThumbnailAspectRatio.Portrait.SMALL
+                        )
+                    )
                     .fitCenter()
                     .into(it)
             }
