@@ -4,16 +4,13 @@ import com.marvelcomics.brito.data.remote.MarvelRemoteDataSource
 import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.datasource.mapper.CharacterMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
-import com.marvelcomics.brito.data_remote.datasource.mapper.RemoteMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
 import com.marvelcomics.brito.data_remote.datasource.response.SeriesResponse
 import com.marvelcomics.brito.data_remote.datasource.response.model.RemoteMarvelContainerResponse
 import com.marvelcomics.brito.data_remote.exception.MarvelApiException
-import com.marvelcomics.brito.data_remote.exception.MarvelMapperException
 import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.models.ComicDomain
 import com.marvelcomics.brito.domain.models.SeriesDomain
-import java.lang.Exception
 import retrofit2.Response
 
 class MarvelRemoteRepository(
