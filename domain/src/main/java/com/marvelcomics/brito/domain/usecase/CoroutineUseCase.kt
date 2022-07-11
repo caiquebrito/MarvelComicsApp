@@ -26,12 +26,6 @@ abstract class CoroutineUseCase<in TParam, out TResult>(private val dispatcher: 
     }
 
     protected abstract suspend fun performAction(param: TParam?): Result<TResult>
-
-    companion object {
-        fun <TResultModel> castSuccess(data: TResultModel): TResultModel {
-            return (data as Result.Success<TResultModel>).result
-        }
-    }
 }
 
 fun <TResultModel> CoroutineUseCase.Result<TResultModel>.onSuccess(callback: (TResultModel) -> Unit):
