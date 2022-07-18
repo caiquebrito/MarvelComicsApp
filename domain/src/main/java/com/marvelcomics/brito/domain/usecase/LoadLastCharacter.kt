@@ -1,6 +1,5 @@
 package com.marvelcomics.brito.domain.usecase
 
-import com.marvelcomics.brito.domain.exception.EmptyInputException
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.repository.MarvelRepository
@@ -15,9 +14,6 @@ class LoadLastCharacter(
 ) : CoroutineUseCase<Any, CharacterDomain>(dispatcher) {
 
     override suspend fun performAction(param: Any?): Result<CharacterDomain> {
-        if (param == null) {
-            throw EmptyInputException()
-        }
         return try {
             marvelRepository.getLastCharacterName().let { Result.fromNullable(it) }
         } catch (exception: Exception) {

@@ -15,6 +15,8 @@ import com.marvelcomics.brito.data_remote.repository.MarvelRemoteRepository
 import com.marvelcomics.brito.domain.repository.MarvelRepository
 import com.marvelcomics.brito.domain.usecase.Character
 import com.marvelcomics.brito.domain.usecase.Comic
+import com.marvelcomics.brito.domain.usecase.LoadLastCharacter
+import com.marvelcomics.brito.domain.usecase.SaveCharacter
 import com.marvelcomics.brito.domain.usecase.Series
 import com.marvelcomics.brito.presentation.character.CharacterViewModel
 import com.marvelcomics.brito.presentation.comic.ComicViewModel
@@ -90,6 +92,8 @@ class MarvelModules {
             factory { Character(get(), Dispatchers.IO) }
             factory { Comic(get(), Dispatchers.IO) }
             factory { Series(get(), Dispatchers.IO) }
+            factory { LoadLastCharacter(get(), Dispatchers.IO) }
+            factory { SaveCharacter(get(), Dispatchers.IO) }
         }
     }
 }

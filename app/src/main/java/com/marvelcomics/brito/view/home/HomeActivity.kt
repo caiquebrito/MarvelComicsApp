@@ -114,7 +114,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showError(exception: Throwable, message: String) {
+    private fun showError(exception: Throwable, message: String?) {
         with(bindings) {
             progressbarLoadingCharacter.visibility = View.GONE
         }
