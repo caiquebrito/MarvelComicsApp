@@ -33,8 +33,8 @@ import org.koin.dsl.module
 class MarvelModules {
 
     object Data {
-        private val pubKey = "e2d714ad0eec8dd9251fb6e340d1d20d"
-        private val prvKey = "a8265201786d1e2ba7888cc2a3f7aaae22efd3ea"
+        private val pubKey = "9294302a561e7a8a489807700c2b56a9"
+        private val prvKey = "cfe96dfbecfd6158c4983507a65ee0edd1f99782"
 
         object Interceptors {
             const val KEY_HASH = "KeyHashInterceptor"
