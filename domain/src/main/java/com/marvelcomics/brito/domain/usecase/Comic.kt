@@ -8,7 +8,7 @@ import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class ComicUseCase(
+class Comic(
     private val marvelRepository: MarvelRepository,
     dispatcher: CoroutineDispatcher
 ) : CoroutineUseCase<Int, List<ComicDomain>>(dispatcher) {

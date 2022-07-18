@@ -2,7 +2,7 @@ package com.marvelcomics.brito.presentation.character
 
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.models.CharacterDomain
-import com.marvelcomics.brito.domain.usecase.CharacterUseCase
+import com.marvelcomics.brito.domain.usecase.Character
 import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
 import com.marvelcomics.brito.presentation.BaseViewModelTest
 import io.mockk.MockKAnnotations
@@ -27,7 +27,7 @@ class CharacterViewModelTest : BaseViewModelTest() {
     lateinit var runtimeExceptionMock: RuntimeException
 
     @MockK
-    lateinit var useCaseMock: CharacterUseCase
+    lateinit var useCaseMock: Character
 
     @InjectMockKs
     lateinit var viewModel: CharacterViewModel

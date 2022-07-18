@@ -8,7 +8,7 @@ import com.marvelcomics.brito.domain.models.CharacterDomain
 class CharacterMapper(private val thumbnailMapper: ThumbnailMapper) {
 
     @Throws(MarvelApiException::class)
-    fun transform(remoteMarvelContainerResponse: RemoteMarvelContainerResponse<CharacterResponse>): List<CharacterDomain>? {
+    fun transform(remoteMarvelContainerResponse: RemoteMarvelContainerResponse<CharacterResponse>): List<CharacterDomain> {
         try {
             val characterDomainList: MutableList<CharacterDomain> = ArrayList()
             remoteMarvelContainerResponse.remoteMarvelDataResponse?.results?.let {

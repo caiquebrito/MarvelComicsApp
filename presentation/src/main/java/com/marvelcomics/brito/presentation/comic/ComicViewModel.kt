@@ -3,7 +3,7 @@ package com.marvelcomics.brito.presentation.comic
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
-import com.marvelcomics.brito.domain.usecase.ComicUseCase
+import com.marvelcomics.brito.domain.usecase.Comic
 import com.marvelcomics.brito.domain.usecase.onFailure
 import com.marvelcomics.brito.domain.usecase.onSuccess
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 @InternalCoroutinesApi
 class ComicViewModel(
-    private val comicUseCase: ComicUseCase
+    private val comic: Comic
 ) : ViewModel() {
 
     private val interactions = Channel<ComicInteraction>()
@@ -35,7 +35,7 @@ class ComicViewModel(
         when (interaction) {
             is ComicInteraction.LoadComicsById -> {
                 comicUiState.emit(ComicScreenState.Loading)
-                comicUseCase.invoke(interaction.id)
+                comic.invoke(interaction.id)
                     .onSuccess {
                         comicUiState.value = ComicScreenState.Success(it)
                     }
