@@ -5,13 +5,14 @@ import com.marvelcomics.brito.data_remote.datasource.response.model.RemoteMarvel
 import com.marvelcomics.brito.data_remote.exception.MarvelApiException
 import com.marvelcomics.brito.domain.models.SeriesDomain
 
-class SeriesMapper(private val thumbnailMapper: ThumbnailMapper) {
+class SeriesMapper(private val thumbnailMapper: ThumbnailMapper) :
+    RemoteMapper<RemoteMarvelContainerResponse<SeriesResponse>, List<SeriesDomain>> {
 
     @Throws(MarvelApiException::class)
-    fun transform(remoteMarvelDataResponse: RemoteMarvelContainerResponse<SeriesResponse>): List<SeriesDomain>? {
+    override fun transform(input: RemoteMarvelContainerResponse<SeriesResponse>): List<SeriesDomain> {
         try {
-            val seriesEntityList = ArrayList<SeriesDomain>()
-            remoteMarvelDataResponse.remoteMarvelDataResponse?.results?.let {
+            val output = ArrayList<SeriesDomain>()
+            input.remoteMarvelDataResponse?.results?.let {
                 for (seriesResponse in it) {
                     val seriesEntity = SeriesDomain(
                         seriesResponse.id,
@@ -19,9 +20,9 @@ class SeriesMapper(private val thumbnailMapper: ThumbnailMapper) {
                         seriesResponse.description,
                         thumbnailMapper.transform(seriesResponse.thumbnailResponse)
                     )
-                    seriesEntityList.add(seriesEntity)
+                    output.add(seriesEntity)
                 }
-                return seriesEntityList
+                return output
             } ?: let {
                 throw MarvelApiException("Result from server return nulls")
             }

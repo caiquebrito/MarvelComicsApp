@@ -18,7 +18,7 @@ import org.junit.Test
 import java.net.UnknownHostException
 
 @ExperimentalCoroutinesApi
-class SeriesUseCaseTest : BaseUseCaseTest() {
+class SeriesTest : BaseUseCaseTest() {
 
     @MockK
     lateinit var listSeries: List<SeriesDomain>
@@ -34,19 +34,19 @@ class SeriesUseCaseTest : BaseUseCaseTest() {
 
     private val dispatcherIO = Dispatchers.IO
 
-    lateinit var seriesUseCase: SeriesUseCase
+    lateinit var series: Series
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        seriesUseCase = SeriesUseCase(iSeriesRepositoryMock, dispatcherIO)
+        series = Series(iSeriesRepositoryMock, dispatcherIO)
     }
 
     @Test
     fun `when the result is sucess and validate object`() = runTest {
         coEvery { iSeriesRepositoryMock.getSeries(any()) } returns listSeries
 
-        val result = seriesUseCase.invoke(10)
+        val result = series.invoke(10)
 
 //        coVerify(exactly = 1) { iSeriesRepositoryMock.getSeries(any()) }
 

@@ -3,7 +3,7 @@ package com.marvelcomics.brito.presentation.series
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.exception.NetworkException
-import com.marvelcomics.brito.domain.usecase.SeriesUseCase
+import com.marvelcomics.brito.domain.usecase.Series
 import com.marvelcomics.brito.domain.usecase.onFailure
 import com.marvelcomics.brito.domain.usecase.onSuccess
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 @InternalCoroutinesApi
 class SeriesViewModel(
-    private val seriesUseCase: SeriesUseCase
+    private val series: Series
 ) : ViewModel() {
 
     private val interactions = Channel<SeriesInteraction>()
@@ -35,7 +35,7 @@ class SeriesViewModel(
         when (interaction) {
             is SeriesInteraction.LoadSeriesById -> {
                 seriesUiState.value = SeriesScreenState.Loading
-                seriesUseCase.invoke(interaction.id)
+                series.invoke(interaction.id)
                     .onSuccess {
                         seriesUiState.value = SeriesScreenState.Success(it)
                     }.onFailure { throwable ->

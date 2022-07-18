@@ -45,9 +45,6 @@ dependencies {
     implementation androidDependencies.appcompat
     implementation androidDependencies.coreKtx
 
-    //Koin
-    implementation customLibDependencies.koinAndroid
-
     //Coroutines
     implementation jetbrainsDependencies.core
     implementation jetbrainsDependencies.android

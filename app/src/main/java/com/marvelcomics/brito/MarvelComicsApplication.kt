@@ -1,9 +1,7 @@
 package com.marvelcomics.brito
 
 import android.app.Application
-import com.marvelcomics.brito.di.DataModule
-import com.marvelcomics.brito.di.DomainModules
-import com.marvelcomics.brito.presentation.di.PresentationModules
+import com.marvelcomics.brito.di.MarvelModules
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -19,12 +17,12 @@ class MarvelComicsApplication : Application() {
             androidContext(this@MarvelComicsApplication)
             modules(
                 listOf(
-                    DomainModules.usesCases,
-                    DataModule.interceptors,
-                    DataModule.mappers,
-                    DataModule.repositories,
-                    DataModule.api,
-                    PresentationModules.viewModels,
+                    MarvelModules.Domain.usesCases,
+                    MarvelModules.Data.interceptors,
+                    MarvelModules.Data.mappers,
+                    MarvelModules.Data.repositories,
+                    MarvelModules.Data.api,
+                    MarvelModules.Presentation.viewModels,
                 )
             )
             logger(EmptyLogger())

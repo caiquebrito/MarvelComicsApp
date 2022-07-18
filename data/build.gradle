@@ -7,9 +7,6 @@ dependencies {
 
     implementation jetbrainsDependencies.stdlib
 
-    //Koin
-    implementation customLibDependencies.koinCore
-
     testImplementation testDependencies.junit
 }
 
