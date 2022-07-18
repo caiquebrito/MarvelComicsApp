@@ -9,17 +9,17 @@ import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class LoadLastCharacter(
+class Character(
     private val marvelRepository: MarvelRepository,
     dispatcher: CoroutineDispatcher
-) : CoroutineUseCase<Any, CharacterDomain>(dispatcher) {
+) : CoroutineUseCase<String, CharacterDomain>(dispatcher) {
 
-    override suspend fun performAction(param: Any?): Result<CharacterDomain> {
+    override suspend fun performAction(param: String?): Result<CharacterDomain> {
         if (param == null) {
             throw EmptyInputException()
         }
         return try {
-            marvelRepository.getLastCharacterName().let { Result.fromNullable(it) }
+            marvelRepository.getCharacters(param).first().let { Result.fromNullable(it) }
         } catch (exception: Exception) {
             when (exception) {
                 is UnknownHostException, is SocketException, is SocketTimeoutException -> {

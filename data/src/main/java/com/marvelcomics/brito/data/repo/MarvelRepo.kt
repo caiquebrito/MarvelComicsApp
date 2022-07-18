@@ -24,11 +24,11 @@ class MarvelRepo(
         return remote.getSeries(characterId)
     }
 
-    override suspend fun getLastCharacterName(): String {
-        return local.getLastCharacterName()
+    override suspend fun getLastCharacterName(): CharacterDomain {
+        return local.getLastCharacter()
     }
 
-    override suspend fun setLastCharacterName(name: String) {
-        local.setLastCharacterName(name)
+    override suspend fun setLastCharacterName(characterDomain: CharacterDomain) {
+        local.setLastCharacter(characterDomain)
     }
 }

@@ -5,13 +5,10 @@ import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.datasource.mapper.CharacterMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
-import com.marvelcomics.brito.data_remote.datasource.response.SeriesResponse
-import com.marvelcomics.brito.data_remote.datasource.response.model.RemoteMarvelContainerResponse
 import com.marvelcomics.brito.data_remote.exception.MarvelApiException
 import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.models.ComicDomain
 import com.marvelcomics.brito.domain.models.SeriesDomain
-import retrofit2.Response
 
 class MarvelRemoteRepository(
     private val api: MarvelAPI,
@@ -66,9 +63,6 @@ class MarvelRemoteRepository(
 
     override suspend fun getSeries(characterId: Int): List<SeriesDomain> {
         api.series(characterId).apply {
-            this.whenBodyNotNull { body ->
-                seriesMapper.transform(body as RemoteMarvelContainerResponse<SeriesResponse>)
-            }
             return if (this.isSuccessful) {
                 body()?.let { body ->
                     seriesMapper.transform(body)
@@ -90,22 +84,27 @@ class MarvelRemoteRepository(
     }
 }
 
-fun <T> Response<T>.whenBodyNotNull(block: (body: Any) -> Unit) {
-    if (this.isSuccessful) {
-        body()?.let { body ->
-            block.invoke(body)
-        } ?: run {
-            throw MarvelApiException(
-                httpCode = this.code(),
-                marvelCode = this.code().toString(),
-                "Error getting info from Comics"
-            )
-        }
-    } else {
-        throw MarvelApiException(
-            httpCode = this.code(),
-            marvelCode = this.code().toString(),
-            "Error getting info from Comics"
-        )
-    }
-}
+// fun <T> Response<T>.handleResponse(
+//    onSuccess: (body: Any) -> Unit,
+//    onError: ((exception: ErrorCallResponse) -> Unit)
+// ) {
+//    if (this.isSuccessful) {
+//        body()?.let { body ->
+//            onSuccess.invoke(body)
+//        } ?: run {
+//            onError.invoke(getMessageFromError(this.errorBody()))
+//        }
+//    } else {
+//        onError.invoke(getMessageFromError(this.errorBody()))
+//    }
+// }
+//
+// private fun getMessageFromError(errorBody: ResponseBody?): ErrorCallResponse {
+//    val type = object : TypeToken<ErrorCallResponse>() {}.type
+//    return Gson().fromJson(errorBody?.charStream(), type)
+// }
+//
+// data class ErrorCallResponse(
+//    @SerializedName("code") val code: String,
+//    @SerializedName("errorMessage") val errorMessage: String
+// )

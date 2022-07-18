@@ -1,25 +1,24 @@
 package com.marvelcomics.brito.domain.usecase
 
-import com.marvelcomics.brito.domain.exception.EmptyInputException
 import com.marvelcomics.brito.domain.exception.NetworkException
-import com.marvelcomics.brito.domain.models.CharacterDomain
+import com.marvelcomics.brito.domain.models.ComicDomain
 import com.marvelcomics.brito.domain.repository.MarvelRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class CharacterUseCase(
+class Comic(
     private val marvelRepository: MarvelRepository,
     dispatcher: CoroutineDispatcher
-) : CoroutineUseCase<String, CharacterDomain>(dispatcher) {
+) : CoroutineUseCase<Int, List<ComicDomain>>(dispatcher) {
 
-    override suspend fun performAction(param: String?): Result<CharacterDomain> {
+    override suspend fun performAction(param: Int?): Result<List<ComicDomain>> {
         if (param == null) {
-            throw EmptyInputException()
+            throw Exception("Empty Param Character")
         }
         return try {
-            marvelRepository.getCharacters(param).first().let { Result.fromNullable(it) }
+            marvelRepository.getComics(param).let { Result.fromNullable(it) }
         } catch (exception: Exception) {
             when (exception) {
                 is UnknownHostException, is SocketException, is SocketTimeoutException -> {

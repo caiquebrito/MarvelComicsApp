@@ -6,5 +6,5 @@ sealed class CharacterScreenState {
     object Empty : CharacterScreenState()
     object Idle : CharacterScreenState()
     class Success(val `data`: Any) : CharacterScreenState()
-    class Error(val exception: Throwable) : CharacterScreenState()
+    class Error(val exception: Throwable, val message: String? = null) : CharacterScreenState()
 }

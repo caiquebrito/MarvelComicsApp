@@ -8,6 +8,6 @@ interface MarvelRepository {
     suspend fun getCharacters(name: String): List<CharacterDomain>
     suspend fun getComics(characterId: Int): List<ComicDomain>
     suspend fun getSeries(characterId: Int): List<SeriesDomain>
-    suspend fun getLastCharacterName(): String
-    suspend fun setLastCharacterName(name: String)
+    suspend fun getLastCharacterName(): CharacterDomain
+    suspend fun setLastCharacterName(characterDomain: CharacterDomain)
 }

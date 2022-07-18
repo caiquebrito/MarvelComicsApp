@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -52,7 +53,7 @@ class HomeActivity : AppCompatActivity() {
                             buildSuccessScreen(newState.data as CharacterDomain)
                         }
                         is CharacterScreenState.Error -> {
-                            showError(newState.exception as Exception)
+                            showError(newState.exception as Exception, newState.message)
                         }
                         is CharacterScreenState.Empty -> {
                             // do nothing
@@ -76,12 +77,18 @@ class HomeActivity : AppCompatActivity() {
     private fun setupViews() {
         with(bindings) {
             buttonSearchMarvelCharacter.setOnClickListener {
+                buttonLoadLastCharacter.isVisible = false
                 with(edittextMarvelCharacter.text.toString()) {
                     if (this.isNotBlank()) {
                         characterViewModel.handle(CharacterInteraction.SearchCharacter(this))
                         hideKeyboard()
                     }
                 }
+            }
+            buttonLoadLastCharacter.setOnClickListener {
+                buttonLoadLastCharacter.isVisible = false
+                characterViewModel.handle(CharacterInteraction.LoadLastCharacter)
+                hideKeyboard()
             }
         }
     }
@@ -107,13 +114,13 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showError(exception: Throwable) {
+    private fun showError(exception: Throwable, message: String) {
         with(bindings) {
             progressbarLoadingCharacter.visibility = View.GONE
         }
         Toast.makeText(
             this,
-            "Error: ${exception.message}",
+            "Error: $message == ${exception.message}",
             Toast.LENGTH_LONG
         ).show()
     }

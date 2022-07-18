@@ -51,6 +51,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/button_load_last_character"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_round_left"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Carregar Último"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"

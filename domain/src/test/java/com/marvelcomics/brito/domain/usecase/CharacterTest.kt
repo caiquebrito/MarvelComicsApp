@@ -1,26 +1,29 @@
 package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.exception.NetworkException
-import com.marvelcomics.brito.domain.models.ComicDomain
+import com.marvelcomics.brito.domain.models.CharacterDomain
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.net.UnknownHostException
 
 @ExperimentalCoroutinesApi
-class ComicUseCaseTest {
+class CharacterTest {
 
     @MockK
-    lateinit var listComics: List<ComicDomain>
+    lateinit var characterDomainMock: CharacterDomain
+
+    @MockK
+    lateinit var listCharacterMock: List<CharacterDomain>
 
     @MockK
     lateinit var runtimeException: RuntimeException
@@ -29,13 +32,13 @@ class ComicUseCaseTest {
     lateinit var unknownHostException: UnknownHostException
 
     @MockK
-    lateinit var iComicRepositoryMock: IComicRepository
+    lateinit var iCharacterRepositoryMock: ICharacterRepository
 
     @MockK
     lateinit var coroutineDispatcherMock: CoroutineDispatcher
 
     @InjectMockKs
-    lateinit var comicUseCase: ComicUseCase
+    lateinit var character: Character
 
     @Before
     fun setup() {
@@ -44,48 +47,52 @@ class ComicUseCaseTest {
 
     @Test
     fun `when the result is sucess and validate object`() = runBlockingTest {
-        coEvery { iComicRepositoryMock.getComics(any()) } returns listComics
+        coEvery { iCharacterRepositoryMock.getCharacters(any()) } returns listCharacterMock
+        coEvery { listCharacterMock.first() } returns characterDomainMock
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-//            comicUseCase.getComics(99).toList(emissions)
+            character.invoke("Caique").let {
+                it
+            }
+//            characterUseCase.invoke("Caique").toList(emissions)
         }
 
-//        comicUseCase.getComics(99)
+        character.invoke("Caique")
 
-        coVerify(exactly = 1) { iComicRepositoryMock.getComics(any()) }
+        coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters(any()) }
 
-        assertEquals(listComics, emissions[0])
+        assertEquals(characterDomainMock, emissions[0])
         job.cancel()
     }
 
     @Test(expected = RuntimeException::class)
     fun `when the result is failure and return runtime error`() = runBlockingTest {
-        coEvery { iComicRepositoryMock.getComics(any()) } throws runtimeException
+        coEvery { iCharacterRepositoryMock.getCharacters(any()) } throws runtimeException
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-//            comicUseCase.getComics(99).toList(emissions)
+//            characterUseCase.invoke("Caique").toList(emissions)
         }
 
-//        comicUseCase.getComics(99)
+        character.invoke("Caique")
 
-        coVerify(exactly = 1) { iComicRepositoryMock.getComics(any()) }
+        coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters(any()) }
         job.cancel()
     }
 
     @Test(expected = NetworkException::class)
     fun `when the result is failure and return network error`() = runBlockingTest {
-        coEvery { iComicRepositoryMock.getComics(any()) } throws unknownHostException
+        coEvery { iCharacterRepositoryMock.getCharacters(any()) } throws unknownHostException
 
         val emissions = mutableListOf<Any>()
         val job = launch {
-//            comicUseCase.getComics(99).toList(emissions)
+//            characterUseCase.invoke("Caique").toList(emissions)
         }
 
-//        comicUseCase.getComics(99)
+        character.invoke("Caique")
 
-        coVerify(exactly = 1) { iComicRepositoryMock.getComics(any()) }
+        coVerify(exactly = 1) { iCharacterRepositoryMock.getCharacters(any()) }
         job.cancel()
     }
 }
