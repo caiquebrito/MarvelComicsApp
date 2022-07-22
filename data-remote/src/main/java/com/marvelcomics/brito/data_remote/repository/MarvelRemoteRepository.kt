@@ -9,8 +9,8 @@ import com.marvelcomics.brito.data_remote.getBodyOrThrow
 import com.marvelcomics.brito.data_remote.handleApi
 import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.models.ComicDomain
-import com.marvelcomics.brito.domain.models.SeriesDomain
 import com.marvelcomics.brito.domain.models.ResultWrapper
+import com.marvelcomics.brito.domain.models.SeriesDomain
 
 class MarvelRemoteRepository(
     private val api: MarvelAPI,

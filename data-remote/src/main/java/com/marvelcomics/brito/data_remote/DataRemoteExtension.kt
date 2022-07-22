@@ -3,12 +3,12 @@ package com.marvelcomics.brito.data_remote
 import com.google.gson.Gson
 import com.marvelcomics.brito.data_remote.models.ErrorBody
 import com.marvelcomics.brito.domain.models.ResultWrapper
+import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import retrofit2.HttpException
-import retrofit2.Response
 
 fun <T> Response<T>.getBodyOrThrow(): T {
     try {

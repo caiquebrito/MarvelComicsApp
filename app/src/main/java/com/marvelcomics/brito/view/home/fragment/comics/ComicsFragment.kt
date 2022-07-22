@@ -54,7 +54,6 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
                             showError(message)
                         }
                         else -> {
-
                         }
                     }
                 }
