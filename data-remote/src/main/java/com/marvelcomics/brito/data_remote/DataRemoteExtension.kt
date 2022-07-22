@@ -1,8 +1,9 @@
 package com.marvelcomics.brito.data_remote
 
 import com.google.gson.Gson
+import com.marvelcomics.brito.data.models.RemoteWrapper
 import com.marvelcomics.brito.data_remote.models.ErrorBody
-import com.marvelcomics.brito.domain.models.ResultWrapper
+import com.marvelcomics.brito.domain.exception.NetworkException
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -19,24 +20,26 @@ fun <T> Response<T>.getBodyOrThrow(): T {
                 throw Exception("Body is null")
             }
         } else {
-            throw Exception("Not Successful call - ${this.code()}")
+            throw FailureResponseException(this)
         }
     } catch (exception: Exception) {
         throw exception
     }
 }
 
+class FailureResponseException(response: Response<*>) : HttpException(response)
+
 suspend fun <T> handleApi(
     apiCall: suspend () -> T
-): ResultWrapper<T> {
+): RemoteWrapper<T> {
     return try {
-        ResultWrapper.Success(apiCall.invoke())
+        RemoteWrapper.Success(apiCall.invoke())
     } catch (throwable: Throwable) {
         when (throwable) {
             is IOException,
             is UnknownHostException,
             is SocketException,
-            is SocketTimeoutException -> ResultWrapper.NetworkError
+            is SocketTimeoutException -> RemoteWrapper.NetworkError
             is HttpException -> {
                 val code = throwable.code()
                 val errorBody = throwable.response()?.errorBody()?.string()
@@ -45,9 +48,27 @@ suspend fun <T> handleApi(
                     ErrorBody::class.java
                 )
                 val message = gsonErrorBody.message
-                ResultWrapper.Error(code, message)
+                RemoteWrapper.Error(code, message)
             }
-            else -> ResultWrapper.Error(0, throwable.message)
+            else -> RemoteWrapper.Error(0, throwable.message)
         }
+    }
+}
+
+fun <T> RemoteWrapper<T>.extractFromWrapper(): T {
+    return try {
+        when (this) {
+            is RemoteWrapper.Success -> {
+                this.data
+            }
+            is RemoteWrapper.NetworkError -> {
+                throw NetworkException()
+            }
+            is RemoteWrapper.Error -> {
+                throw Exception(this.message)
+            }
+        }
+    } catch (exception: Exception) {
+        throw exception
     }
 }

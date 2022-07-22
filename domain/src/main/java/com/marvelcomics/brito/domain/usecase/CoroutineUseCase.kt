@@ -43,3 +43,7 @@ fun <TResultModel> CoroutineUseCase.Result<TResultModel>.onFailure(callback: (Th
         }
         return this
     }
+
+fun <TResultModel> TResultModel.toCoroutineResult(): CoroutineUseCase.Result<TResultModel> {
+    return CoroutineUseCase.Result.fromNullable(this)
+}
