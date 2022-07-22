@@ -5,10 +5,10 @@ import com.marvelcomics.brito.data_remote.datasource.response.model.RemoteMarvel
 import com.marvelcomics.brito.data_remote.exception.MarvelApiException
 import com.marvelcomics.brito.domain.models.ComicDomain
 
-class ComicMapper(private val thumbnailMapper: ThumbnailMapper?) {
+class ComicMapper(private val thumbnailMapper: ThumbnailMapper) {
 
     @Throws(MarvelApiException::class)
-    fun transform(remoteMarvelDataResponse: RemoteMarvelContainerResponse<ComicResponse>): List<ComicDomain>? {
+    fun transform(remoteMarvelDataResponse: RemoteMarvelContainerResponse<ComicResponse>): List<ComicDomain> {
         try {
             val comicEntityList = ArrayList<ComicDomain>()
             remoteMarvelDataResponse.remoteMarvelDataResponse?.results?.let {
@@ -17,7 +17,7 @@ class ComicMapper(private val thumbnailMapper: ThumbnailMapper?) {
                         comicResponse.id,
                         comicResponse.title,
                         comicResponse.description,
-                        thumbnailMapper!!.transform(comicResponse.thumbnailResponse)
+                        thumbnailMapper.transform(comicResponse.thumbnailResponse)
                     )
                     comicEntityList.add(comicEntity)
                 }

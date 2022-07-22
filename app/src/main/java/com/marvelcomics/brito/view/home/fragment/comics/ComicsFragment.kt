@@ -36,10 +36,6 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadComics()
-    }
-
-    override fun onStart() {
-        super.onStart()
         initObservers()
     }
 
@@ -56,6 +52,9 @@ class ComicsFragment : Fragment(R.layout.fragment_comics) {
                         }
                         is ComicScreenState.Error -> it.exception.message?.let { message ->
                             showError(message)
+                        }
+                        else -> {
+
                         }
                     }
                 }

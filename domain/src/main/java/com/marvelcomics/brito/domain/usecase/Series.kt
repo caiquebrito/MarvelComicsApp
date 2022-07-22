@@ -1,8 +1,11 @@
 package com.marvelcomics.brito.domain.usecase
 
+import com.marvelcomics.brito.domain.exception.EmptyInputException
 import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.handleDomain
 import com.marvelcomics.brito.domain.models.SeriesDomain
 import com.marvelcomics.brito.domain.repository.MarvelRepository
+import com.marvelcomics.brito.domain.toCoroutineResult
 import kotlinx.coroutines.CoroutineDispatcher
 import java.net.SocketException
 import java.net.SocketTimeoutException
@@ -14,20 +17,8 @@ class Series(
 ) : CoroutineUseCase<Int, List<SeriesDomain>>(dispatcher) {
 
     override suspend fun performAction(param: Int?): Result<List<SeriesDomain>> {
-        if (param == null) {
-            throw Exception("Empty Param Character")
-        }
-        return try {
-            marvelRepository.getSeries(param).let { Result.fromNullable(it) }
-        } catch (exception: Exception) {
-            when (exception) {
-                is UnknownHostException, is SocketException, is SocketTimeoutException -> {
-                    throw NetworkException()
-                }
-                else -> {
-                    throw exception
-                }
-            }
-        }
+        return param?.let {
+            marvelRepository.getSeries(it).handleDomain().toCoroutineResult()
+        } ?: throw EmptyInputException()
     }
 }

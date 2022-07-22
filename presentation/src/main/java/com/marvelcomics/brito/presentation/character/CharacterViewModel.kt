@@ -75,19 +75,13 @@ class CharacterViewModel(
                         }
                     }.onFailure { throwable ->
                         mainScope.launch {
-                            if (throwable is NetworkException) {
-                                characterUiState.emitOnScope(
-                                    mainScope, CharacterScreenState.NetworkError
+                            characterUiState.emitOnScope(
+                                mainScope,
+                                CharacterScreenState.Error(
+                                    throwable,
+                                    "Can't Load from Local"
                                 )
-                            } else {
-                                characterUiState.emitOnScope(
-                                    mainScope,
-                                    CharacterScreenState.Error(
-                                        throwable,
-                                        "Can't Load from Local"
-                                    )
-                                )
-                            }
+                            )
                         }
                     }
             }
