@@ -12,7 +12,7 @@ class Series(
 
     override suspend fun performAction(param: Int?): Result<List<SeriesDomain>> {
         return param?.let {
-            marvelRepository.getSeries(it).toCoroutineResult()
+            marvelRepository.getSeries(it).resultFromNullable()
         } ?: throw EmptyInputException()
     }
 }

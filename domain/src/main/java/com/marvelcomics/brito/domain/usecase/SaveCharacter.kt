@@ -12,7 +12,7 @@ class SaveCharacter(
 
     override suspend fun performAction(param: CharacterDomain?): Result<Any> {
         return param?.let {
-            marvelRepository.setLastCharacterName(it).toCoroutineResult()
+            marvelRepository.setLastCharacterName(it).resultFromNullable()
         } ?: throw EmptyInputException()
     }
 }

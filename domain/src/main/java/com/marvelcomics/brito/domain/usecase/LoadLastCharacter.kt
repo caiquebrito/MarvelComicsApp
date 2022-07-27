@@ -10,6 +10,6 @@ class LoadLastCharacter(
 ) : CoroutineUseCase<Any, CharacterDomain>(dispatcher) {
 
     override suspend fun performAction(param: Any?): Result<CharacterDomain> {
-        return marvelRepository.getLastCharacterName().toCoroutineResult()
+        return marvelRepository.getLastCharacterName().resultFromNullable()
     }
 }

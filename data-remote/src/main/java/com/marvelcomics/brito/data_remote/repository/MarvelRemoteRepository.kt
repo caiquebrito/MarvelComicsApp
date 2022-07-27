@@ -1,16 +1,30 @@
 package com.marvelcomics.brito.data_remote.repository
 
+import com.google.gson.Gson
 import com.marvelcomics.brito.data.remote.MarvelRemoteDataSource
 import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.datasource.mapper.CharacterMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
-import com.marvelcomics.brito.data_remote.extractFromWrapper
 import com.marvelcomics.brito.data_remote.getBodyOrThrow
 import com.marvelcomics.brito.data_remote.handleApi
+import com.marvelcomics.brito.data_remote.handleFlowApi
+import com.marvelcomics.brito.data_remote.models.ErrorBody
+import com.marvelcomics.brito.data_remote.treatByCode
+import com.marvelcomics.brito.domain.exception.ErrorBodyException
+import com.marvelcomics.brito.domain.exception.ErrorHandlingNullException
+import com.marvelcomics.brito.domain.exception.NetworkException
+import com.marvelcomics.brito.domain.exception.UnknownException
 import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.models.ComicDomain
 import com.marvelcomics.brito.domain.models.SeriesDomain
+import java.io.IOException
+import java.net.SocketException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
 
 class MarvelRemoteRepository(
     private val api: MarvelAPI,
@@ -22,18 +36,42 @@ class MarvelRemoteRepository(
     override suspend fun getCharacters(name: String): List<CharacterDomain> {
         return handleApi {
             characterMapper.transform(api.characters(name).getBodyOrThrow())
-        }.extractFromWrapper()
+        }
     }
 
     override suspend fun getComics(characterId: Int): List<ComicDomain> {
-        return handleApi {
-            comicMapper.transform(api.comics(characterId).getBodyOrThrow())
-        }.extractFromWrapper()
+        return handleApi(
+            callHandling = {
+                comicMapper.transform(api.comics(characterId).getBodyOrThrow())
+            },
+            errorHandling = { exception ->
+                with(exception) {
+                    throw when (this) {
+                        is ErrorBodyException -> {
+                            throw when (coraCode) {
+                                "SMB-1010" -> Exception("invalid code")
+                                else -> UnknownException(message)
+                            }
+                        }
+                        else -> this
+                    }
+                }
+            }
+        )
     }
 
     override suspend fun getSeries(characterId: Int): List<SeriesDomain> {
-        return handleApi {
-            seriesMapper.transform(api.series(characterId).getBodyOrThrow())
-        }.extractFromWrapper()
+        return handleApi(
+            callHandling = {
+                seriesMapper.transform(api.series(characterId).getBodyOrThrow())
+            },
+            errorHandling = { exception ->
+                val mappedCodes = hashMapOf(
+                    Pair("SMB-1010", Exception("invalid password")),
+                    Pair("SMB-0001", Exception("locked password")),
+                    Pair("SMB-8594", Exception("insuficient balance"))
+                )
+                exception.treatByCode(mappedCodes)
+            })
     }
 }

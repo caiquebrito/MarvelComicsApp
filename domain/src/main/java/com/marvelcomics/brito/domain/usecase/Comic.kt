@@ -12,7 +12,7 @@ class Comic(
 
     override suspend fun performAction(param: Int?): Result<List<ComicDomain>> {
         return param?.let {
-            marvelRepository.getComics(it).toCoroutineResult()
+            marvelRepository.getComics(it).resultFromNullable()
         } ?: throw EmptyInputException()
     }
 }

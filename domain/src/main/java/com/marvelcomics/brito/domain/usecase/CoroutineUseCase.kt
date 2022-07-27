@@ -44,6 +44,6 @@ fun <TResultModel> CoroutineUseCase.Result<TResultModel>.onFailure(callback: (Th
         return this
     }
 
-fun <TResultModel> TResultModel.toCoroutineResult(): CoroutineUseCase.Result<TResultModel> {
+fun <TResultModel> TResultModel.resultFromNullable(): CoroutineUseCase.Result<TResultModel> {
     return CoroutineUseCase.Result.fromNullable(this)
 }

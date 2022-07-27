@@ -12,7 +12,7 @@ class Character(
 
     override suspend fun performAction(param: String?): Result<CharacterDomain> {
         return param?.let {
-            marvelRepository.getCharacters(it).first().toCoroutineResult()
+            marvelRepository.getCharacters(it).first().resultFromNullable()
         } ?: throw EmptyInputException()
     }
 }

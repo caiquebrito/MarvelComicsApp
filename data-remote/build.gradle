@@ -7,6 +7,7 @@ dependencies {
     implementation project(path: ':data')
 
     implementation jetbrainsDependencies.stdlib
+    implementation jetbrainsDependencies.core
 
     implementation customLibDependencies.retrofit
     implementation customLibDependencies.retrofitGson
