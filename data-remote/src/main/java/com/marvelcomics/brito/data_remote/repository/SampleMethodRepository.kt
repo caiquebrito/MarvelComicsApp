@@ -31,7 +31,7 @@ class SampleMethodRepository(
     override suspend fun secondMethod(characterId: Int): List<ComicDomain> {
         return handleApi(
             callHandling = {
-                comicMapper.transform(api.comics(characterId))
+                comicMapper.transform(api.comics(characterId).getBodyOrThrow())
             },
             errorHandling = { exception ->
                 with(exception) {

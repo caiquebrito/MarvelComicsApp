@@ -2,6 +2,7 @@ package com.marvelcomics.brito.data_remote
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.marvelcomics.brito.domain.exception.NetworkException
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -77,7 +78,6 @@ fun <T> Throwable.handledByCommon(): T {
 }
 
 class NullBodyException : Exception()
-class NetworkException : Exception()
 class ErrorHandlingNullException : Exception()
 class ErrorBodyException(
     val httpCode: Int,

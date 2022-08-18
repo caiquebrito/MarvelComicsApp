@@ -30,7 +30,7 @@ class MarvelRemoteRepository(
     override suspend fun getComics(characterId: Int): List<ComicDomain> {
         return handleApi(
             callHandling = {
-                comicMapper.transform(api.comics(characterId))
+                comicMapper.transform(api.comics(characterId).getBodyOrThrow())
             },
             errorHandling = { exception ->
                 with(exception) {
