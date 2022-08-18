@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply from: '../dependencies.gradle'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     signingConfigs {
         debug {
@@ -18,8 +18,8 @@ android {
 
     defaultConfig {
         applicationId "com.marvelcomics.brito.marvelcomics"
-        minSdkVersion 21
-        targetSdkVersion 31
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
