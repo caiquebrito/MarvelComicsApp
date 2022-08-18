@@ -3,11 +3,12 @@
 buildscript {
     ext.kotlin_version = '1.7.0'
     ext.ktlint_version = '9.2.1'
-    ext.detekt_version = '1.9.1'
+    ext.detekt_version = '1.17.0-RC3'
     ext.gradle_version = '7.2.1'
     repositories {
         google()
         mavenCentral()
+        jcenter()
         maven { url 'https://jitpack.io' }
     }
     dependencies {
@@ -19,7 +20,7 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.2.0"
+    id "io.gitlab.arturbosch.detekt" version "$detekt_version"
     id "com.github.ben-manes.versions" version "0.27.0"
 }
 
@@ -30,11 +31,12 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter()
         maven { url 'https://jitpack.io' }
     }
 
     ktlint {
-        version = "0.37.2"
+        version = "0.40.0"
         outputToConsole = true
         outputColorName = "RED"
         ignoreFailures = false

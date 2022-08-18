@@ -5,6 +5,6 @@ sealed class ComicScreenState {
     object Loading : ComicScreenState()
     object Empty : ComicScreenState()
     object Idle : ComicScreenState()
-    class Success(val `data`: Any) : ComicScreenState()
+    class Success(val data: Any) : ComicScreenState()
     class Error(val exception: Throwable) : ComicScreenState()
 }

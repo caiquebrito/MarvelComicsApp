@@ -5,6 +5,6 @@ sealed class SeriesScreenState {
     object Loading : SeriesScreenState()
     object Empty : SeriesScreenState()
     object Idle : SeriesScreenState()
-    class Success(val `data`: Any) : SeriesScreenState()
+    class Success(val data: Any) : SeriesScreenState()
     class Error(val exception: Throwable) : SeriesScreenState()
 }

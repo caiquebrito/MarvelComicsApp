@@ -9,5 +9,4 @@ detekt {
             "infrastructure/src",
             "presentation/src"
     )
-    filters = ".*build.*,.*/resources/.*,.*/tmp/.*"
 }
