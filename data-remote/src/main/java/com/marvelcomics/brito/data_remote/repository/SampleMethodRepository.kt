@@ -74,5 +74,6 @@ class SampleMethodRepository(
                 exception.handledByCommon()
             }
         )
+        // this method and first method will do exactly the same
     }
 }
