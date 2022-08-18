@@ -1,7 +1,7 @@
-package com.marvelcomics.brito.view.mapper
+package com.marvelcomics.brito.view.legacy.mapper
 
 import com.marvelcomics.brito.domain.models.ThumbnailDomain
-import com.marvelcomics.brito.view.models.ThumbnailEntity
+import com.marvelcomics.brito.view.legacy.models.ThumbnailEntity
 
 class ThumbnailViewMapper : Mapper<ThumbnailEntity, ThumbnailDomain> {
 

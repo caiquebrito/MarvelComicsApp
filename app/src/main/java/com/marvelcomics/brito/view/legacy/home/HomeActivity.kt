@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.home
+package com.marvelcomics.brito.view.legacy.home
 
 import android.os.Bundle
 import android.view.View
@@ -15,11 +15,11 @@ import com.marvelcomics.brito.presentation.character.CharacterInteraction
 import com.marvelcomics.brito.presentation.character.CharacterScreenState
 import com.marvelcomics.brito.presentation.character.CharacterViewModel
 import com.marvelcomics.brito.replaceFragment
-import com.marvelcomics.brito.view.extensions.viewBinding
-import com.marvelcomics.brito.view.home.fragment.character.CharacterFragment
-import com.marvelcomics.brito.view.home.fragment.comics.ComicsFragment
-import com.marvelcomics.brito.view.home.fragment.series.SeriesFragment
-import com.marvelcomics.brito.view.mapper.CharacterViewMapper
+import com.marvelcomics.brito.view.legacy.extensions.viewBinding
+import com.marvelcomics.brito.view.legacy.home.fragment.character.CharacterFragment
+import com.marvelcomics.brito.view.legacy.home.fragment.comics.ComicsFragment
+import com.marvelcomics.brito.view.legacy.home.fragment.series.SeriesFragment
+import com.marvelcomics.brito.view.legacy.mapper.CharacterViewMapper
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel

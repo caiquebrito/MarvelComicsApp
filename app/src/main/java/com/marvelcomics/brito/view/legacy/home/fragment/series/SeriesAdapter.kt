@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.home.fragment.series
+package com.marvelcomics.brito.view.legacy.home.fragment.series
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.domain.models.SeriesDomain
-import com.marvelcomics.brito.view.models.MarvelThumbnailAspectRatio
+import com.marvelcomics.brito.view.legacy.models.MarvelThumbnailAspectRatio
 
 class SeriesAdapter(private val series: List<SeriesDomain>) :
     RecyclerView.Adapter<SeriesAdapter.ViewHolder?>() {

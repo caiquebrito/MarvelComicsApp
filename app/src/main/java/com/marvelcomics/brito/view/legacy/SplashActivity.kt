@@ -1,11 +1,11 @@
-package com.marvelcomics.brito.view
+package com.marvelcomics.brito.view.legacy
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.marvelcomics.brito.databinding.ActivitySplashBinding
-import com.marvelcomics.brito.view.extensions.viewBinding
-import com.marvelcomics.brito.view.home.HomeActivity
+import com.marvelcomics.brito.view.legacy.extensions.viewBinding
+import com.marvelcomics.brito.view.legacy.home.HomeActivity
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

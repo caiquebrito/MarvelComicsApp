@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.home.fragment.comics
+package com.marvelcomics.brito.view.legacy.home.fragment.comics
 
 import android.os.Bundle
 import android.view.View
@@ -13,9 +13,9 @@ import com.marvelcomics.brito.domain.models.ComicDomain
 import com.marvelcomics.brito.presentation.comic.ComicInteraction
 import com.marvelcomics.brito.presentation.comic.ComicScreenState
 import com.marvelcomics.brito.presentation.comic.ComicViewModel
-import com.marvelcomics.brito.view.extensions.AlertDialogUtils
-import com.marvelcomics.brito.view.extensions.viewBinding
-import com.marvelcomics.brito.view.home.fragment.ItemOffSetDecorationHorizontal
+import com.marvelcomics.brito.view.legacy.extensions.AlertDialogUtils
+import com.marvelcomics.brito.view.legacy.extensions.viewBinding
+import com.marvelcomics.brito.view.legacy.home.fragment.ItemOffSetDecorationHorizontal
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject

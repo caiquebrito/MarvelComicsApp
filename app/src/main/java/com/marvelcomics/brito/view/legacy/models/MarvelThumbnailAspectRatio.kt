@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.models
+package com.marvelcomics.brito.view.legacy.models
 
 class MarvelThumbnailAspectRatio {
     // resolution at https://developer.marvel.com/documentation/images

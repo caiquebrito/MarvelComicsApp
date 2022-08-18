@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.extensions
+package com.marvelcomics.brito.view.legacy.extensions
 
 import android.view.LayoutInflater
 import android.view.View

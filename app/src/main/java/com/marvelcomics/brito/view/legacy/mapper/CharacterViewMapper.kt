@@ -1,7 +1,7 @@
-package com.marvelcomics.brito.view.mapper
+package com.marvelcomics.brito.view.legacy.mapper
 
 import com.marvelcomics.brito.domain.models.CharacterDomain
-import com.marvelcomics.brito.view.models.CharacterEntity
+import com.marvelcomics.brito.view.legacy.models.CharacterEntity
 
 class CharacterViewMapper : Mapper<CharacterEntity, CharacterDomain> {
 

@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.extensions
+package com.marvelcomics.brito.view.legacy.extensions
 
 import android.app.AlertDialog
 import android.content.Context

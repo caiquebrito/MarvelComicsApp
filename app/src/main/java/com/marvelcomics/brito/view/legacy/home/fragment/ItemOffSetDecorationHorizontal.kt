@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.home.fragment
+package com.marvelcomics.brito.view.legacy.home.fragment
 
 import android.graphics.Rect
 import android.view.View

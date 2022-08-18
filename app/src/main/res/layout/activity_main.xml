@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@drawable/background_strip_line"
-    tools:context=".view.home.HomeActivity">
+    tools:context=".view.legacy.home.HomeActivity">
 
     <VideoView
         android:layout_width="match_parent"

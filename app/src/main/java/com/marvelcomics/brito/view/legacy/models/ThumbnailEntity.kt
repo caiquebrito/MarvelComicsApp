@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.models
+package com.marvelcomics.brito.view.legacy.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.home.fragment.character
+package com.marvelcomics.brito.view.legacy.home.fragment.character
 
 import android.os.Bundle
 import android.view.View
@@ -7,9 +7,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.databinding.FragmentCharacterBinding
-import com.marvelcomics.brito.view.extensions.viewBinding
-import com.marvelcomics.brito.view.models.CharacterEntity
-import com.marvelcomics.brito.view.models.MarvelThumbnailAspectRatio
+import com.marvelcomics.brito.view.legacy.extensions.viewBinding
+import com.marvelcomics.brito.view.legacy.models.CharacterEntity
+import com.marvelcomics.brito.view.legacy.models.MarvelThumbnailAspectRatio
 
 class CharacterFragment : Fragment(R.layout.fragment_character) {
 
