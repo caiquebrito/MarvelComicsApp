@@ -69,7 +69,7 @@ dependencies {
     implementation customLibDependencies.canarinho
     //Glide
     implementation customLibDependencies.glide
-    annotationProcessor annotationProcessor.glide
+    kapt kaptProcessor.glide
     //Kotlin
     implementation jetbrainsDependencies.stdlib
     implementation jetbrainsDependencies.core
