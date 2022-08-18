@@ -8,7 +8,6 @@ import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
 import com.marvelcomics.brito.data_remote.getBodyOrThrow
 import com.marvelcomics.brito.data_remote.handleApi
-import com.marvelcomics.brito.data_remote.handledByCommon
 import com.marvelcomics.brito.data_remote.treatByCode
 import com.marvelcomics.brito.domain.exception.UnknownException
 import com.marvelcomics.brito.domain.models.CharacterDomain
@@ -61,6 +60,7 @@ class MarvelRemoteRepository(
                     Pair("SMB-8594", Exception("insuficient balance"))
                 )
                 exception.treatByCode(mappedCodes)
-            })
+            }
+        )
     }
 }

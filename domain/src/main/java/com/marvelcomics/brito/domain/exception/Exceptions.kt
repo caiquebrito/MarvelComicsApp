@@ -1,7 +1,5 @@
 package com.marvelcomics.brito.domain.exception
 
-import kotlin.Exception
-
 class EmptyInputException : Throwable()
 class InvalidTransactionCodeException : Throwable()
 class LockedTransactionCodeException : Throwable()

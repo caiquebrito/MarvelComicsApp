@@ -61,7 +61,8 @@ class SampleMethodRepository(
                     Pair("SMB-8594", Exception("insuficient balance"))
                 )
                 exception.treatByCode(mappedCodes)
-            })
+            }
+        )
     }
 
     override suspend fun fourthMethod(characterId: Int): List<SeriesDomain> {
@@ -71,6 +72,7 @@ class SampleMethodRepository(
             },
             errorHandling = { exception ->
                 exception.handledByCommon()
-            })
+            }
+        )
     }
 }
