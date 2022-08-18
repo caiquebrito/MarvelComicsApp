@@ -6,6 +6,7 @@ dependencies {
     implementation project(path: ':domain')
 
     implementation jetbrainsDependencies.stdlib
+    implementation jetbrainsDependencies.core
 
     testImplementation testDependencies.junit
 }

@@ -1,6 +1,6 @@
 package com.marvelcomics.brito.data_remote.repository
 
-import com.marvelcomics.brito.data.remote.MarvelRemoteDataSource
+import com.marvelcomics.brito.data.remote.HandlerSample
 import com.marvelcomics.brito.data_remote.ErrorBodyException
 import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.datasource.mapper.CharacterMapper
@@ -8,26 +8,27 @@ import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
 import com.marvelcomics.brito.data_remote.getBodyOrThrow
 import com.marvelcomics.brito.data_remote.handleApi
+import com.marvelcomics.brito.data_remote.handledByCommon
 import com.marvelcomics.brito.data_remote.treatByCode
 import com.marvelcomics.brito.domain.exception.UnknownException
 import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.models.ComicDomain
 import com.marvelcomics.brito.domain.models.SeriesDomain
 
-class MarvelRemoteRepository(
+class SampleMethodRepository(
     private val api: MarvelAPI,
     private val characterMapper: CharacterMapper,
     private val comicMapper: ComicMapper,
     private val seriesMapper: SeriesMapper
-) : MarvelRemoteDataSource {
+) : HandlerSample {
 
-    override suspend fun getCharacters(name: String): List<CharacterDomain> {
+    override suspend fun firstMethod(name: String): List<CharacterDomain> {
         return handleApi {
             characterMapper.transform(api.characters(name).getBodyOrThrow())
         }
     }
 
-    override suspend fun getComics(characterId: Int): List<ComicDomain> {
+    override suspend fun secondMethod(characterId: Int): List<ComicDomain> {
         return handleApi(
             callHandling = {
                 comicMapper.transform(api.comics(characterId))
@@ -48,7 +49,7 @@ class MarvelRemoteRepository(
         )
     }
 
-    override suspend fun getSeries(characterId: Int): List<SeriesDomain> {
+    override suspend fun thirdMethod(characterId: Int): List<SeriesDomain> {
         return handleApi(
             callHandling = {
                 seriesMapper.transform(api.series(characterId).getBodyOrThrow())
@@ -62,5 +63,17 @@ class MarvelRemoteRepository(
                 exception.treatByCode(mappedCodes)
             }
         )
+    }
+
+    override suspend fun fourthMethod(characterId: Int): List<SeriesDomain> {
+        return handleApi(
+            callHandling = {
+                seriesMapper.transform(api.series(characterId).getBodyOrThrow())
+            },
+            errorHandling = { exception ->
+                exception.handledByCommon()
+            }
+        )
+        // this method and first method will do exactly the same
     }
 }
