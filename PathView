@@ -1,0 +1,81 @@
+class PathView(context: Context, vararg views: AppCompatImageView) : View(context) {
+
+    private var paint: Paint = Paint()
+    private var path: Path = Path()
+    var length: Float = 0.toFloat()
+    private val animDuration = 1000L
+
+    init {
+        paint.style = Paint.Style.STROKE
+        paint.isAntiAlias = true
+        paint.color = ContextCompat.getColor(context, R.color.darkish_pink)
+        paint.strokeWidth = 5f
+
+        if (views.isNotEmpty() && views.size > 1) {
+            drawPathTo(path, views[0])
+            for (i in views.indices) {
+                if (i + 1 == views.size) {
+                    break
+                } else {
+                    drawCubicTo(path, views[i], views[i + 1])
+                }
+            }
+        }
+
+        val measure = PathMeasure(path, false)
+        length = measure.length
+
+        val animator = ObjectAnimator.ofFloat(this@PathView, "phase", 1.0f, 0.0f)
+        animator.duration = animDuration
+        animator.start()
+
+        for (view in views) {
+            view.animate().apply {
+                scaleX(1.0f)
+                scaleY(1.0f)
+                duration = 500L
+                start()
+            }
+        }
+
+        bringViewToFront(views)
+    }
+
+    private fun bringViewToFront(views: Array<out AppCompatImageView>) {
+        Handler().postDelayed({
+            views[views.size - 1].setVectorBackground(R.drawable.ic_bullet_on)
+            for (view in views) {
+                view.bringToFront()
+            }
+        }, 950L)
+    }
+
+    private fun drawPathTo(path: Path, view: View) {
+        val x1 = view.x + view.width / 2
+        val y1 = view.y + view.height / 2
+        path.moveTo(x1, y1)
+    }
+
+    private fun drawCubicTo(path: Path, init: View, final: View) {
+        val x1 = init.x + init.width / 2
+        val y1 = init.y + init.height / 2
+        val x2 = final.x + final.width / 2
+        val y2 = final.y + final.height / 2
+        path.cubicTo((x1 + x2) / 2, y1, (x1 + x2) / 2, y2, x2, y2)
+    }
+
+    //will be called from propertyName "phase"
+    fun setPhase(phase: Float) {
+        paint.pathEffect = createPathEffect(length, phase, 0.0f)
+        invalidate()
+    }
+
+    private fun createPathEffect(pathLength: Float, phase: Float, offset: Float): PathEffect {
+        return DashPathEffect(floatArrayOf(pathLength, pathLength), max(phase * pathLength, offset))
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        canvas.drawPath(path, paint)
+    }
+}
