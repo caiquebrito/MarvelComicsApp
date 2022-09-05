@@ -20,7 +20,7 @@
         android:layout_height="50dp"
         android:contentDescription="@null"
         android:scaleType="fitXY"
-        android:src="@drawable/marvel_logo"
+        android:src="@drawable/ic_marvel_logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

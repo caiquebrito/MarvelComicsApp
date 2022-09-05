@@ -14,7 +14,6 @@ ext {
             permissionsDispatcher  : "com.github.permissions-dispatcher:permissionsdispatcher:4.9.1",
             viewpagerDots          : "com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2",
             glide                  : "com.github.bumptech.glide:glide:4.11.0",
-            coilCompose            : "implementation 'io.coil-kt:coil-compose:1.4.0'"
     ]
     androidDependencies = [
             appcompat          : "androidx.appcompat:appcompat:1.4.1",
@@ -40,7 +39,8 @@ ext {
             foundation      : "androidx.compose.foundation:foundation:1.0.5",
             material        : "androidx.compose.material:material:1.0.5",
             uiTooling       : "androidx.compose.ui:ui-tooling:1.0.5",
-            constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01"
+            constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.1",
+            coilCompose     : "io.coil-kt:coil-compose:2.2.0"
     ]
     googleDependencies = [
             playServicesBase     : "com.google.android.gms:play-services-base:17.0.0",

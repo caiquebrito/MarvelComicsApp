@@ -46,7 +46,7 @@ fun <T> Exception.treatByCode(
                 throw if (mapCode.containsKey(mappedCode)) {
                     mapCode[mappedCode]!!
                 } else {
-                    Exception()
+                    this
                 }
             }
             else -> this
@@ -56,10 +56,6 @@ fun <T> Exception.treatByCode(
 
 fun <T> Throwable.handledByCommon(): T {
     throw when (this) {
-        is IOException,
-        is UnknownHostException,
-        is SocketException,
-        is SocketTimeoutException -> NetworkException()
         is HttpException -> {
             val httpCode = this.code()
             val errorBody = this.response()?.errorBody()?.string()
@@ -72,7 +68,7 @@ fun <T> Throwable.handledByCommon(): T {
             ErrorBodyException(httpCode, coraCode, message, this)
         }
         else -> {
-            Exception(this)
+            this
         }
     }
 }

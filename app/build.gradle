@@ -37,13 +37,24 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = '1.8'
     }
+
 
     viewBinding {
         enabled = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 
@@ -61,6 +72,15 @@ dependencies {
     implementation androidDependencies.constraintLayout
     implementation androidDependencies.lifecycleCommon
 
+    // Compose
+    implementation composeDependencies.foundation
+    implementation composeDependencies.material
+    implementation composeDependencies.uiTooling
+    implementation composeDependencies.constraintLayout
+
+    // Coil
+    implementation composeDependencies.coilCompose
+
     //Koin
     implementation customLibDependencies.koinAndroid
     //OkHttp
@@ -69,6 +89,12 @@ dependencies {
     implementation customLibDependencies.canarinho
     //Glide
     implementation customLibDependencies.glide
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha01'
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.activity:activity-compose:1.3.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
     kapt kaptProcessor.glide
     //Kotlin
     implementation jetbrainsDependencies.stdlib

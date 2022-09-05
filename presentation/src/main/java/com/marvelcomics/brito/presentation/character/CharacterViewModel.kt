@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
-@InternalCoroutinesApi
 class CharacterViewModel(
     private val character: Character,
     private val loadLastCharacter: LoadLastCharacter,

@@ -2,15 +2,18 @@
 
 buildscript {
 
-    ext.compileSdkVersion = 32
-    ext.minSdkVersion = 21
-    ext.targetSdkVersion = 32
-    ext.buildToolsVersion = "30.0.3"
+    ext {
+        compose_version = '1.2.0'
+        compileSdkVersion = 32
+        minSdkVersion = 21
+        targetSdkVersion = 32
+        buildToolsVersion = "30.0.3"
+        kotlin_version = '1.7.0'
+        ktlint_version = '9.2.1'
+        detekt_version = '1.17.0-RC3'
+        gradle_version = '7.2.1'
+    }
 
-    ext.kotlin_version = '1.7.0'
-    ext.ktlint_version = '9.2.1'
-    ext.detekt_version = '1.17.0-RC3'
-    ext.gradle_version = '7.2.1'
     repositories {
         google()
         mavenCentral()
@@ -28,6 +31,7 @@ buildscript {
 plugins {
     id "io.gitlab.arturbosch.detekt" version "$detekt_version"
     id "com.github.ben-manes.versions" version "0.27.0"
+    id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
 }
 
 allprojects {
