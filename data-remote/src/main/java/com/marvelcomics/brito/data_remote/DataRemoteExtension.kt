@@ -2,13 +2,8 @@ package com.marvelcomics.brito.data_remote
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.marvelcomics.brito.domain.exception.NetworkException
 import retrofit2.HttpException
 import retrofit2.Response
-import java.io.IOException
-import java.net.SocketException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 suspend fun <T> handleApi(
     errorHandling: ((errorBodyException: Exception) -> T)? = null,

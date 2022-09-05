@@ -17,6 +17,4 @@ fun RoundedCornerShapeButBottomLeftSquared(
     backgroundColor: Color
 ) {
     val shape = RoundedCornerShape(16.dp)
-
-
 }
