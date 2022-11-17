@@ -5,18 +5,18 @@ import com.google.gson.annotations.SerializedName
 import retrofit2.HttpException
 import retrofit2.Response
 
-suspend fun <T> handleApi(
-    errorHandling: ((errorBodyException: Exception) -> T)? = null,
-    callHandling: suspend () -> T,
+inline fun <reified T> handleApi(
+    noinline errorHandling: ((throwable: Throwable) -> T)? = null,
+    callHandling: () -> T,
 ): T {
     return try {
         callHandling.invoke()
     } catch (throwable: Throwable) {
-        errorHandling?.invoke(Exception(throwable)) ?: throwable.handledByCommon()
+        errorHandling?.invoke(throwable) ?: throwable.handledByCommon()
     } ?: throw ErrorHandlingNullException()
 }
 
-fun <T> Response<T>.getBodyOrThrow(): T {
+inline fun <reified T> Response<T>.getBodyOrThrow(): T {
     try {
         if (this.isSuccessful) {
             body()?.let { body ->
@@ -32,24 +32,22 @@ fun <T> Response<T>.getBodyOrThrow(): T {
     }
 }
 
-fun <T> Exception.treatByCode(
+inline fun <reified T> Throwable.handleByCode(
     mapCode: HashMap<String, Exception>
 ): T {
-    with(this) {
-        throw when (this) {
-            is ErrorBodyException -> {
-                throw if (mapCode.containsKey(mappedCode)) {
-                    mapCode[mappedCode]!!
-                } else {
-                    this
-                }
+    throw when (this) {
+        is ErrorBodyException -> {
+            throw if (mapCode.containsKey(mappedCode)) {
+                mapCode[mappedCode]!!
+            } else {
+                this
             }
-            else -> this
         }
+        else -> this
     }
 }
 
-fun <T> Throwable.handledByCommon(): T {
+inline fun <reified T> Throwable.handledByCommon(): T {
     throw when (this) {
         is HttpException -> {
             val httpCode = this.code()

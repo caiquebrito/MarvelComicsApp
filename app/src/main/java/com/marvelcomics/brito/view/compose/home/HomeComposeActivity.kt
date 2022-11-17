@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -26,9 +31,15 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.marvelcomics.brito.R
 import com.marvelcomics.brito.presentation.character.CharacterViewModel
 import com.marvelcomics.brito.view.compose.theme.Black
@@ -36,113 +47,229 @@ import com.marvelcomics.brito.view.compose.theme.MarvelComicsAppPreview
 import com.marvelcomics.brito.view.compose.theme.MarvelComicsAppTheme
 import com.marvelcomics.brito.view.compose.theme.Typography
 import com.marvelcomics.brito.view.compose.theme.White
+import com.marvelcomics.brito.view.compose.theme.White60
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeComposeActivity : ComponentActivity() {
 
     private val characterViewModel: CharacterViewModel by viewModel()
 
+    private val listHeroes = listOf(
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        )
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MarvelComicsAppTheme {
-                HomeScreen()
+                HomeScreenConstraint(listHeroes)
             }
         }
     }
 }
 
+class MockObjectHeroes(val backgroundResource: Int, val heroeTitle: String, val heroeName: String)
+
 @Composable
-fun HomeScreen() {
+fun HomeScreenConstraint(listHeroes: List<MockObjectHeroes>) {
     HomeBackgroundComponent {
-        Column {
-            Surface(
-                color = Color.Transparent,
+        ConstraintLayout(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val startGuideline = createGuidelineFromStart(0.1f)
+            val endGuideline = createGuidelineFromEnd(0.1f)
+            val topDivGuideline = createGuidelineFromTop(0.4f)
+
+            val (toolbar, headerContent, bodyContent) = createRefs()
+            HomeToolbarComponent(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.4f)
+                    .wrapContentHeight()
+                    .padding(top = 16.dp)
+                    .constrainAs(toolbar) {
+                        top.linkTo(parent.top)
+                        start.linkTo(startGuideline)
+                        end.linkTo(endGuideline)
+                    }
+            )
+            HomeHeaderComponent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(headerContent) {
+                        linkTo(top = toolbar.bottom, bottom = topDivGuideline)
+                    }
+            )
+            TopSquaredComponent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(bodyContent) {
+                        linkTo(top = topDivGuideline, bottom = parent.bottom)
+                        height = Dimension.fillToConstraints
+                    }
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    verticalArrangement = Arrangement.Center
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
-                    HomeToolbarComponent()
-                    HomeHeaderComponent(
-                        modifier = Modifier.weight(1f)
-                    )
+                    items(listHeroes) { item ->
+                        HeroesCardComponent(
+                            modifier = Modifier,
+                            backgroundResource = item.backgroundResource,
+                            heroesTitle = item.heroeTitle,
+                            heroesName = item.heroeName
+                        )
+                    }
                 }
             }
-            Surface(
-                color = White,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(1f)
-                    .alpha(0.6f),
-                shape = AbsoluteRoundedCornerShape(
-                    topLeftPercent = 4,
-                    topRightPercent = 4,
-                    bottomLeftPercent = 0,
-                    bottomRightPercent = 0
-                )
-            ) {
-                HomeBodyComponent()
-            }
         }
     }
 }
 
 @Composable
-fun HomeHeaderComponent(modifier: Modifier) {
+fun HeroesCardComponent(
+    modifier: Modifier,
+    backgroundResource: Int,
+    heroesTitle: String,
+    heroesName: String
+) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(start = 16.dp, end = 16.dp)
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Marvel Characters",
-            style = MaterialTheme.typography.h4,
-            textAlign = TextAlign.Center,
-            color = White
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Get hooked on a hearty helping of heroes and villains form the humble House of Ideas!",
-            style = Typography.bodySmall,
-            textAlign = TextAlign.Center,
-            color = White
-        )
-    }
-}
+        RoundedSquareBottomFlatComponent(
+            modifier = Modifier
+                .height(250.dp)
+                .width(130.dp)
+        ) {
+            ConstraintLayout {
+                val startGuideline = createGuidelineFromStart(0.05f)
+                val endGuideline = createGuidelineFromEnd(0.05f)
+                val bottomGuideline = createGuidelineFromBottom(0.04f)
+                val centerVerticalGuideline = createGuidelineFromTop(0.5f)
 
-@Composable
-fun HomeToolbarComponent() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_marvel_logo),
-            contentDescription = null,
-            modifier = Modifier
-                .height(50.dp)
-                .width(100.dp)
-                .align(Alignment.Center),
-        )
-        Image(
-            painter = painterResource(id = R.drawable.ic_search),
-            contentDescription = null,
-            modifier = Modifier
-                .height(40.dp)
-                .width(40.dp)
-                .align(Alignment.CenterEnd)
-                .padding(end = 16.dp)
-        )
+                val (centerDiv, tooltip, backgroundHeroes, title, name) = createRefs()
+
+                Image(
+                    painter = painterResource(id = backgroundResource),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(backgroundHeroes) {
+                            linkTo(top = parent.top, bottom = centerDiv.top)
+                            height = Dimension.fillToConstraints
+                        }
+                )
+
+                Surface(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(top = 4.dp)
+                        .constrainAs(tooltip) {
+                            linkTo(start = startGuideline, end = endGuideline)
+                        },
+                    color = Black,
+                    shape = CutCornerShape(
+                        topStart = 8.dp,
+                        topEnd = 0.dp,
+                        bottomEnd = 8.dp,
+                        bottomStart = 0.dp
+                    )
+                ) {
+                    Text(
+                        modifier = Modifier.padding(
+                            top = 4.dp,
+                            bottom = 4.dp,
+                            start = 16.dp,
+                            end = 16.dp
+                        ),
+                        text = "MOVIES",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Default,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 6.sp,
+                            letterSpacing = 0.5.sp
+                        ),
+                        textAlign = TextAlign.Center,
+                        color = White
+                    )
+                }
+                Spacer(modifier = Modifier
+                    .height(5.dp)
+                    .fillMaxWidth()
+                    .background(color = Color.Red)
+                    .constrainAs(centerDiv) {
+                        linkTo(
+                            top = centerVerticalGuideline,
+                            bottom = centerVerticalGuideline
+                        )
+                    })
+                Text(
+                    text = heroesTitle,
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .constrainAs(title) {
+                            start.linkTo(startGuideline)
+                            top.linkTo(centerDiv.bottom)
+                            end.linkTo(endGuideline)
+                            width = Dimension.fillToConstraints
+                        },
+                    textAlign = TextAlign.Start,
+                    style = TextStyle(
+                        fontFamily = FontFamily.Default,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 16.sp,
+                        letterSpacing = 0.5.sp
+                    ),
+                    color = White,
+                )
+                Text(
+                    text = heroesName,
+                    modifier = Modifier
+                        .constrainAs(name) {
+                            start.linkTo(startGuideline)
+                            bottom.linkTo(bottomGuideline)
+                        },
+                    textAlign = TextAlign.Start,
+                    style = TextStyle(
+                        fontFamily = FontFamily.Default,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 10.sp,
+                        letterSpacing = 0.5.sp
+                    ),
+                    color = White
+                )
+            }
+        }
     }
 }
 
@@ -167,54 +294,120 @@ fun HomeBackgroundComponent(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun HomeBodyComponent() {
-}
-
-@Composable
-fun HomeHeroesCardComponent() {
-    Surface(
-        color = Color.Transparent,
-        modifier = Modifier.fillMaxSize()
+fun HomeToolbarComponent(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
     ) {
-        Surface(
-            color = Black,
+        Image(
+            painter = painterResource(id = R.drawable.ic_marvel_logo),
+            contentDescription = null,
             modifier = Modifier
-                .fillMaxHeight(
-                    1f
-                )
-                .padding(
-                    start = 20.dp,
-                    top = 40.dp,
-                    end = 20.dp,
-                    bottom = 40.dp
-                ),
-            shape = AbsoluteRoundedCornerShape(
-                topLeftPercent = 20,
-                topRightPercent = 20,
-                bottomLeftPercent = 0,
-                bottomRightPercent = 20
-            )
-        ) {
-            Text(
-                text = "Wrapped content",
-                style = MaterialTheme.typography.h2
-            )
-        }
+                .height(50.dp)
+                .width(100.dp)
+                .align(Alignment.Center),
+        )
+        Image(
+            painter = painterResource(id = R.drawable.ic_search),
+            contentDescription = null,
+            modifier = Modifier
+                .height(40.dp)
+                .width(40.dp)
+                .align(Alignment.CenterEnd)
+                .padding(end = 16.dp)
+        )
     }
+}
+
+@Composable
+fun HomeHeaderComponent(modifier: Modifier) {
+    Column(
+        modifier = modifier
+            .padding(start = 16.dp, end = 16.dp)
+    ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Marvel Characters",
+            style = MaterialTheme.typography.h4,
+            textAlign = TextAlign.Center,
+            color = White
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Get hooked on a hearty helping of heroes and villains form the humble House of Ideas!",
+            style = Typography.bodySmall,
+            textAlign = TextAlign.Center,
+            color = White
+        )
+    }
+}
+
+@Composable
+fun TopSquaredComponent(modifier: Modifier, innerContent: @Composable () -> Unit) {
+    Surface(
+        color = White60,
+        modifier = modifier,
+        shape = AbsoluteRoundedCornerShape(
+            topLeftPercent = 4,
+            topRightPercent = 4,
+            bottomLeftPercent = 0,
+            bottomRightPercent = 0
+        ),
+        content = innerContent
+    )
+}
+
+@Composable
+fun RoundedSquareBottomFlatComponent(modifier: Modifier, innerContent: @Composable () -> Unit) {
+    Surface(
+        color = Black,
+        modifier = modifier,
+        shape = AbsoluteRoundedCornerShape(
+            topLeftPercent = 16,
+            topRightPercent = 16,
+            bottomLeftPercent = 0,
+            bottomRightPercent = 16
+        ),
+        content = innerContent
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun HomeToolbarPreview() {
+fun HomeScreenConstraintPreview() {
+    val listHeroes = listOf(
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        ),
+        MockObjectHeroes(
+            R.drawable.captain_marvel,
+            "Captain Marvel",
+            "Carol Danvers"
+        )
+    )
     MarvelComicsAppPreview {
-        HomeToolbarComponent()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MarvelComicsAppTheme {
-        HomeScreen()
+        HomeScreenConstraint(listHeroes)
     }
 }
