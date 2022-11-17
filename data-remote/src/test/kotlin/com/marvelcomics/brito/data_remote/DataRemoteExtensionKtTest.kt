@@ -20,7 +20,7 @@ internal class DataRemoteExtensionKtTest {
 
     @Test(expected = NullBodyException::class)
     fun `GIVEN a success response body null WHEN the extension extractor is called THEN throw a error`() {
-        //just to match a Nullable object and respect reified rules
+        // just to match a Nullable object and respect reified rules
         val nullAny: Any? = null
         val response = Response.success(nullAny)
         response.getBodyOrThrow()
@@ -44,21 +44,24 @@ internal class DataRemoteExtensionKtTest {
     @Test
     fun `GIVEN a function call WHEN suspended function execute THEN throws itself`() {
         var throwable: Throwable? = null
-        handleApi(callHandling = {
-            throw Throwable()
-        }, errorHandling = {
-            throwable = it
-        })
+        handleApi(
+            callHandling = {
+                throw Throwable()
+            },
+            errorHandling = {
+                throwable = it
+            }
+        )
         assert(throwable != null) { "Should check throws call trigger" }
     }
 
     @Test(expected = ErrorBodyException::class)
     fun `GIVEN a function call WHEN the responseBody is error and is mapped THEN throws a mapped Exception`() {
         val jsonBody = "{\n" +
-                "\t\"http_status_code\": 400,\n" +
-                "\t\"message\": \"error mapped\",\n" +
-                "\t\"code\": \"SMB-0101\"\n" +
-                "}"
+            "\t\"http_status_code\": 400,\n" +
+            "\t\"message\": \"error mapped\",\n" +
+            "\t\"code\": \"SMB-0101\"\n" +
+            "}"
         val responseBody = ResponseBody.create(null, jsonBody)
         val response = Response.error<ResponseBody>(400, responseBody)
         handleApi {
@@ -69,10 +72,10 @@ internal class DataRemoteExtensionKtTest {
     @Test(expected = Exception::class)
     fun `GIVEN a function call WHEN the responseBody is error and is mapped THEN throws a mapped coded Exception`() {
         val jsonBody = "{\n" +
-                "\t\"http_status_code\": 400,\n" +
-                "\t\"message\": \"error mapped\",\n" +
-                "\t\"code\": \"SMB-0101\"\n" +
-                "}"
+            "\t\"http_status_code\": 400,\n" +
+            "\t\"message\": \"error mapped\",\n" +
+            "\t\"code\": \"SMB-0101\"\n" +
+            "}"
         val responseBody = ResponseBody.create(null, jsonBody)
         val response = Response.error<ResponseBody>(400, responseBody)
         handleApi(

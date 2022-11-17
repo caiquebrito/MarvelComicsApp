@@ -223,16 +223,18 @@ fun HeroesCardComponent(
                         color = White
                     )
                 }
-                Spacer(modifier = Modifier
-                    .height(5.dp)
-                    .fillMaxWidth()
-                    .background(color = Color.Red)
-                    .constrainAs(centerDiv) {
-                        linkTo(
-                            top = centerVerticalGuideline,
-                            bottom = centerVerticalGuideline
-                        )
-                    })
+                Spacer(
+                    modifier = Modifier
+                        .height(5.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Red)
+                        .constrainAs(centerDiv) {
+                            linkTo(
+                                top = centerVerticalGuideline,
+                                bottom = centerVerticalGuideline
+                            )
+                        }
+                )
                 Text(
                     text = heroesTitle,
                     modifier = Modifier
