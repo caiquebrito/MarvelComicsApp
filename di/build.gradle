@@ -45,6 +45,10 @@ dependencies {
     //Coroutines
     implementation jetbrainsDependencies.core
 
+    //Room
+    implementation("androidx.room:room-runtime:2.4.3")
+    annotationProcessor("androidx.room:room-compiler:2.4.3")
+
     //Koin
     implementation customLibDependencies.koinCore
     implementation customLibDependencies.koinAndroid

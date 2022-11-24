@@ -1,9 +1,11 @@
 package com.marvelcomics.brito.di
 
+import androidx.room.Room
 import com.marvelcomics.brito.data.local.MarvelLocalDataSource
 import com.marvelcomics.brito.data.remote.MarvelRemoteDataSource
 import com.marvelcomics.brito.data.repo.MarvelRepo
 import com.marvelcomics.brito.data_local.MarvelLocalRepository
+import com.marvelcomics.brito.data_local.room.AppDatabase
 import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.api.MarvelAPIImpl
 import com.marvelcomics.brito.data_remote.datasource.mapper.CharacterMapper
@@ -35,6 +37,7 @@ class MarvelModules {
     object Data {
         private val pubKey = "9294302a561e7a8a489807700c2b56a9"
         private val prvKey = "cfe96dfbecfd6158c4983507a65ee0edd1f99782"
+        private val databaseName = "marvel-database"
 
         object Interceptors {
             const val KEY_HASH = "KeyHashInterceptor"
@@ -55,10 +58,21 @@ class MarvelModules {
             }
         }
 
-        val repositories = module {
-            single<MarvelRemoteDataSource> { MarvelRemoteRepository(get(), get(), get(), get()) }
-            single<MarvelLocalDataSource> { MarvelLocalRepository(get()) }
-            single<MarvelRepository> { MarvelRepo(get(), get()) }
+        val database = module {
+            single {
+                Room.databaseBuilder(
+                    get(),
+                    AppDatabase::class.java,
+                    databaseName
+                ).build()
+            }
+        }
+
+        val mappers = module {
+            factory { ThumbnailMapper() }
+            factory { CharacterMapper(get()) }
+            factory { SeriesMapper(get()) }
+            factory { ComicMapper(get()) }
         }
 
         val api = module {
@@ -71,11 +85,10 @@ class MarvelModules {
             }
         }
 
-        val mappers = module {
-            factory { ThumbnailMapper() }
-            factory { CharacterMapper(get()) }
-            factory { SeriesMapper(get()) }
-            factory { ComicMapper(get()) }
+        val repositories = module {
+            single<MarvelRemoteDataSource> { MarvelRemoteRepository(get(), get(), get(), get()) }
+            single<MarvelLocalDataSource> { MarvelLocalRepository(get()) }
+            single<MarvelRepository> { MarvelRepo(get(), get()) }
         }
     }
 

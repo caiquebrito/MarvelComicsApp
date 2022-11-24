@@ -6,7 +6,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.drawable.shapes.Shape
 
-class CutCornerShape : Shape() {
+class CutCustomCornerShape : Shape() {
     private val border = Paint()
     private val path: Path = Path()
     override fun onResize(width: Float, height: Float) {
