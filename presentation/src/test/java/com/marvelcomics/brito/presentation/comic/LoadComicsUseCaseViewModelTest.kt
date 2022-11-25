@@ -2,8 +2,8 @@ package com.marvelcomics.brito.presentation.comic
 
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.models.ComicDomain
-import com.marvelcomics.brito.domain.usecase.Comic
 import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
+import com.marvelcomics.brito.domain.usecase.LoadComicsUseCase
 import com.marvelcomics.brito.presentation.BaseViewModelTest
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -18,7 +18,7 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class ComicViewModelTest : BaseViewModelTest() {
+class LoadComicsUseCaseViewModelTest : BaseViewModelTest() {
 
     @MockK
     lateinit var listComicsMock: List<ComicDomain>
@@ -27,7 +27,7 @@ class ComicViewModelTest : BaseViewModelTest() {
     lateinit var runtimeException: RuntimeException
 
     @MockK
-    lateinit var useCaseMock: Comic
+    lateinit var useCaseMock: LoadComicsUseCase
 
     @InjectMockKs
     lateinit var viewModel: ComicViewModel

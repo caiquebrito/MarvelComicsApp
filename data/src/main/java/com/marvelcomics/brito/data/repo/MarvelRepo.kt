@@ -13,15 +13,15 @@ class MarvelRepo(
 ) : MarvelRepository {
 
     override suspend fun getCharacters(name: String): List<CharacterDomain> {
-        return remote.getCharacters(name)
+        return remote.getCharactersByName(name)
     }
 
     override suspend fun getComics(characterId: Int): List<ComicDomain> {
-        return remote.getComics(characterId)
+        return remote.getComicsById(characterId)
     }
 
     override suspend fun getSeries(characterId: Int): List<SeriesDomain> {
-        return remote.getSeries(characterId)
+        return remote.getSeriesById(characterId)
     }
 
     override suspend fun getCharacterById(id: Int): CharacterDomain {

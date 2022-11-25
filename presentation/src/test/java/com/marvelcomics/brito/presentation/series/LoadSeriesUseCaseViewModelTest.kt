@@ -3,7 +3,7 @@ package com.marvelcomics.brito.presentation.series
 import com.marvelcomics.brito.domain.exception.NetworkException
 import com.marvelcomics.brito.domain.models.SeriesDomain
 import com.marvelcomics.brito.domain.usecase.CoroutineUseCase
-import com.marvelcomics.brito.domain.usecase.Series
+import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
 import com.marvelcomics.brito.presentation.BaseViewModelTest
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -18,7 +18,7 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class SeriesViewModelTest : BaseViewModelTest() {
+class LoadSeriesUseCaseViewModelTest : BaseViewModelTest() {
 
     @RelaxedMockK
     lateinit var listSeriesMock: List<SeriesDomain>
@@ -27,7 +27,7 @@ class SeriesViewModelTest : BaseViewModelTest() {
     lateinit var runtimeException: RuntimeException
 
     @RelaxedMockK
-    lateinit var useCaseMock: Series
+    lateinit var useCaseMock: LoadSeriesUseCase
 
     @InjectMockKs
     lateinit var viewModel: SeriesViewModel

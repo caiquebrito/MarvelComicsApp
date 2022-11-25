@@ -17,7 +17,7 @@ import org.junit.Test
 import java.net.UnknownHostException
 
 @ExperimentalCoroutinesApi
-class ComicTest {
+class LoadComicsUseCaseTest {
 
     @MockK
     lateinit var listComics: List<ComicDomain>
@@ -35,7 +35,7 @@ class ComicTest {
     lateinit var coroutineDispatcherMock: CoroutineDispatcher
 
     @InjectMockKs
-    lateinit var comic: Comic
+    lateinit var loadComicsUseCase: LoadComicsUseCase
 
     @Before
     fun setup() {

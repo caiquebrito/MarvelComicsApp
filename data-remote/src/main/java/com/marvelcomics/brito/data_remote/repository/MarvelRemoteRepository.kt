@@ -22,13 +22,13 @@ class MarvelRemoteRepository(
     private val seriesMapper: SeriesMapper
 ) : MarvelRemoteDataSource {
 
-    override suspend fun getCharacters(name: String): List<CharacterDomain> {
+    override suspend fun getCharactersByName(name: String): List<CharacterDomain> {
         return handleApi {
             characterMapper.transform(api.characters(name).getBodyOrThrow())
         }
     }
 
-    override suspend fun getComics(characterId: Int): List<ComicDomain> {
+    override suspend fun getComicsById(characterId: Int): List<ComicDomain> {
         return handleApi(
             callHandling = {
                 comicMapper.transform(api.comics(characterId).getBodyOrThrow())
@@ -49,7 +49,7 @@ class MarvelRemoteRepository(
         )
     }
 
-    override suspend fun getSeries(characterId: Int): List<SeriesDomain> {
+    override suspend fun getSeriesById(characterId: Int): List<SeriesDomain> {
         return handleApi(
             callHandling = {
                 seriesMapper.transform(api.series(characterId).getBodyOrThrow())

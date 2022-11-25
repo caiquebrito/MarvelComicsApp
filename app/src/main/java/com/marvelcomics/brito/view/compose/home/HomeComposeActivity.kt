@@ -41,18 +41,14 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.marvelcomics.brito.R
-import com.marvelcomics.brito.presentation.character.CharacterViewModel
 import com.marvelcomics.brito.view.compose.theme.Black
 import com.marvelcomics.brito.view.compose.theme.MarvelComicsAppPreview
 import com.marvelcomics.brito.view.compose.theme.MarvelComicsAppTheme
 import com.marvelcomics.brito.view.compose.theme.Typography
 import com.marvelcomics.brito.view.compose.theme.White
 import com.marvelcomics.brito.view.compose.theme.White60
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeComposeActivity : ComponentActivity() {
-
-    private val characterViewModel: CharacterViewModel by viewModel()
 
     private val listHeroes = listOf(
         MockObjectHeroes(

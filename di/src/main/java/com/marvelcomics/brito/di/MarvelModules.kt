@@ -15,19 +15,16 @@ import com.marvelcomics.brito.data_remote.datasource.mapper.ThumbnailMapper
 import com.marvelcomics.brito.data_remote.okhttp.KeyHashInterceptor
 import com.marvelcomics.brito.data_remote.repository.MarvelRemoteRepository
 import com.marvelcomics.brito.domain.repository.MarvelRepository
-import com.marvelcomics.brito.domain.usecase.Character
-import com.marvelcomics.brito.domain.usecase.Comic
-import com.marvelcomics.brito.domain.usecase.LoadLastCharacter
-import com.marvelcomics.brito.domain.usecase.SaveCharacter
-import com.marvelcomics.brito.domain.usecase.Series
-import com.marvelcomics.brito.presentation.character.CharacterViewModel
-import com.marvelcomics.brito.presentation.comic.ComicViewModel
-import com.marvelcomics.brito.presentation.series.SeriesViewModel
+import com.marvelcomics.brito.domain.usecase.LoadAllCharactersIdsUseCase
+import com.marvelcomics.brito.domain.usecase.LoadCharacterByIdUseCase
+import com.marvelcomics.brito.domain.usecase.LoadCharacterUseCase
+import com.marvelcomics.brito.domain.usecase.LoadComicsUseCase
+import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
+import com.marvelcomics.brito.domain.usecase.SaveCharacterUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -94,19 +91,20 @@ class MarvelModules {
 
     object Presentation {
         val viewModels = module {
-            viewModel { CharacterViewModel(get(), get(), get(), null) }
-            viewModel { ComicViewModel(get()) }
-            viewModel { SeriesViewModel(get()) }
+//            viewModel { CharacterViewModel(get(), get(), get(), null) }
+//            viewModel { ComicViewModel(get()) }
+//            viewModel { SeriesViewModel(get()) }
         }
     }
 
     object Domain {
         val usesCases = module {
-            factory { Character(get(), Dispatchers.IO) }
-            factory { Comic(get(), Dispatchers.IO) }
-            factory { Series(get(), Dispatchers.IO) }
-            factory { LoadLastCharacter(get(), Dispatchers.IO) }
-            factory { SaveCharacter(get(), Dispatchers.IO) }
+            factory { LoadAllCharactersIdsUseCase(get(), Dispatchers.IO) }
+            factory { LoadCharacterByIdUseCase(get(), Dispatchers.IO) }
+            factory { LoadCharacterUseCase(get(), Dispatchers.IO) }
+            factory { LoadComicsUseCase(get(), Dispatchers.IO) }
+            factory { LoadSeriesUseCase(get(), Dispatchers.IO) }
+            factory { SaveCharacterUseCase(get(), Dispatchers.IO) }
         }
     }
 }

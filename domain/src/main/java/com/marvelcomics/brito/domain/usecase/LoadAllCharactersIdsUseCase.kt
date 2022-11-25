@@ -5,14 +5,14 @@ import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.repository.MarvelRepository
 import kotlinx.coroutines.CoroutineDispatcher
 
-class SaveCharacter(
+class LoadAllCharactersIdsUseCase(
     private val marvelRepository: MarvelRepository,
     dispatcher: CoroutineDispatcher
 ) : CoroutineUseCase<CharacterDomain, Any>(dispatcher) {
 
     override suspend fun performAction(param: CharacterDomain?): Result<Any> {
         return param?.let {
-            marvelRepository.setLastCharacterName(it).resultFromNullable()
+            marvelRepository.getAllCharactersIds().resultFromNullable()
         } ?: throw EmptyInputException()
     }
 }

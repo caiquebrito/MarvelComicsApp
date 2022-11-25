@@ -38,7 +38,7 @@ class CharacterTest {
     lateinit var coroutineDispatcherMock: CoroutineDispatcher
 
     @InjectMockKs
-    lateinit var character: Character
+    lateinit var character: LoadCharacterUseCase
 
     @Before
     fun setup() {
