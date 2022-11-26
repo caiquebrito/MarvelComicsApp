@@ -35,4 +35,8 @@ class MarvelRepo(
     override suspend fun getAllCharactersIds(): List<Int> {
         return local.getAllCharactersIds()
     }
+
+    override suspend fun getAllCharacters(): List<CharacterDomain> {
+        return local.getAllCharacters()
+    }
 }

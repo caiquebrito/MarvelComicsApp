@@ -37,11 +37,7 @@ inline fun <reified T> Throwable.handleByCode(
 ): T {
     throw when (this) {
         is ErrorBodyException -> {
-            throw if (mapCode.containsKey(mappedCode)) {
-                mapCode[mappedCode]!!
-            } else {
-                this
-            }
+            throw mapCode[mappedCode] ?: this
         }
         else -> this
     }

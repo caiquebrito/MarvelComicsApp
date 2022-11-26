@@ -11,4 +11,5 @@ interface MarvelRepository {
     suspend fun getCharacterById(id: Int): CharacterDomain
     suspend fun saveCharacter(character: CharacterDomain)
     suspend fun getAllCharactersIds(): List<Int>
+    suspend fun getAllCharacters(): List<CharacterDomain>
 }
