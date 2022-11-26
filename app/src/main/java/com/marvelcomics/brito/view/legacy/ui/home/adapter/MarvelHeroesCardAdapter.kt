@@ -10,7 +10,10 @@ import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.view.legacy.models.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.view.shape.CutCustomCornerShape
 
-class MarvelHeroesCardAdapter(private val list: List<CharacterDomain>) :
+class MarvelHeroesCardAdapter(
+    private val list: List<CharacterDomain>,
+    private var adapterClickCallback: ((characterDomain: CharacterDomain) -> Unit)
+) :
     RecyclerView.Adapter<MarvelHeroesCardAdapter.MarvelHeroesCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarvelHeroesCardViewHolder {
@@ -21,7 +24,7 @@ class MarvelHeroesCardAdapter(private val list: List<CharacterDomain>) :
     }
 
     override fun onBindViewHolder(holder: MarvelHeroesCardViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list[position], adapterClickCallback)
     }
 
     override fun getItemCount(): Int {
@@ -31,7 +34,10 @@ class MarvelHeroesCardAdapter(private val list: List<CharacterDomain>) :
     class MarvelHeroesCardViewHolder(val binding: ViewMarvelCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(character: CharacterDomain) = with(binding) {
+        fun bind(
+            character: CharacterDomain,
+            adapterClickCallback: ((characterDomain: CharacterDomain) -> Unit)
+        ) = with(binding) {
             linearlayoutMarvelCardMovieShape.background = ShapeDrawable(CutCustomCornerShape())
             Glide.with(binding.root).load(
                 character.thumbnailDomain?.getFullUrlThumbnailWithAspect(
@@ -40,6 +46,9 @@ class MarvelHeroesCardAdapter(private val list: List<CharacterDomain>) :
             ).fitCenter().into(binding.imageviewMarvelCardHeroProfile)
             textviewMarvelCardHeroName.text = "Building..."
             textviewMarvelCardHeroTitle.text = character.name
+            root.setOnClickListener {
+                adapterClickCallback.invoke(character)
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.marvelcomics.brito.presentation.home
 
-import br.com.cora.common.viewmodel.flow.UIState
+import com.marvelcomics.brito.domain.models.CharacterDomain
+import com.marvelcomics.brito.presentation.flow.UIState
 
 data class HomeUiState(
-    val showLoading: Boolean = false
+    val showLoading: Boolean = false,
+    val heroesInfo: List<CharacterDomain>? = null
 ) : UIState

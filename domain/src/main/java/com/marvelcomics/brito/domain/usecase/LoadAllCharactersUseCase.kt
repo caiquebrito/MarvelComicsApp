@@ -11,5 +11,12 @@ class LoadAllCharactersUseCase(
 
     override suspend fun performAction(param: Any?): Result<List<CharacterDomain>> {
         return marvelRepository.getAllCharacters().resultFromNullable()
+            .onSuccess {
+                if (it.isEmpty()) {
+                    throw EmptyException()
+                }
+            }
     }
 }
+
+class EmptyException : Throwable()

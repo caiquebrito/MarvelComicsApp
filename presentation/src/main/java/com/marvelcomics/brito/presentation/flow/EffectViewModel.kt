@@ -1,4 +1,4 @@
-package br.com.cora.common.viewmodel.flow
+package com.marvelcomics.brito.presentation.flow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

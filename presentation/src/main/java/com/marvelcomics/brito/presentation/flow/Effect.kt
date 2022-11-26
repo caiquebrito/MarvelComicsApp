@@ -1,4 +1,4 @@
-package br.com.cora.common.viewmodel.flow
+package com.marvelcomics.brito.presentation.flow
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

@@ -17,9 +17,7 @@ class MarvelLocalRepository(private val database: AppDatabase) : MarvelLocalData
     }
 
     override suspend fun getAllCharactersIds(): List<Int> {
-        return database.characterDao().getAllCharacters().map {
-            it.id
-        }
+        return database.characterDao().getAllCharactersIds()
     }
 
     override suspend fun getAllCharacters(): List<CharacterDomain> {

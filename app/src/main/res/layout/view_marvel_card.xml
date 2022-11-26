@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="130dp"
     android:layout_height="250dp"
-    android:background="@drawable/shape_round_bottom_right_flat"
-    android:backgroundTint="@color/marvel_black">
+    android:background="?attr/selectableItemBackground">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_round_bottom_right_flat"
+        android:backgroundTint="@color/marvel_black" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageview_marvel_card_hero_profile"
