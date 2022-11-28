@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.marvelcomics.brito" >
+    package="com.marvelcomics.brito">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,15 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:targetApi="n" >
-        <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
+        tools:targetApi="n">
         <activity
             android:name=".view.compose.home.HomeComposeActivity"
-            android:exported="false"
             android:label="@string/title_activity_home_compose"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.marvelcomics.brito.view.legacy.ui.splash.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,12 +31,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.marvelcomics.brito.view.legacy.ui.splash.SplashActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="com.marvelcomics.brito.view.legacy.ui.home.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.legacy.ui.search.SearchActivity"
             android:screenOrientation="portrait" />
     </application>
 

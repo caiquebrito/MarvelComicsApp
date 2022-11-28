@@ -10,7 +10,6 @@ import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeUiState
 import com.marvelcomics.brito.presentation.home.HomeViewModel
-import com.marvelcomics.brito.view.launchActivity
 import com.marvelcomics.brito.view.legacy.extensions.onEffectTriggered
 import com.marvelcomics.brito.view.legacy.extensions.onStateChange
 import com.marvelcomics.brito.view.legacy.extensions.viewBinding

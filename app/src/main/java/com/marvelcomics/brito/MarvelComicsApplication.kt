@@ -17,6 +17,7 @@ class MarvelComicsApplication : Application() {
             androidContext(this@MarvelComicsApplication)
             modules(
                 listOf(
+                    MarvelModules.Data.database,
                     MarvelModules.Domain.usesCases,
                     MarvelModules.Data.interceptors,
                     MarvelModules.Data.mappers,

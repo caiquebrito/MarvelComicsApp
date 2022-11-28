@@ -16,15 +16,19 @@ import com.marvelcomics.brito.data_remote.okhttp.KeyHashInterceptor
 import com.marvelcomics.brito.data_remote.repository.MarvelRemoteRepository
 import com.marvelcomics.brito.domain.repository.MarvelRepository
 import com.marvelcomics.brito.domain.usecase.LoadAllCharactersIdsUseCase
+import com.marvelcomics.brito.domain.usecase.LoadAllCharactersUseCase
 import com.marvelcomics.brito.domain.usecase.LoadCharacterByIdUseCase
 import com.marvelcomics.brito.domain.usecase.LoadCharacterUseCase
 import com.marvelcomics.brito.domain.usecase.LoadComicsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
 import com.marvelcomics.brito.domain.usecase.SaveCharacterUseCase
+import com.marvelcomics.brito.presentation.home.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -58,7 +62,7 @@ class MarvelModules {
         val database = module {
             single {
                 Room.databaseBuilder(
-                    get(),
+                    androidApplication(),
                     AppDatabase::class.java,
                     databaseName
                 ).build()
@@ -94,12 +98,14 @@ class MarvelModules {
 //            viewModel { CharacterViewModel(get(), get(), get(), null) }
 //            viewModel { ComicViewModel(get()) }
 //            viewModel { SeriesViewModel(get()) }
+            viewModel { HomeViewModel(get()) }
         }
     }
 
     object Domain {
         val usesCases = module {
             factory { LoadAllCharactersIdsUseCase(get(), Dispatchers.IO) }
+            factory { LoadAllCharactersUseCase(get(), Dispatchers.IO) }
             factory { LoadCharacterByIdUseCase(get(), Dispatchers.IO) }
             factory { LoadCharacterUseCase(get(), Dispatchers.IO) }
             factory { LoadComicsUseCase(get(), Dispatchers.IO) }
