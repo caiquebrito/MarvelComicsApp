@@ -16,8 +16,8 @@
 
     <ImageView
         android:id="@+id/imageview_search_marvel_logo_m"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@null"
@@ -32,8 +32,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:hint="Nome do Personagem"
-        android:textColorHint="@color/marvel_white"
-        android:theme="@style/TextInputLayoutStyle"
         app:endIconMode="clear_text"
         app:layout_constraintBottom_toBottomOf="@id/imageview_search_marvel_logo_m"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +42,9 @@
             android:id="@+id/textinputedittext_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/marvel_white" />
+            android:inputType="text"
+            android:maxLines="1"
+            android:minLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView

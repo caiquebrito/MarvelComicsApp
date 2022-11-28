@@ -2,6 +2,7 @@ package com.marvelcomics.brito.view.legacy.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,22 +43,29 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun handleStates(state: HomeUiState) = with(binding) {
+        Log.i("AbstractViewModel", "Handle State: ${state.showLoading} // ${state.heroesInfo}")
         // loading.visible = state.isLoading
-        recyclerviewMarvelCharacters.adapter = state.heroesInfo?.let {
-            MarvelHeroesCardAdapter(it) {
+        if (state.showLoading) {
+            viewModel.getHeroesLocal()
+        }
+        state.heroesInfo?.let {
+            recyclerviewMarvelCharacters.adapter = MarvelHeroesCardAdapter(it) {
                 // send effect show details hero
             }
         }
     }
 
-    private fun handleEffects(effect: HomeUiEffect) = when (effect) {
-        is HomeUiEffect.ShowEmptyHeroes -> {
-            binding.recyclerviewMarvelCharacters.adapter = getEmptyStateAdapter()
+    private fun handleEffects(effect: HomeUiEffect) {
+        Log.i("AbstractViewModel", "Handle Effects: $effect")
+        when (effect) {
+            is HomeUiEffect.ShowEmptyHeroes -> {
+                binding.recyclerviewMarvelCharacters.adapter = getEmptyStateAdapter()
+            }
+            is HomeUiEffect.OpenSearchScreen -> {
+                startActivity(Intent(this, SearchActivity::class.java))
+            }
+            else -> {}
         }
-        is HomeUiEffect.OpenSearchScreen -> {
-            startActivity(Intent(this, SearchActivity::class.java))
-        }
-        else -> {}
     }
 
     private fun getEmptyStateAdapter(): MarvelHeroesCardAdapter {
