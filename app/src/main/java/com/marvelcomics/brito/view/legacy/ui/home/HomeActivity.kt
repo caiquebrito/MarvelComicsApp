@@ -1,5 +1,6 @@
 package com.marvelcomics.brito.view.legacy.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,11 +10,13 @@ import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeUiState
 import com.marvelcomics.brito.presentation.home.HomeViewModel
+import com.marvelcomics.brito.view.launchActivity
 import com.marvelcomics.brito.view.legacy.extensions.onEffectTriggered
 import com.marvelcomics.brito.view.legacy.extensions.onStateChange
 import com.marvelcomics.brito.view.legacy.extensions.viewBinding
 import com.marvelcomics.brito.view.legacy.ui.home.adapter.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.view.legacy.ui.home.adapter.MarvelHeroesCardAdapter
+import com.marvelcomics.brito.view.legacy.ui.search.SearchActivity
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -53,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
             binding.recyclerviewMarvelCharacters.adapter = getEmptyStateAdapter()
         }
         is HomeUiEffect.OpenSearchScreen -> {
-            // open search activity
+            startActivity(Intent(this, SearchActivity::class.java))
         }
         else -> {}
     }
