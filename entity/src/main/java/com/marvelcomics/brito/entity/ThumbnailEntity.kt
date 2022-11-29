@@ -1,6 +1,6 @@
-package com.marvelcomics.brito.domain.models
+package com.marvelcomics.brito.entity
 
-data class ThumbnailDomain(
+data class ThumbnailEntity(
     val path: String? = null,
     val extension: String? = null
 ) {

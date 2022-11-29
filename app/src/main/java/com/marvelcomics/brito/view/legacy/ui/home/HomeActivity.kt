@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.databinding.ActivityMainBinding
-import com.marvelcomics.brito.domain.models.CharacterDomain
+import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeUiState
 import com.marvelcomics.brito.presentation.home.HomeViewModel
@@ -81,11 +81,11 @@ class HomeActivity : AppCompatActivity() {
     private fun getEmptyStateAdapter(): MarvelHeroesCardAdapter {
         return MarvelHeroesCardAdapter(
             listOf(
-                CharacterDomain(
+                CharacterEntity(
                     id = 0,
                     name = "Click to search",
                     description = null,
-                    thumbnailDomain = null
+                    thumbnailEntity = null
                 )
             )
         ) {

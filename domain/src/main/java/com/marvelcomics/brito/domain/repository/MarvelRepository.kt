@@ -1,15 +1,15 @@
 package com.marvelcomics.brito.domain.repository
 
-import com.marvelcomics.brito.domain.models.CharacterDomain
-import com.marvelcomics.brito.domain.models.ComicDomain
-import com.marvelcomics.brito.domain.models.SeriesDomain
+import com.marvelcomics.brito.entity.CharacterEntity
+import com.marvelcomics.brito.entity.ComicEntity
+import com.marvelcomics.brito.entity.SeriesEntity
 
 interface MarvelRepository {
-    suspend fun getCharacters(name: String): List<CharacterDomain>
-    suspend fun getComics(characterId: Int): List<ComicDomain>
-    suspend fun getSeries(characterId: Int): List<SeriesDomain>
-    suspend fun getCharacterById(id: Int): CharacterDomain
-    suspend fun saveCharacter(character: CharacterDomain)
-    suspend fun getAllCharactersIds(): List<Int>
-    suspend fun getAllCharacters(): List<CharacterDomain>
+    suspend fun getCharacters(name: String): List<CharacterEntity>
+    suspend fun getComics(characterId: Int): List<ComicEntity>
+    suspend fun getSeries(characterId: Int): List<SeriesEntity>
+    suspend fun loadCharacterById(id: Int): CharacterEntity
+    suspend fun saveCharacter(character: CharacterEntity)
+    suspend fun loadAllCharactersIds(): List<Int>
+    suspend fun loadAllCharacters(): List<CharacterEntity>
 }

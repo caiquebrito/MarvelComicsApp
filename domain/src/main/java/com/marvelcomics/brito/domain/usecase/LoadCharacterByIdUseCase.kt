@@ -1,18 +1,18 @@
 package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.exception.EmptyInputException
-import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.repository.MarvelRepository
+import com.marvelcomics.brito.entity.CharacterEntity
 import kotlinx.coroutines.CoroutineDispatcher
 
 class LoadCharacterByIdUseCase(
     private val marvelRepository: MarvelRepository,
     dispatcher: CoroutineDispatcher
-) : CoroutineUseCase<Int, CharacterDomain>(dispatcher) {
+) : CoroutineUseCase<Int, CharacterEntity>(dispatcher) {
 
-    override suspend fun performAction(param: Int?): Result<CharacterDomain> {
+    override suspend fun performAction(param: Int?): Result<CharacterEntity> {
         return param?.let {
-            marvelRepository.getCharacterById(it).resultFromNullable()
+            marvelRepository.loadCharacterById(it).resultFromNullable()
         } ?: throw EmptyInputException()
     }
 }

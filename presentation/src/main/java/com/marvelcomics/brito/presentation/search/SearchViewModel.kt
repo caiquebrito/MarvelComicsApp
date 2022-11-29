@@ -1,10 +1,10 @@
 package com.marvelcomics.brito.presentation.search
 
 import androidx.lifecycle.viewModelScope
-import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.usecase.LoadCharacterUseCase
 import com.marvelcomics.brito.domain.usecase.onFailure
 import com.marvelcomics.brito.domain.usecase.onSuccess
+import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.presentation.flow.ViewModel
 import kotlinx.coroutines.launch
 
@@ -13,7 +13,7 @@ class SearchViewModel(private val loadCharacterUseCase: LoadCharacterUseCase) :
 
     fun searchCharacterByName(name: String) {
         viewModelScope.launch {
-            var listCharacters: List<CharacterDomain>? = null
+            var listCharacters: List<CharacterEntity>? = null
             loadCharacterUseCase.invoke(name)
                 .onSuccess {
                     listCharacters = it

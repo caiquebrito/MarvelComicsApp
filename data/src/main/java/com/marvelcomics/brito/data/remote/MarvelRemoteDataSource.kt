@@ -1,11 +1,11 @@
 package com.marvelcomics.brito.data.remote
 
-import com.marvelcomics.brito.domain.models.CharacterDomain
-import com.marvelcomics.brito.domain.models.ComicDomain
-import com.marvelcomics.brito.domain.models.SeriesDomain
+import com.marvelcomics.brito.entity.CharacterEntity
+import com.marvelcomics.brito.entity.ComicEntity
+import com.marvelcomics.brito.entity.SeriesEntity
 
 interface MarvelRemoteDataSource {
-    suspend fun getCharactersByName(name: String): List<CharacterDomain>
-    suspend fun getComicsById(characterId: Int): List<ComicDomain>
-    suspend fun getSeriesById(characterId: Int): List<SeriesDomain>
+    suspend fun getCharactersByName(name: String): List<CharacterEntity>
+    suspend fun getComicsById(characterId: Int): List<ComicEntity>
+    suspend fun getSeriesById(characterId: Int): List<SeriesEntity>
 }

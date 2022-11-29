@@ -1,10 +1,10 @@
 package com.marvelcomics.brito.presentation.home
 
 import androidx.lifecycle.viewModelScope
-import com.marvelcomics.brito.domain.models.CharacterDomain
 import com.marvelcomics.brito.domain.usecase.LoadAllCharactersUseCase
 import com.marvelcomics.brito.domain.usecase.onFailure
 import com.marvelcomics.brito.domain.usecase.onSuccess
+import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.presentation.flow.ViewModel
 import kotlinx.coroutines.launch
 
@@ -13,7 +13,7 @@ class HomeViewModel(val loadAllCharactersUseCase: LoadAllCharactersUseCase) :
 
     fun getHeroesLocal() {
         viewModelScope.launch {
-            var listCharacters: List<CharacterDomain>? = null
+            var listCharacters: List<CharacterEntity>? = null
             loadAllCharactersUseCase.invoke()
                 .onSuccess {
                     listCharacters = it

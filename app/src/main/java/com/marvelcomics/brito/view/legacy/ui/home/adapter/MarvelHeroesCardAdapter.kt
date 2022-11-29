@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.databinding.ViewMarvelCardBinding
-import com.marvelcomics.brito.domain.models.CharacterDomain
+import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.view.legacy.models.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.view.shape.CutCustomCornerShape
 
 class MarvelHeroesCardAdapter(
-    private val list: List<CharacterDomain>,
-    private var adapterClickCallback: ((characterDomain: CharacterDomain) -> Unit)
+    private val list: List<CharacterEntity>,
+    private var adapterClickCallback: ((characterDomain: CharacterEntity) -> Unit)
 ) :
     RecyclerView.Adapter<MarvelHeroesCardAdapter.MarvelHeroesCardViewHolder>() {
 
@@ -35,12 +35,12 @@ class MarvelHeroesCardAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            character: CharacterDomain,
-            adapterClickCallback: ((characterDomain: CharacterDomain) -> Unit)
+            character: CharacterEntity,
+            adapterClickCallback: ((characterDomain: CharacterEntity) -> Unit)
         ) = with(binding) {
             linearlayoutMarvelCardMovieShape.background = ShapeDrawable(CutCustomCornerShape())
             Glide.with(binding.root).load(
-                character.thumbnailDomain?.getFullUrlThumbnailWithAspect(
+                character.thumbnailEntity?.getFullUrlThumbnailWithAspect(
                     MarvelThumbnailAspectRatio.Portrait.SMALL
                 )
             ).fitCenter().into(binding.imageviewMarvelCardHeroProfile)

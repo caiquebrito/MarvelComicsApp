@@ -7,9 +7,9 @@ import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
 import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
 import com.marvelcomics.brito.data_remote.getBodyOrThrow
 import com.marvelcomics.brito.data_remote.handleApi
-import com.marvelcomics.brito.domain.models.CharacterDomain
-import com.marvelcomics.brito.domain.models.ComicDomain
-import com.marvelcomics.brito.domain.models.SeriesDomain
+import com.marvelcomics.brito.entity.CharacterEntity
+import com.marvelcomics.brito.entity.ComicEntity
+import com.marvelcomics.brito.entity.SeriesEntity
 
 class MarvelRemoteRepository(
     private val api: MarvelAPI,
@@ -18,19 +18,19 @@ class MarvelRemoteRepository(
     private val seriesMapper: SeriesMapper
 ) : MarvelRemoteDataSource {
 
-    override suspend fun getCharactersByName(name: String): List<CharacterDomain> {
+    override suspend fun getCharactersByName(name: String): List<CharacterEntity> {
         return handleApi {
             characterMapper.transform(api.characters(name).getBodyOrThrow())
         }
     }
 
-    override suspend fun getComicsById(characterId: Int): List<ComicDomain> {
+    override suspend fun getComicsById(characterId: Int): List<ComicEntity> {
         return handleApi {
             comicMapper.transform(api.comics(characterId).getBodyOrThrow())
         }
     }
 
-    override suspend fun getSeriesById(characterId: Int): List<SeriesDomain> {
+    override suspend fun getSeriesById(characterId: Int): List<SeriesEntity> {
         return handleApi {
             seriesMapper.transform(api.series(characterId).getBodyOrThrow())
         }

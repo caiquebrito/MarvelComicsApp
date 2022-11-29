@@ -1,10 +1,10 @@
 package com.marvelcomics.brito.data.local
 
-import com.marvelcomics.brito.domain.models.CharacterDomain
+import com.marvelcomics.brito.entity.CharacterEntity
 
 interface MarvelLocalDataSource {
-    suspend fun getCharacterById(id: Int): CharacterDomain
-    suspend fun saveCharacter(character: CharacterDomain)
-    suspend fun getAllCharactersIds(): List<Int>
-    suspend fun getAllCharacters(): List<CharacterDomain>
+    suspend fun loadCharacterById(id: Int): CharacterEntity
+    suspend fun saveCharacter(character: CharacterEntity)
+    suspend fun loadAllCharactersIds(): List<Int>
+    suspend fun loadAllCharacters(): List<CharacterEntity>
 }

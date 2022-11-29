@@ -9,6 +9,6 @@ class LoadAllCharactersIdsUseCase(
 ) : CoroutineUseCase<Any, List<Int>>(dispatcher) {
 
     override suspend fun performAction(param: Any?): Result<List<Int>> {
-        return marvelRepository.getAllCharactersIds().resultFromNullable()
+        return marvelRepository.loadAllCharactersIds().resultFromNullable()
     }
 }
