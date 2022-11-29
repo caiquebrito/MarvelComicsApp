@@ -18,10 +18,10 @@
         android:layout_height="0dp"
         android:contentDescription="@null"
         android:scaleType="fitXY"
+        android:src="@drawable/ic_thanos"
         app:layout_constraintBottom_toTopOf="@id/view_divider_anchor"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ImageView.Corner"
-        tools:srcCompat="@drawable/captain_marvel" />
+        app:shapeAppearanceOverlay="@style/ImageView.Corner" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearlayout_marvel_card_movie_shape"

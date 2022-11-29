@@ -3,6 +3,7 @@ package com.marvelcomics.brito.view.legacy.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,12 +12,13 @@ import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeUiState
 import com.marvelcomics.brito.presentation.home.HomeViewModel
+import com.marvelcomics.brito.view.legacy.extensions.ItemOffSetDecorationHorizontal
+import com.marvelcomics.brito.view.legacy.extensions.animateFallRight
+import com.marvelcomics.brito.view.legacy.extensions.dpToPx
 import com.marvelcomics.brito.view.legacy.extensions.onEffectTriggered
 import com.marvelcomics.brito.view.legacy.extensions.onStateChange
 import com.marvelcomics.brito.view.legacy.extensions.viewBinding
-import com.marvelcomics.brito.view.legacy.ui.dpToPx
-import com.marvelcomics.brito.view.legacy.ui.home.adapter.ItemOffSetDecorationHorizontal
-import com.marvelcomics.brito.view.legacy.ui.home.adapter.MarvelHeroesCardAdapter
+import com.marvelcomics.brito.view.legacy.ui.home.adapter.HomeCardAdapter
 import com.marvelcomics.brito.view.legacy.ui.search.SearchActivity
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initViews() = with(binding) {
-        binding.recyclerviewMarvelCharacters.addItemDecoration(
+        recyclerviewMarvelCharacters.addItemDecoration(
             ItemOffSetDecorationHorizontal(16.dpToPx(resources))
         )
         recyclerviewMarvelCharacters.layoutManager = LinearLayoutManager(
@@ -59,17 +61,18 @@ class HomeActivity : AppCompatActivity() {
             viewModel.getHeroesLocal()
         }
         recyclerviewMarvelCharacters.adapter = state.listCharacters?.let {
-            MarvelHeroesCardAdapter(it) {
-                // send effect show details hero
+            HomeCardAdapter(it) {
+                Toast.makeText(this@HomeActivity, "Load Details Screen", Toast.LENGTH_LONG).show()
             }
         } ?: getEmptyStateAdapter()
+        recyclerviewMarvelCharacters.animateFallRight()
     }
 
     private fun handleEffects(effect: HomeUiEffect) {
         Log.i("AbstractViewModel", "Home Handle Effects: $effect")
         when (effect) {
             is HomeUiEffect.ShowError -> {
-                // show toast error
+                Toast.makeText(this, "Show Error", Toast.LENGTH_LONG).show()
             }
             is HomeUiEffect.OpenSearchScreen -> {
                 startActivity(Intent(this, SearchActivity::class.java))
@@ -78,12 +81,12 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun getEmptyStateAdapter(): MarvelHeroesCardAdapter {
-        return MarvelHeroesCardAdapter(
+    private fun getEmptyStateAdapter(): HomeCardAdapter {
+        return HomeCardAdapter(
             listOf(
                 CharacterEntity(
                     id = 0,
-                    name = "Click to search",
+                    name = "Click to Add",
                     description = null,
                     thumbnailEntity = null
                 )

@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.legacy.ui.home.adapter
+package com.marvelcomics.brito.view.legacy.extensions
 
 import android.graphics.Rect
 import android.view.View

@@ -2,15 +2,21 @@ package com.marvelcomics.brito.view.legacy.ui.search
 
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.databinding.ActivitySearchBinding
 import com.marvelcomics.brito.presentation.search.SearchUiEffect
 import com.marvelcomics.brito.presentation.search.SearchUiState
 import com.marvelcomics.brito.presentation.search.SearchViewModel
 import com.marvelcomics.brito.view.hideKeyboard
+import com.marvelcomics.brito.view.legacy.extensions.ItemOffSetDecorationHorizontal
+import com.marvelcomics.brito.view.legacy.extensions.dpToPx
 import com.marvelcomics.brito.view.legacy.extensions.onEffectTriggered
 import com.marvelcomics.brito.view.legacy.extensions.onStateChange
 import com.marvelcomics.brito.view.legacy.extensions.viewBinding
+import com.marvelcomics.brito.view.legacy.ui.search.adapter.SearchCharacterAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
@@ -46,13 +52,26 @@ class SearchActivity : AppCompatActivity() {
                 false
             }
         }
+        recyclerviewSearch.addItemDecoration(
+            ItemOffSetDecorationHorizontal(16.dpToPx(resources))
+        )
+        recyclerviewSearch.layoutManager = LinearLayoutManager(
+            this.root.context, RecyclerView.HORIZONTAL, false
+        )
     }
 
     private fun handleState(state: SearchUiState) = with(binding) {
         // loading.visible = state.isLoading
         state.listCharacters?.let {
-//            recyclerviewSearch = adapter
-        }
+            recyclerviewSearch.adapter = SearchCharacterAdapter(it) {
+                Toast.makeText(this@SearchActivity, "Save this on database", Toast.LENGTH_LONG)
+                    .show()
+            }
+        } ?: buildEmptyState()
+    }
+
+    private fun buildEmptyState() {
+        Toast.makeText(this, "Empty State Screen", Toast.LENGTH_LONG).show()
     }
 
     private fun handleEffect(effect: SearchUiEffect) {

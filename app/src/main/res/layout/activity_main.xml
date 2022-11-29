@@ -18,7 +18,7 @@
         android:id="@+id/constraintlayout_top_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/constraintlayout_bottom_container"
+        app:layout_constraintBottom_toTopOf="@id/view_bottom_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_weight="0.4">
 
@@ -77,24 +77,23 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintlayout_bottom_container"
+    <View
+        android:id="@+id/view_bottom_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:alpha="0.6"
         android:background="@drawable/shape_round_top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constraintlayout_top_container"
-        app:layout_constraintVertical_weight="0.6">
+        app:layout_constraintVertical_weight="0.6" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_marvel_characters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:foregroundGravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_marvel_characters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/view_bottom_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/view_bottom_container" />
 </androidx.constraintlayout.widget.ConstraintLayout>

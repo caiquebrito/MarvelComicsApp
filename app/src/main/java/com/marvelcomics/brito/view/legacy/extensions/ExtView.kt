@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.legacy.ui
+package com.marvelcomics.brito.view.legacy.extensions
 
 import android.content.res.Resources
 import android.util.DisplayMetrics

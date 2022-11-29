@@ -3,7 +3,6 @@ apply from: '../dependencies.gradle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':domain')
     implementation project(path: ':entity')
     implementation project(path: ':data')
 
