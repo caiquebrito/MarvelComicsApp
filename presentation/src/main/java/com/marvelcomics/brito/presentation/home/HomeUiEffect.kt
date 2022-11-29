@@ -4,5 +4,5 @@ import com.marvelcomics.brito.presentation.flow.UIEffect
 
 sealed class HomeUiEffect : UIEffect {
     object OpenSearchScreen : HomeUiEffect()
-    object ShowEmptyHeroes : HomeUiEffect()
+    object ShowEmptyCharacters : HomeUiEffect()
 }

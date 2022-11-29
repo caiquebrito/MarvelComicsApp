@@ -5,5 +5,5 @@ import com.marvelcomics.brito.presentation.flow.UIState
 
 data class HomeUiState(
     val showLoading: Boolean = false,
-    val heroesInfo: List<CharacterDomain>? = null
+    val listCharacters: List<CharacterDomain>? = null
 ) : UIState

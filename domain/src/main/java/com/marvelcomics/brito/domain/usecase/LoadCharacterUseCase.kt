@@ -8,11 +8,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 class LoadCharacterUseCase(
     private val marvelRepository: MarvelRepository,
     dispatcher: CoroutineDispatcher
-) : CoroutineUseCase<String, CharacterDomain>(dispatcher) {
+) : CoroutineUseCase<String, List<CharacterDomain>>(dispatcher) {
 
-    override suspend fun performAction(param: String?): Result<CharacterDomain> {
-        return param?.let {
-            marvelRepository.getCharacters(it).first().resultFromNullable()
+    override suspend fun performAction(param: String?): Result<List<CharacterDomain>> {
+        return param?.let { param ->
+            marvelRepository.getCharacters(param).resultFromNullable()
+                .onSuccess {
+                    if (it.isEmpty()) {
+                        throw EmptyException()
+                    }
+                }
         } ?: throw EmptyInputException()
     }
 }

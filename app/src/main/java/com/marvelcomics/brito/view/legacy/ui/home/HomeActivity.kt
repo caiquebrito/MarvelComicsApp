@@ -43,12 +43,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun handleStates(state: HomeUiState) = with(binding) {
-        Log.i("AbstractViewModel", "Handle State: ${state.showLoading} // ${state.heroesInfo}")
+        Log.i("AbstractViewModel", "Handle State: ${state.showLoading} // ${state.listCharacters}")
         // loading.visible = state.isLoading
         if (state.showLoading) {
             viewModel.getHeroesLocal()
         }
-        state.heroesInfo?.let {
+        state.listCharacters?.let {
             recyclerviewMarvelCharacters.adapter = MarvelHeroesCardAdapter(it) {
                 // send effect show details hero
             }
@@ -58,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
     private fun handleEffects(effect: HomeUiEffect) {
         Log.i("AbstractViewModel", "Handle Effects: $effect")
         when (effect) {
-            is HomeUiEffect.ShowEmptyHeroes -> {
+            is HomeUiEffect.ShowEmptyCharacters -> {
                 binding.recyclerviewMarvelCharacters.adapter = getEmptyStateAdapter()
             }
             is HomeUiEffect.OpenSearchScreen -> {

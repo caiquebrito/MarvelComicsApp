@@ -1,24 +1,25 @@
-package com.marvelcomics.brito.presentation.home
+package com.marvelcomics.brito.presentation.search
 
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.models.CharacterDomain
-import com.marvelcomics.brito.domain.usecase.LoadAllCharactersUseCase
+import com.marvelcomics.brito.domain.usecase.LoadCharacterUseCase
 import com.marvelcomics.brito.domain.usecase.onFailure
 import com.marvelcomics.brito.domain.usecase.onSuccess
 import com.marvelcomics.brito.presentation.flow.ViewModel
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val loadAllCharactersUseCase: LoadAllCharactersUseCase) :
-    ViewModel<HomeUiState, HomeUiEffect>(HomeUiState(showLoading = true)) {
+class SearchViewModel(private val loadCharacterUseCase: LoadCharacterUseCase) :
+    ViewModel<SearchUiState, SearchUiEffect>(SearchUiState(false, null)) {
 
-    fun getHeroesLocal() {
+    fun searchCharacterByName(name: String) {
         viewModelScope.launch {
             var listCharacters: List<CharacterDomain>? = null
-            loadAllCharactersUseCase.invoke()
+            loadCharacterUseCase.invoke(name)
                 .onSuccess {
                     listCharacters = it
-                }.onFailure {
-                    sendEffect(HomeUiEffect.ShowEmptyCharacters)
+                }
+                .onFailure {
+                    sendEffect(SearchUiEffect.ShowEmptyCharacters)
                 }
             setState { state ->
                 state.copy(
@@ -26,12 +27,6 @@ class HomeViewModel(val loadAllCharactersUseCase: LoadAllCharactersUseCase) :
                     listCharacters = listCharacters
                 )
             }
-        }
-    }
-
-    fun openSearchScreen() {
-        viewModelScope.launch {
-            sendEffect(HomeUiEffect.OpenSearchScreen)
         }
     }
 }
