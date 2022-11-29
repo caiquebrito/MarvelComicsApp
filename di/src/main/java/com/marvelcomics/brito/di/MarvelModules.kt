@@ -23,6 +23,7 @@ import com.marvelcomics.brito.domain.usecase.LoadComicsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
 import com.marvelcomics.brito.domain.usecase.SaveCharacterUseCase
 import com.marvelcomics.brito.presentation.home.HomeViewModel
+import com.marvelcomics.brito.presentation.search.SearchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import okhttp3.Interceptor
@@ -99,6 +100,7 @@ class MarvelModules {
 //            viewModel { ComicViewModel(get()) }
 //            viewModel { SeriesViewModel(get()) }
             viewModel { HomeViewModel(get()) }
+            viewModel { SearchViewModel(get()) }
         }
     }
 

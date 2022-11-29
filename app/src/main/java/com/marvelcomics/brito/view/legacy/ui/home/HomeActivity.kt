@@ -14,6 +14,7 @@ import com.marvelcomics.brito.presentation.home.HomeViewModel
 import com.marvelcomics.brito.view.legacy.extensions.onEffectTriggered
 import com.marvelcomics.brito.view.legacy.extensions.onStateChange
 import com.marvelcomics.brito.view.legacy.extensions.viewBinding
+import com.marvelcomics.brito.view.legacy.ui.dpToPx
 import com.marvelcomics.brito.view.legacy.ui.home.adapter.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.view.legacy.ui.home.adapter.MarvelHeroesCardAdapter
 import com.marvelcomics.brito.view.legacy.ui.search.SearchActivity
@@ -37,29 +38,38 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initViews() = with(binding) {
-        binding.recyclerviewMarvelCharacters.addItemDecoration(ItemOffSetDecorationHorizontal(8))
-        binding.recyclerviewMarvelCharacters.layoutManager =
-            LinearLayoutManager(this.root.context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerviewMarvelCharacters.addItemDecoration(
+            ItemOffSetDecorationHorizontal(16.dpToPx(resources))
+        )
+        recyclerviewMarvelCharacters.layoutManager = LinearLayoutManager(
+            this.root.context, RecyclerView.HORIZONTAL, false
+        )
+        imageviewMarvelSearch.setOnClickListener {
+            viewModel.searchButtonClicked()
+        }
     }
 
     private fun handleStates(state: HomeUiState) = with(binding) {
-        Log.i("AbstractViewModel", "Handle State: ${state.showLoading} // ${state.listCharacters}")
+        Log.i(
+            "AbstractViewModel",
+            "Home Handle State: ${state.showLoading} // ${state.listCharacters}"
+        )
         // loading.visible = state.isLoading
         if (state.showLoading) {
             viewModel.getHeroesLocal()
         }
-        state.listCharacters?.let {
-            recyclerviewMarvelCharacters.adapter = MarvelHeroesCardAdapter(it) {
+        recyclerviewMarvelCharacters.adapter = state.listCharacters?.let {
+            MarvelHeroesCardAdapter(it) {
                 // send effect show details hero
             }
-        }
+        } ?: getEmptyStateAdapter()
     }
 
     private fun handleEffects(effect: HomeUiEffect) {
-        Log.i("AbstractViewModel", "Handle Effects: $effect")
+        Log.i("AbstractViewModel", "Home Handle Effects: $effect")
         when (effect) {
-            is HomeUiEffect.ShowEmptyCharacters -> {
-                binding.recyclerviewMarvelCharacters.adapter = getEmptyStateAdapter()
+            is HomeUiEffect.ShowError -> {
+                // show toast error
             }
             is HomeUiEffect.OpenSearchScreen -> {
                 startActivity(Intent(this, SearchActivity::class.java))
@@ -73,13 +83,13 @@ class HomeActivity : AppCompatActivity() {
             listOf(
                 CharacterDomain(
                     id = 0,
-                    name = "Empty List",
+                    name = "Click to search",
                     description = null,
                     thumbnailDomain = null
                 )
             )
         ) {
-            viewModel.openSearchScreen()
+            viewModel.emptyButtonItemClicked()
         }
     }
 }

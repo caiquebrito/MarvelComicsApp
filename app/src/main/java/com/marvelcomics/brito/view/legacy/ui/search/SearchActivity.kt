@@ -57,7 +57,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun handleEffect(effect: SearchUiEffect) {
         when (effect) {
-            SearchUiEffect.ShowEmptyCharacters -> {
+            SearchUiEffect.ShowError -> {
             }
         }
     }

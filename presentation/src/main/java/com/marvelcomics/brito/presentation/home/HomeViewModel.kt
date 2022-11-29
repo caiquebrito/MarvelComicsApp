@@ -18,18 +18,23 @@ class HomeViewModel(val loadAllCharactersUseCase: LoadAllCharactersUseCase) :
                 .onSuccess {
                     listCharacters = it
                 }.onFailure {
-                    sendEffect(HomeUiEffect.ShowEmptyCharacters)
+                    sendEffect(HomeUiEffect.ShowError)
                 }
-            setState { state ->
-                state.copy(
-                    showLoading = false,
-                    listCharacters = listCharacters
-                )
+            setState {
+                HomeUiState(showLoading = false, listCharacters = listCharacters)
             }
         }
     }
 
-    fun openSearchScreen() {
+    fun emptyButtonItemClicked() {
+        sendOpenSearchScreenEffect()
+    }
+
+    fun searchButtonClicked() {
+        sendOpenSearchScreenEffect()
+    }
+
+    private fun sendOpenSearchScreenEffect() {
         viewModelScope.launch {
             sendEffect(HomeUiEffect.OpenSearchScreen)
         }

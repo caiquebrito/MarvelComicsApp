@@ -19,7 +19,7 @@ class SearchViewModel(private val loadCharacterUseCase: LoadCharacterUseCase) :
                     listCharacters = it
                 }
                 .onFailure {
-                    sendEffect(SearchUiEffect.ShowEmptyCharacters)
+                    sendEffect(SearchUiEffect.ShowError)
                 }
             setState { state ->
                 state.copy(
