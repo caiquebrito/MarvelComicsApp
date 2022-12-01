@@ -1,12 +1,12 @@
 package com.marvelcomics.brito.data_remote.datasource.mapper
 
 import com.marvelcomics.brito.data_remote.datasource.response.ThumbnailResponse
-import com.marvelcomics.brito.domain.models.ThumbnailDomain
+import com.marvelcomics.brito.entity.ThumbnailEntity
 
 class ThumbnailMapper {
-    fun transform(thumbnailResponse: ThumbnailResponse?): ThumbnailDomain? {
+    fun transform(thumbnailResponse: ThumbnailResponse?): ThumbnailEntity? {
         thumbnailResponse?.let {
-            return ThumbnailDomain(thumbnailResponse.path, thumbnailResponse.extension)
+            return ThumbnailEntity(thumbnailResponse.path, thumbnailResponse.extension)
         }
         return null
     }

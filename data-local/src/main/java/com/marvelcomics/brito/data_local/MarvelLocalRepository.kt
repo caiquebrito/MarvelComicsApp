@@ -1,44 +1,28 @@
 package com.marvelcomics.brito.data_local
 
-import android.content.Context
 import com.marvelcomics.brito.data.local.MarvelLocalDataSource
-import com.marvelcomics.brito.domain.models.CharacterDomain
-import com.marvelcomics.brito.domain.models.ThumbnailDomain
+import com.marvelcomics.brito.data_local.room.AppDatabase
+import com.marvelcomics.brito.data_local.room.extension.toCharacterDomain
+import com.marvelcomics.brito.data_local.room.extension.toCharacterRoomEntity
+import com.marvelcomics.brito.entity.CharacterEntity
 
-class MarvelLocalRepository(context: Context) : MarvelLocalDataSource {
+class MarvelLocalRepository(private val database: AppDatabase) : MarvelLocalDataSource {
 
-    private val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
-    override suspend fun getLastCharacter(): CharacterDomain {
-        return CharacterDomain(
-            id = sharedPreferences.getInt(CHARACTER_ID, 0),
-            name = sharedPreferences.getString(CHARACTER_NAME, ""),
-            description = sharedPreferences.getString(CHARACTER_DESCRIPTION, ""),
-            ThumbnailDomain(
-                path = sharedPreferences.getString(CHARACTER_THUMBNAIL_PATH, ""),
-                extension = sharedPreferences.getString(CHARACTER_THUMBNAIL_EXTENSION, "")
-            )
-        )
+    override suspend fun loadCharacterById(id: Int): CharacterEntity {
+        return database.characterDao().findCharacterById(id).toCharacterDomain()
     }
 
-    override suspend fun setLastCharacter(character: CharacterDomain) {
-        with(sharedPreferences.edit()) {
-            putInt(CHARACTER_ID, character.id)
-            putString(CHARACTER_NAME, character.name)
-            putString(CHARACTER_DESCRIPTION, character.description)
-            putString(CHARACTER_THUMBNAIL_PATH, character.thumbnailDomain?.path)
-            putString(CHARACTER_THUMBNAIL_EXTENSION, character.thumbnailDomain?.extension)
-        }.apply()
+    override suspend fun saveCharacter(character: CharacterEntity) {
+        database.characterDao().insertCharacter(character.toCharacterRoomEntity())
     }
 
-    companion object {
-        const val CHARACTER_ID = "com.marvelcomics.brito.extras.character_id"
-        const val CHARACTER_NAME = "com.marvelcomics.brito.extras.character_name"
-        const val CHARACTER_DESCRIPTION = "com.marvelcomics.brito.extras.character_description"
-        const val CHARACTER_THUMBNAIL_PATH =
-            "com.marvelcomics.brito.extras.character_thumbnail_path"
-        const val CHARACTER_THUMBNAIL_EXTENSION =
-            "com.marvelcomics.brito.extras.character_thumbnail_extensions"
-        const val PREF_NAME = "com.marvelcomics.brito"
+    override suspend fun loadAllCharactersIds(): List<Int> {
+        return database.characterDao().getAllCharactersIds()
+    }
+
+    override suspend fun loadAllCharacters(): List<CharacterEntity> {
+        return database.characterDao().getAllCharacters().map {
+            it.toCharacterDomain()
+        }
     }
 }

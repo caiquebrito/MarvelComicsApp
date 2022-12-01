@@ -37,19 +37,31 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = '1.8'
     }
+
 
     viewBinding {
         enabled = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':presentation')
+    implementation project(path: ':entity')
     implementation project(path: ':domain')
     implementation project(path: ':di')
 
@@ -60,6 +72,15 @@ dependencies {
     implementation androidDependencies.coreKtx
     implementation androidDependencies.constraintLayout
     implementation androidDependencies.lifecycleCommon
+
+    // Compose
+    implementation composeDependencies.foundation
+    implementation composeDependencies.material
+    implementation composeDependencies.uiTooling
+    implementation composeDependencies.constraintLayout
+
+    // Coil
+    implementation composeDependencies.coilCompose
 
     //Koin
     implementation customLibDependencies.koinAndroid
@@ -77,4 +98,15 @@ dependencies {
     testImplementation testDependencies.junit
     androidTestImplementation androidTestDependencies.junit
     androidTestImplementation androidTestDependencies.espressoCore
+
+    // random
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha01'
+    implementation 'com.google.android.material:material:1.2.0'
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.activity:activity-compose:1.3.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 }

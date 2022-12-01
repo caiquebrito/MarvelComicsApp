@@ -2,26 +2,21 @@ package com.marvelcomics.brito.data_remote
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.marvelcomics.brito.domain.exception.NetworkException
 import retrofit2.HttpException
 import retrofit2.Response
-import java.io.IOException
-import java.net.SocketException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
-suspend fun <T> handleApi(
-    errorHandling: ((errorBodyException: Exception) -> T)? = null,
-    callHandling: suspend () -> T,
+inline fun <reified T> handleApi(
+    noinline errorHandling: ((throwable: Throwable) -> T)? = null,
+    callHandling: () -> T,
 ): T {
     return try {
         callHandling.invoke()
     } catch (throwable: Throwable) {
-        errorHandling?.invoke(Exception(throwable)) ?: throwable.handledByCommon()
+        errorHandling?.invoke(throwable) ?: throwable.handledByCommon()
     } ?: throw ErrorHandlingNullException()
 }
 
-fun <T> Response<T>.getBodyOrThrow(): T {
+inline fun <reified T> Response<T>.getBodyOrThrow(): T {
     try {
         if (this.isSuccessful) {
             body()?.let { body ->
@@ -37,29 +32,19 @@ fun <T> Response<T>.getBodyOrThrow(): T {
     }
 }
 
-fun <T> Exception.treatByCode(
+inline fun <reified T> Throwable.handleByCode(
     mapCode: HashMap<String, Exception>
 ): T {
-    with(this) {
-        throw when (this) {
-            is ErrorBodyException -> {
-                throw if (mapCode.containsKey(mappedCode)) {
-                    mapCode[mappedCode]!!
-                } else {
-                    Exception()
-                }
-            }
-            else -> this
+    throw when (this) {
+        is ErrorBodyException -> {
+            throw mapCode[mappedCode] ?: this
         }
+        else -> this
     }
 }
 
-fun <T> Throwable.handledByCommon(): T {
+inline fun <reified T> Throwable.handledByCommon(): T {
     throw when (this) {
-        is IOException,
-        is UnknownHostException,
-        is SocketException,
-        is SocketTimeoutException -> NetworkException()
         is HttpException -> {
             val httpCode = this.code()
             val errorBody = this.response()?.errorBody()?.string()
@@ -72,7 +57,7 @@ fun <T> Throwable.handledByCommon(): T {
             ErrorBodyException(httpCode, coraCode, message, this)
         }
         else -> {
-            Exception(this)
+            this
         }
     }
 }

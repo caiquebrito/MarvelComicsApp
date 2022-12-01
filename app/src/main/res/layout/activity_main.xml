@@ -5,110 +5,95 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/background_strip_line"
-    tools:context=".view.home.HomeActivity">
+    android:background="@color/marvel_black"
+    tools:context=".view.legacy.ui.home.HomeActivity">
 
-    <VideoView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:alpha="0.6"
+        android:background="@drawable/ic_background_marvel" />
 
-    <ImageView
-        android:id="@+id/imageview_home_marvel_logo"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:contentDescription="@null"
-        android:scaleType="fitXY"
-        android:src="@drawable/marvel_logo"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/edittext_marvel_character"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:autofillHints="Hulk"
-        android:background="#FFFFFF"
-        android:hint="Procure seu heroi aqui"
-        android:maxLines="1"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:singleLine="true"
-        app:layout_constraintEnd_toStartOf="@+id/button_search_marvel_character"
-        app:layout_constraintStart_toEndOf="@+id/imageview_home_marvel_logo"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_search_marvel_character"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/shape_round_left"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Procurar"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_load_last_character"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/shape_round_left"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Carregar Último"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ScrollView
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout_top_container"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageview_home_marvel_logo">
+        app:layout_constraintBottom_toTopOf="@id/view_bottom_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="0.4">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/imageview_marvel_logo"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_marvel_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_marvel_search"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="@id/imageview_marvel_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageview_marvel_logo" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/linearlayout_title_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageview_marvel_logo">
 
-            <FrameLayout
-                android:id="@+id/fragment_home_character"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <FrameLayout
-                android:id="@+id/fragment_home_comics"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_marvel_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_home_character" />
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="Marvel Characters"
+                android:textColor="@color/marvel_white"
+                android:textSize="32sp" />
 
-            <FrameLayout
-                android:id="@+id/fragment_home_series"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_marvel_content"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_home_comics" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="Get hooked on a hearty helping of heroes and villains form the humble House of Ideas!"
+                android:textColor="@color/marvel_white"
+                android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ProgressBar
-        android:id="@+id/progressbar_loading_character"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:visibility="gone"
+    <View
+        android:id="@+id/view_bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@drawable/shape_round_top"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintlayout_top_container"
+        app:layout_constraintVertical_weight="0.6" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_marvel_characters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/view_bottom_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edittext_marvel_character" />
+        app:layout_constraintTop_toTopOf="@id/view_bottom_container" />
 </androidx.constraintlayout.widget.ConstraintLayout>
