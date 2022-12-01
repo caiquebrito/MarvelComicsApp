@@ -11,8 +11,11 @@ import kotlinx.coroutines.launch
 class HomeViewModel(val loadAllCharactersUseCase: LoadAllCharactersUseCase) :
     ViewModel<HomeUiState, HomeUiEffect>(HomeUiState(showLoading = true)) {
 
-    fun getHeroesLocal() {
+    fun getLocalCharacters() {
         viewModelScope.launch {
+            setState {
+                HomeUiState(showLoading = true, listCharacters = null)
+            }
             var listCharacters: List<CharacterEntity>? = null
             loadAllCharactersUseCase.invoke()
                 .onSuccess {

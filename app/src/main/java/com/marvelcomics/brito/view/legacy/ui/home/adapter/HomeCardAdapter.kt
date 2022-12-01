@@ -41,7 +41,7 @@ class HomeCardAdapter(
             character.thumbnailEntity?.let {
                 Glide.with(binding.root).load(
                     it.getFullUrlThumbnailWithAspect(
-                        MarvelThumbnailAspectRatio.Portrait.SMALL
+                        MarvelThumbnailAspectRatio.Portrait.MEDIUM
                     )
                 ).fitCenter().into(imageviewMarvelCardHeroProfile)
             }

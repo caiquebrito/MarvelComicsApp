@@ -64,8 +64,7 @@ class SearchActivity : AppCompatActivity() {
         // loading.visible = state.isLoading
         state.listCharacters?.let {
             recyclerviewSearch.adapter = SearchCharacterAdapter(it) {
-                Toast.makeText(this@SearchActivity, "Save this on database", Toast.LENGTH_LONG)
-                    .show()
+                viewModel.addCharacterButtonClicked(it)
             }
         } ?: buildEmptyState()
     }
@@ -77,6 +76,11 @@ class SearchActivity : AppCompatActivity() {
     private fun handleEffect(effect: SearchUiEffect) {
         when (effect) {
             SearchUiEffect.ShowError -> {
+                Toast.makeText(this, "Show Error", Toast.LENGTH_LONG).show()
+            }
+            SearchUiEffect.BackToHome -> {
+                setResult(RESULT_OK)
+                onBackPressed()
             }
         }
     }

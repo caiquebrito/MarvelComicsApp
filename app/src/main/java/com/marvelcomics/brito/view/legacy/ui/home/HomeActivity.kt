@@ -1,9 +1,13 @@
 package com.marvelcomics.brito.view.legacy.ui.home
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,14 +33,28 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModel()
     private val binding by viewBinding(ActivityMainBinding::inflate)
 
+    private var registerSearchActivityResult: ActivityResultLauncher<Intent>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initViews()
+        initObservers()
 
         onStateChange(viewModel, ::handleStates)
         onEffectTriggered(viewModel, ::handleEffects)
+    }
+
+    private fun initObservers() {
+        registerSearchActivityResult =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    viewModel.getLocalCharacters()
+                }
+            }
     }
 
     private fun initViews() = with(binding) {
@@ -58,7 +76,7 @@ class HomeActivity : AppCompatActivity() {
         )
         // loading.visible = state.isLoading
         if (state.showLoading) {
-            viewModel.getHeroesLocal()
+            viewModel.getLocalCharacters()
         }
         recyclerviewMarvelCharacters.adapter = state.listCharacters?.let {
             HomeCardAdapter(it) {
@@ -75,7 +93,9 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this, "Show Error", Toast.LENGTH_LONG).show()
             }
             is HomeUiEffect.OpenSearchScreen -> {
-                startActivity(Intent(this, SearchActivity::class.java))
+                registerSearchActivityResult?.launch(
+                    Intent(this, SearchActivity::class.java)
+                )
             }
             else -> {}
         }
