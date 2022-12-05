@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.presentation.home
 
 import androidx.lifecycle.viewModelScope
+import com.marvelcomics.brito.domain.usecase.LoadAllCharactersIdsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadAllCharactersUseCase
 import com.marvelcomics.brito.domain.usecase.onFailure
 import com.marvelcomics.brito.domain.usecase.onSuccess
@@ -8,13 +9,16 @@ import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.presentation.flow.ViewModel
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val loadAllCharactersUseCase: LoadAllCharactersUseCase) :
+class HomeViewModel(
+    val loadAllCharactersUseCase: LoadAllCharactersUseCase,
+    val loadAllCharactersIdsUseCase: LoadAllCharactersIdsUseCase
+) :
     ViewModel<HomeUiState, HomeUiEffect>(HomeUiState(showLoading = true)) {
 
     fun getLocalCharacters() {
         viewModelScope.launch {
-            setState {
-                HomeUiState(showLoading = true, listCharacters = null)
+            setState { state ->
+                state.copy(showLoading = true)
             }
             var listCharacters: List<CharacterEntity>? = null
             loadAllCharactersUseCase.invoke()
@@ -30,16 +34,30 @@ class HomeViewModel(val loadAllCharactersUseCase: LoadAllCharactersUseCase) :
     }
 
     fun emptyButtonItemClicked() {
-        sendOpenSearchScreenEffect()
+        viewModelScope.launch {
+            sendOpenSearchScreenEffect(ids = null)
+        }
     }
 
     fun searchButtonClicked() {
-        sendOpenSearchScreenEffect()
+        getLocalCharactersIds()
     }
 
-    private fun sendOpenSearchScreenEffect() {
+    private fun getLocalCharactersIds() {
         viewModelScope.launch {
-            sendEffect(HomeUiEffect.OpenSearchScreen)
+            var listIds: List<Int>? = null
+            loadAllCharactersIdsUseCase.invoke()
+                .onSuccess {
+                    listIds = it
+                }.onFailure {
+                }
+            sendOpenSearchScreenEffect(ids = listIds)
+        }
+    }
+
+    private suspend fun sendOpenSearchScreenEffect(ids: List<Int>?) {
+        viewModelScope.launch {
+            sendEffect(HomeUiEffect.OpenSearchScreen(ids))
         }
     }
 }

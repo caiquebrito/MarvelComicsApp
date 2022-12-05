@@ -96,7 +96,7 @@ class MarvelModules {
 
     object Presentation {
         val viewModels = module {
-            viewModel { HomeViewModel(get()) }
+            viewModel { HomeViewModel(get(), get()) }
             viewModel { SearchViewModel(get(), get()) }
         }
     }

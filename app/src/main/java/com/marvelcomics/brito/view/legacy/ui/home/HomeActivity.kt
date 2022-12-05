@@ -3,12 +3,12 @@ package com.marvelcomics.brito.view.legacy.ui.home
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.databinding.ActivityMainBinding
@@ -23,6 +23,7 @@ import com.marvelcomics.brito.view.legacy.extensions.onEffectTriggered
 import com.marvelcomics.brito.view.legacy.extensions.onStateChange
 import com.marvelcomics.brito.view.legacy.extensions.viewBinding
 import com.marvelcomics.brito.view.legacy.ui.home.adapter.HomeCardAdapter
+import com.marvelcomics.brito.view.legacy.ui.search.LIST_IDS_EXTRA
 import com.marvelcomics.brito.view.legacy.ui.search.SearchActivity
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -70,34 +71,34 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun handleStates(state: HomeUiState) = with(binding) {
-        Log.i(
-            "AbstractViewModel",
-            "Home Handle State: ${state.showLoading} // ${state.listCharacters}"
-        )
-        // loading.visible = state.isLoading
+        circularprogressindicatorHome.isVisible = state.showLoading
+        recyclerviewMarvelCharacters.isVisible = state.showLoading.not()
         if (state.showLoading) {
             viewModel.getLocalCharacters()
         }
-        recyclerviewMarvelCharacters.adapter = state.listCharacters?.let {
-            HomeCardAdapter(it) {
-                Toast.makeText(this@HomeActivity, "Load Details Screen", Toast.LENGTH_LONG).show()
+        recyclerviewMarvelCharacters.adapter = state.listCharacters?.let { list ->
+            if (list.isEmpty()) {
+                getEmptyStateAdapter()
+            } else {
+                HomeCardAdapter(list) {
+                    Toast.makeText(this@HomeActivity, "Load Details Screen", Toast.LENGTH_LONG)
+                        .show()
+                }
             }
         } ?: getEmptyStateAdapter()
         recyclerviewMarvelCharacters.animateFallRight()
     }
 
     private fun handleEffects(effect: HomeUiEffect) {
-        Log.i("AbstractViewModel", "Home Handle Effects: $effect")
         when (effect) {
             is HomeUiEffect.ShowError -> {
                 Toast.makeText(this, "Show Error", Toast.LENGTH_LONG).show()
             }
             is HomeUiEffect.OpenSearchScreen -> {
-                registerSearchActivityResult?.launch(
-                    Intent(this, SearchActivity::class.java)
-                )
+                val intent = Intent(this, SearchActivity::class.java)
+                intent.putExtra(LIST_IDS_EXTRA, effect.ids?.toIntArray())
+                registerSearchActivityResult?.launch(intent)
             }
-            else -> {}
         }
     }
 

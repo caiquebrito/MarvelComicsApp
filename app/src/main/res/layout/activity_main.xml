@@ -96,4 +96,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/view_bottom_container" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/circularprogressindicator_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/marvel_red"
+        app:indicatorSize="60dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_bottom_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/view_bottom_container"
+        app:trackThickness="10dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
