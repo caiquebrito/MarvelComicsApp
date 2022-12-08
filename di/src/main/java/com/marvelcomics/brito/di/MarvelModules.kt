@@ -22,6 +22,7 @@ import com.marvelcomics.brito.domain.usecase.LoadCharacterUseCase
 import com.marvelcomics.brito.domain.usecase.LoadComicsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
 import com.marvelcomics.brito.domain.usecase.SaveCharacterUseCase
+import com.marvelcomics.brito.presentation.details.DetailCharacterViewModel
 import com.marvelcomics.brito.presentation.home.HomeViewModel
 import com.marvelcomics.brito.presentation.search.SearchViewModel
 import kotlinx.coroutines.Dispatchers
@@ -98,6 +99,7 @@ class MarvelModules {
         val viewModels = module {
             viewModel { HomeViewModel(get(), get()) }
             viewModel { SearchViewModel(get(), get()) }
+            viewModel { DetailCharacterViewModel(get(), get()) }
         }
     }
 

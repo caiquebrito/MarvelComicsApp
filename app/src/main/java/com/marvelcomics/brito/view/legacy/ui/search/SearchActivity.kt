@@ -20,12 +20,14 @@ import com.marvelcomics.brito.view.legacy.extensions.viewBinding
 import com.marvelcomics.brito.view.legacy.ui.search.adapter.SearchCharacterAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-const val LIST_IDS_EXTRA = "com.marvelcomics.brito.view.search.listIdsExtra"
-
 class SearchActivity : AppCompatActivity() {
 
     private val viewModel: SearchViewModel by viewModel()
     private val binding by viewBinding(ActivitySearchBinding::inflate)
+
+    private val args: SearchActivityArgs by lazy {
+        SearchActivityArgs.deserializeFrom(intent)
+    }
 
     private val actionsEnter = listOf(
         EditorInfo.IME_ACTION_NEXT,
@@ -46,9 +48,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initFromExtras() {
-        intent.extras?.getIntArray(LIST_IDS_EXTRA)?.apply {
-            viewModel.setListIds(this.toList())
-        }
+        viewModel.setListIds(args.listIds)
     }
 
     private fun initViews() = with(binding) {

@@ -22,9 +22,9 @@ import com.marvelcomics.brito.view.legacy.extensions.dpToPx
 import com.marvelcomics.brito.view.legacy.extensions.onEffectTriggered
 import com.marvelcomics.brito.view.legacy.extensions.onStateChange
 import com.marvelcomics.brito.view.legacy.extensions.viewBinding
+import com.marvelcomics.brito.view.legacy.ui.details.DetailCharacterActivityArgs
 import com.marvelcomics.brito.view.legacy.ui.home.adapter.HomeCardAdapter
-import com.marvelcomics.brito.view.legacy.ui.search.LIST_IDS_EXTRA
-import com.marvelcomics.brito.view.legacy.ui.search.SearchActivity
+import com.marvelcomics.brito.view.legacy.ui.search.SearchActivityArgs
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -80,9 +80,8 @@ class HomeActivity : AppCompatActivity() {
             if (list.isEmpty()) {
                 getEmptyStateAdapter()
             } else {
-                HomeCardAdapter(list) {
-                    Toast.makeText(this@HomeActivity, "Load Details Screen", Toast.LENGTH_LONG)
-                        .show()
+                HomeCardAdapter(list) { entity ->
+                    viewModel.adapterItemClicked(entity)
                 }
             }
         } ?: getEmptyStateAdapter()
@@ -95,9 +94,16 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this, "Show Error", Toast.LENGTH_LONG).show()
             }
             is HomeUiEffect.OpenSearchScreen -> {
-                val intent = Intent(this, SearchActivity::class.java)
-                intent.putExtra(LIST_IDS_EXTRA, effect.ids?.toIntArray())
-                registerSearchActivityResult?.launch(intent)
+                effect.ids?.let {
+                    val intent = SearchActivityArgs(it).build(this@HomeActivity)
+                    registerSearchActivityResult?.launch(intent)
+                }
+            }
+            is HomeUiEffect.OpenDetailScreen -> {
+                startActivity(
+                    DetailCharacterActivityArgs(effect.entity)
+                        .build(this@HomeActivity)
+                )
             }
         }
     }

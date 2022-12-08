@@ -41,9 +41,9 @@ class HomeCardAdapter(
             character.thumbnailEntity?.let {
                 Glide.with(binding.root).load(
                     it.getFullUrlThumbnailWithAspect(
-                        MarvelThumbnailAspectRatio.Portrait.MEDIUM
+                        MarvelThumbnailAspectRatio.Standard.MEDIUM
                     )
-                ).fitCenter().into(imageviewMarvelCardHeroProfile)
+                ).centerCrop().into(imageviewMarvelCardHeroProfile)
             }
             textviewMarvelCardHeroName.text = "Building..."
             textviewMarvelCardHeroTitle.text = character.name

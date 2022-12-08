@@ -55,9 +55,11 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun sendOpenSearchScreenEffect(ids: List<Int>?) {
-        viewModelScope.launch {
-            sendEffect(HomeUiEffect.OpenSearchScreen(ids))
-        }
+    private fun sendOpenSearchScreenEffect(ids: List<Int>?) {
+        sendEffect(HomeUiEffect.OpenSearchScreen(ids))
+    }
+
+    fun adapterItemClicked(entity: CharacterEntity) {
+        sendEffect(HomeUiEffect.OpenDetailScreen(entity))
     }
 }

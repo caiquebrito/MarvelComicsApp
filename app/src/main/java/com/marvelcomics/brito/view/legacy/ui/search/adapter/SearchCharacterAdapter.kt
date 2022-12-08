@@ -38,9 +38,9 @@ class SearchCharacterAdapter(
             characterEntity.thumbnailEntity?.let {
                 Glide.with(binding.root).load(
                     it.getFullUrlThumbnailWithAspect(
-                        MarvelThumbnailAspectRatio.Portrait.SMALL
+                        MarvelThumbnailAspectRatio.Standard.SMALL
                     )
-                ).fitCenter().into(imageviewSearchCharacterItem)
+                ).centerCrop().into(imageviewSearchCharacterItem)
             }
             textviewSearchCharacterItemName.text = characterEntity.name
             textviewSearchCharacterItemDescription.text = characterEntity.description
