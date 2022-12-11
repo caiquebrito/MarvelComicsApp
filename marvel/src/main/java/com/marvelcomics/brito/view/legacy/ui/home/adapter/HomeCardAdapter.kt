@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelcomics.brito.databinding.ViewHomeCardItemBinding
 import com.marvelcomics.brito.entity.CharacterEntity
+import com.marvelcomics.brito.view.compose.shape.CutCustomCornerShape
 import com.marvelcomics.brito.view.legacy.models.MarvelThumbnailAspectRatio
-import com.marvelcomics.brito.view.shape.CutCustomCornerShape
 
 class HomeCardAdapter(
     private val list: List<CharacterEntity>,

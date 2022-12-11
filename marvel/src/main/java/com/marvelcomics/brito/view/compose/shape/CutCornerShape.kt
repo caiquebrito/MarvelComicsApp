@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.view.shape
+package com.marvelcomics.brito.view.compose.shape
 
 import android.graphics.Canvas
 import android.graphics.Color

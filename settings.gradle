@@ -1,6 +1,6 @@
 include ':domain'
 rootProject.name='MarvelComicsApp'
-include ':app'
+include ':marvel'
 include ':presentation'
 include ':data'
 include ':data-remote'
