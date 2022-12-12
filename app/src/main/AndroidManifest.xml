@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.marvelcomics.brito">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".app.MarvelApp"
+        android:allowBackup="true"
+        android:fullBackupContent="true"
+        android:supportsRtl="true"
+        tools:targetApi="n">
+    </application>
+</manifest>

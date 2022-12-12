@@ -19,8 +19,4 @@ interface MarvelAPI {
 
     @GET("characters/{characterId}/series")
     suspend fun series(@Path("characterId") characterId: Int): Response<RemoteMarvelContainerResponse<SeriesResponse>>
-
-    companion object {
-        const val BASE_URL = "https://gateway.marvel.com/v1/public/"
-    }
 }

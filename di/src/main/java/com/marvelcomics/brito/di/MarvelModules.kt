@@ -31,11 +31,33 @@ import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 @InternalCoroutinesApi
-class MarvelModules {
+object MarvelModules {
+
+    fun injectFeature(baseURL: String) {
+        MarvelModules.baseURL = baseURL
+        loadFeature
+    }
+
+    internal var baseURL: String = ""
+
+    private val loadFeature by lazy {
+        loadKoinModules(
+            listOf(
+                Data.database,
+                Domain.usesCases,
+                Data.interceptors,
+                Data.mappers,
+                Data.repositories,
+                Data.api,
+                Presentation.viewModels
+            )
+        )
+    }
 
     object Data {
         private val pubKey = "9294302a561e7a8a489807700c2b56a9"
@@ -81,7 +103,7 @@ class MarvelModules {
         val api = module {
             single<MarvelAPI> {
                 MarvelAPIImpl(
-                    MarvelAPI.BASE_URL,
+                    baseURL,
                     get(named(Interceptors.KEY_HASH)),
                     get(named(Interceptors.LOGGING))
                 )
