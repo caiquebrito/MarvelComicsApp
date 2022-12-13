@@ -1,5 +1,5 @@
+rootProject.name = 'MarvelComicsApp'
 include ':domain'
-rootProject.name='MarvelComicsApp'
 include ':app'
 include ':presentation'
 include ':data'

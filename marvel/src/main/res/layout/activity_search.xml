@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/marvel_black"
-    tools:context=".view.legacy.ui.search.SearchActivity">
+    tools:context=".marvel.legacy.ui.search.SearchActivity">
 
     <View
         android:layout_width="match_parent"

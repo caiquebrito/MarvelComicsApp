@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/marvel_black"
-    tools:context=".view.legacy.ui.home.HomeActivity">
+    tools:context=".marvel.legacy.ui.home.HomeActivity">
 
     <View
         android:layout_width="match_parent"
