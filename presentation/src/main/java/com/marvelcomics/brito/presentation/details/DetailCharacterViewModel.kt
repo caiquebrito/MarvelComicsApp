@@ -6,13 +6,19 @@ import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
 import com.marvelcomics.brito.domain.usecase.onFailure
 import com.marvelcomics.brito.domain.usecase.onSuccess
 import com.marvelcomics.brito.entity.ComicEntity
-import com.marvelcomics.brito.entity.SeriesEntity
 import com.marvelcomics.brito.presentation.flow.ViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class DetailCharacterViewModel(
     private val loadComicsUseCase: LoadComicsUseCase,
-    private val loadSeriesUseCase: LoadSeriesUseCase
+    private val loadSeriesUseCase: LoadSeriesUseCase,
+    private val dispatcher: CoroutineDispatcher,
 ) : ViewModel<DetailCharacterUiState, DetailCharacterUiEffect>(DetailCharacterUiState(isIdle = true)) {
 
     fun getComicsAndSeriesById(id: Int) {
@@ -39,18 +45,24 @@ class DetailCharacterViewModel(
     }
 
     private suspend fun getSeriesById(id: Int) {
-        setState { state ->
-            state.copy(isIdle = false, showSeriesLoading = true)
-        }
-        var listSeries: List<SeriesEntity>? = null
         loadSeriesUseCase.invoke(id)
-            .onSuccess {
-                listSeries = it
-            }.onFailure {
+            .flowOn(dispatcher)
+            .onStart {
+                setState { state ->
+                    state.copy(isIdle = false, showSeriesLoading = true)
+                }
+            }
+            .onCompletion {
+                setState { state ->
+                    state.copy(showSeriesLoading = false)
+                }
+            }.catch {
                 sendEffect(DetailCharacterUiEffect.ShowSeriesError)
             }
-        setState { state ->
-            state.copy(showSeriesLoading = false, listSeries = listSeries)
-        }
+            .collect {
+                setState { state ->
+                    state.copy(listSeries = it)
+                }
+            }
     }
 }
