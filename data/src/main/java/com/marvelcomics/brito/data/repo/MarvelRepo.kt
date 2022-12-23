@@ -6,6 +6,7 @@ import com.marvelcomics.brito.domain.repository.MarvelRepository
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.entity.ComicEntity
 import com.marvelcomics.brito.entity.SeriesEntity
+import kotlinx.coroutines.flow.Flow
 
 class MarvelRepo(
     private val remote: MarvelRemoteDataSource,
@@ -20,7 +21,7 @@ class MarvelRepo(
         return remote.getComicsById(characterId)
     }
 
-    override suspend fun getSeries(characterId: Int): List<SeriesEntity> {
+    override suspend fun getSeries(characterId: Int): Flow<List<SeriesEntity>> {
         return remote.getSeriesById(characterId)
     }
 
