@@ -3,9 +3,9 @@ package com.marvelcomics.brito.data_remote.repository
 import com.marvelcomics.brito.data.remote.MarvelRemoteDataSource
 import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.datasource.response.fromResponseToEntity
-import com.marvelcomics.brito.data_remote.exception.MarvelApiException
 import com.marvelcomics.brito.data_remote.getBodyOrThrow
 import com.marvelcomics.brito.data_remote.handleApi
+import com.marvelcomics.brito.data_remote.throwIfNull
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.entity.ComicEntity
 import com.marvelcomics.brito.entity.SeriesEntity
@@ -33,11 +33,4 @@ class MarvelRemoteRepository(
             api.series(characterId).getBodyOrThrow().fromResponseToEntity().throwIfNull()
         )
     }
-}
-
-@Throws(MarvelApiException::class)
-inline fun <reified T> T?.throwIfNull(): T {
-    this?.let {
-        return it
-    } ?: throw MarvelApiException("Error Mapping ${T::class.java.canonicalName}")
 }
