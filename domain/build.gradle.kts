@@ -7,17 +7,18 @@ plugins {
 dependencies {
     implementation(project(":entity"))
 
-    //Kotlin
-    implementation(libs.kotlin.stdlib)
+    with(libs.kotlin) {
+        implementation(stdlib)
+        implementation(coroutines.core)
+    }
 
-    //Coroutines
-    implementation(libs.kotlin.coroutines.core)
+    with(libs) {
+        testImplementation(androidx.archCoreTesting)
+        testImplementation(kotlin.coroutines.test)
+        testImplementation(mockK)
 
-    testImplementation(libs.androidx.archCoreTesting)
-    testImplementation(libs.kotlin.coroutines.test)
-    testImplementation(libs.mockK)
-
-    testImplementation(libs.junit4)
+        testImplementation(junit4)
+    }
 }
 
 java {

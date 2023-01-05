@@ -29,7 +29,10 @@ dependencies {
     implementation(project(":entity"))
     implementation(project(":domain"))
 
-    implementation(libs.kotlin.stdlib)
+    with(libs.kotlin) {
+        implementation(stdlib)
+        testImplementation(coroutines.test)
+    }
 
     with(libs.kotlin.coroutines) {
         implementation(core)
@@ -39,6 +42,7 @@ dependencies {
     with(libs.androidx) {
         implementation(appcompat)
         implementation(coreKtx)
+        testImplementation(archCoreTesting)
     }
 
     with(libs.androidx.lifecycle) {
@@ -46,9 +50,8 @@ dependencies {
         implementation(runtime.ktx)
     }
 
-    testImplementation(libs.androidx.archCoreTesting)
-    testImplementation(libs.kotlin.coroutines.test)
-    testImplementation(libs.mockK)
-
-    testImplementation(libs.junit4)
+    with(libs) {
+        testImplementation(mockK)
+        testImplementation(junit4)
+    }
 }

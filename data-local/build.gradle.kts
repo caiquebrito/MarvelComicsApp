@@ -30,10 +30,13 @@ dependencies {
     implementation(project(":entity"))
     implementation(project(":data"))
 
-    implementation(libs.kotlin.stdlib)
+    with(libs.androidx) {
+        implementation(room.runtime)
+        kapt(room.compiler)
+    }
 
-    implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
-
-    testImplementation(libs.junit4)
+    with(libs) {
+        implementation(kotlin.stdlib)
+        testImplementation(junit4)
+    }
 }

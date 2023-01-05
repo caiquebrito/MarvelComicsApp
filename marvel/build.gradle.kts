@@ -90,6 +90,9 @@ dependencies {
         implementation(appcompat)
         implementation(coreKtx)
         implementation(constraintLayout)
+        implementation(navigationUi)
+        implementation(navigationFragment)
+        androidTestImplementation(test.espressoCore)
     }
 
     with(libs.compose) {
@@ -109,29 +112,23 @@ dependencies {
         implementation(coroutines.core)
     }
 
-    implementation(libs.koin.android)
-
     with(libs.okhttp) {
         implementation(okhttp)
         implementation(loggingInterceptor)
     }
-    
+
     with(libs) {
         implementation(canarinho)
 
         implementation(glide)
         kapt(glide.compiler)
 
+        implementation(koin.android)
+
         testImplementation(junit4)
         androidTestImplementation(junit4)
-        androidTestImplementation(androidx.test.espressoCore)
         androidTestImplementation(compose.test.junit4)
 
         debugImplementation(compose.test.manifest)
-    }
-
-    with(libs.androidx) {
-        implementation(navigationUi)
-        implementation(navigationFragment)
     }
 }

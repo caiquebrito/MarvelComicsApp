@@ -8,13 +8,17 @@ dependencies {
     implementation(project(":entity"))
     implementation(project(":data"))
 
-    implementation(libs.kotlin.stdlib)
-    implementation(libs.kotlin.coroutines.core)
+    with(libs.kotlin) {
+        implementation(stdlib)
+        implementation(coroutines.core)
+    }
 
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gsonConverter)
+    with(libs) {
+        implementation(retrofit)
+        implementation(retrofit.gsonConverter)
 
-    testImplementation(libs.junit4)
+        testImplementation(junit4)
+    }
 }
 
 java {

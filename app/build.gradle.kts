@@ -49,9 +49,11 @@ dependencies {
     implementation(project(":marvel"))
     implementation(project(":di"))
 
-    implementation(libs.kotlin.stdlib)
+    with(libs) {
+        implementation(kotlin.stdlib)
 
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.test.espressoCore)
+        androidTestImplementation(junit4)
+        androidTestImplementation(androidx.test.espressoCore)
+        testImplementation(junit4)
+    }
 }

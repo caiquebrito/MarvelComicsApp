@@ -34,18 +34,22 @@ dependencies {
 
     implementation(libs.kotlin.stdlib)
 
-    implementation(libs.retrofit)
-    implementation(libs.okhttp.loggingInterceptor)
-
-    implementation(libs.kotlin.coroutines.core)
-
-    implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
-
     with(libs.koin) {
         implementation(core)
         implementation(android)
     }
 
-    testImplementation(libs.junit4)
+    with(libs.androidx) {
+        implementation(room.runtime)
+        kapt(room.compiler)
+    }
+
+    with(libs) {
+        implementation(retrofit)
+        implementation(okhttp.loggingInterceptor)
+
+        implementation(kotlin.coroutines.core)
+
+        testImplementation(junit4)
+    }
 }

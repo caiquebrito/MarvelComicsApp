@@ -18,7 +18,7 @@
         tools:targetApi="n">
 
         <activity
-            android:name=".LauncherActivity"
+            android:name=".app.LauncherActivity"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

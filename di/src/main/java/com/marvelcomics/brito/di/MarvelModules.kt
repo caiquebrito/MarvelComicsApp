@@ -8,10 +8,6 @@ import com.marvelcomics.brito.data_local.MarvelLocalRepository
 import com.marvelcomics.brito.data_local.room.AppDatabase
 import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.api.MarvelAPIImpl
-import com.marvelcomics.brito.data_remote.datasource.mapper.CharacterMapper
-import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
-import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
-import com.marvelcomics.brito.data_remote.datasource.mapper.ThumbnailMapper
 import com.marvelcomics.brito.data_remote.okhttp.KeyHashInterceptor
 import com.marvelcomics.brito.data_remote.repository.MarvelRemoteRepository
 import com.marvelcomics.brito.domain.repository.MarvelRepository
@@ -51,7 +47,6 @@ object MarvelModules {
                 Data.database,
                 Domain.usesCases,
                 Data.interceptors,
-                Data.mappers,
                 Data.repositories,
                 Data.api,
                 Presentation.viewModels
@@ -93,13 +88,6 @@ object MarvelModules {
             }
         }
 
-        val mappers = module {
-            factory { ThumbnailMapper() }
-            factory { CharacterMapper(get()) }
-            factory { SeriesMapper(get()) }
-            factory { ComicMapper(get()) }
-        }
-
         val api = module {
             single<MarvelAPI> {
                 MarvelAPIImpl(
@@ -111,7 +99,7 @@ object MarvelModules {
         }
 
         val repositories = module {
-            single<MarvelRemoteDataSource> { MarvelRemoteRepository(get(), get(), get(), get()) }
+            single<MarvelRemoteDataSource> { MarvelRemoteRepository(get()) }
             single<MarvelLocalDataSource> { MarvelLocalRepository(get()) }
             single<MarvelRepository> { MarvelRepo(get(), get()) }
         }
@@ -121,7 +109,7 @@ object MarvelModules {
         val viewModels = module {
             viewModel { HomeViewModel(get(), get()) }
             viewModel { SearchViewModel(get(), get()) }
-            viewModel { DetailCharacterViewModel(get(), get()) }
+            viewModel { DetailCharacterViewModel(get(), get(), Dispatchers.IO) }
         }
     }
 
@@ -132,7 +120,7 @@ object MarvelModules {
             factory { LoadCharacterByIdUseCase(get(), Dispatchers.IO) }
             factory { LoadCharacterUseCase(get(), Dispatchers.IO) }
             factory { LoadComicsUseCase(get(), Dispatchers.IO) }
-            factory { LoadSeriesUseCase(get(), Dispatchers.IO) }
+            factory { LoadSeriesUseCase(get()) }
             factory { SaveCharacterUseCase(get(), Dispatchers.IO) }
         }
     }
