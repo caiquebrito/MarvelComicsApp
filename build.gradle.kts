@@ -19,29 +19,29 @@ allprojects {
     apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
     apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
 
-//    configure<KtlintExtension> {
-//        outputToConsole.set(true)
-//        outputColorName.set("RED")
-//        ignoreFailures.set(false)
-//        enableExperimentalRules.set(false)
-//        filter {
-//            exclude("**/generated/**")
-//            include("**/kotlin/**")
-//        }
-//    }
-//
-//    configure<DetektExtension> {
-//        source = files(
-//            "app/src/",
-//            "domain/src",
-//            "data-local/src",
-//            "data-remote/src",
-//            "data/src",
-//            "entity/src",
-//            "di/src",
-//            "marvel/src",
-//            "presentation/src"
-//        )
-//        config = files("./quality/detekt.yml")
-//    }
+    configure<KtlintExtension> {
+        outputToConsole.set(true)
+        outputColorName.set("RED")
+        ignoreFailures.set(false)
+        enableExperimentalRules.set(false)
+        filter {
+            exclude("**/generated/**")
+            include("**/kotlin/**")
+        }
+    }
+
+    configure<DetektExtension> {
+        source = files(
+            "app/src/",
+            "data/src",
+            "data-local/src",
+            "data-remote/src",
+            "di/src",
+            "domain/src",
+            "entity/src",
+            "marvel/src",
+            "presentation/src"
+        )
+        config = files("./quality/detekt.yml")
+    }
 }
