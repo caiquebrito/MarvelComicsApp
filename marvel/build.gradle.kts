@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
@@ -24,26 +24,10 @@ android {
 //    }
 
     defaultConfig {
-        applicationId = "com.marvelcomics.brito.marvelcomics"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-    }
-
-    buildTypes {
-        debug {
-            applicationIdSuffix = ".stage"
-        }
-
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            )
-        }
     }
 
     compileOptions {
@@ -102,6 +86,7 @@ dependencies {
         implementation(ui.tooling.preview)
         implementation(ui.ui)
         implementation(constraintLayout)
+        kapt(runtime)
         implementation(material3)
         implementation(google.material)
         implementation(activity)

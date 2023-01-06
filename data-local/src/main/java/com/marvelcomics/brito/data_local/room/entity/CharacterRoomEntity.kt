@@ -10,5 +10,5 @@ data class CharacterRoomEntity(
     val name: String?,
     val description: String?,
     @Embedded
-    val thumbnail: ThumbnailRoomEntity?
+    var thumbnail: ThumbnailRoomEntity?
 )

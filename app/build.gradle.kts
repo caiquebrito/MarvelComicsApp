@@ -19,6 +19,19 @@ android {
 //        consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildTypes {
+        debug {
+            applicationIdSuffix = ".stage"
+        }
+
+        release {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.valueOf(libs.versions.javaVersion.get())
         targetCompatibility = JavaVersion.valueOf(libs.versions.javaVersion.get())
@@ -29,12 +42,7 @@ android {
     }
 
     buildFeatures {
-        compose = true
         viewBinding = true
-    }
-    
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
     
     packagingOptions {
@@ -49,11 +57,20 @@ dependencies {
     implementation(project(":marvel"))
     implementation(project(":di"))
 
+    with(libs.androidx) {
+        implementation(appcompat)
+        androidTestImplementation(test.espressoCore)
+    }
+
+    with(libs.koin) {
+        implementation(core)
+        implementation(android)
+    }
+
     with(libs) {
         implementation(kotlin.stdlib)
 
         androidTestImplementation(junit4)
-        androidTestImplementation(androidx.test.espressoCore)
         testImplementation(junit4)
     }
 }

@@ -26,6 +26,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.qualifier.named
@@ -81,7 +82,7 @@ object MarvelModules {
         val database = module {
             single {
                 Room.databaseBuilder(
-                    androidApplication(),
+                    androidContext(),
                     AppDatabase::class.java,
                     databaseName
                 ).build()

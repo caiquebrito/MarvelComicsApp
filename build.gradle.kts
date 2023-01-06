@@ -16,6 +16,13 @@ plugins {
 
 allprojects {
 
+    repositories {
+        google()
+        mavenCentral()
+        maven { setUrl("https://jitpack.io") }
+        gradlePluginPortal()
+    }
+
     apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
     apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
 
