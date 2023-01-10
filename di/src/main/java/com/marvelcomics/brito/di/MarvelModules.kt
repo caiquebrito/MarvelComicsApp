@@ -8,10 +8,6 @@ import com.marvelcomics.brito.data_local.MarvelLocalRepository
 import com.marvelcomics.brito.data_local.room.AppDatabase
 import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.api.MarvelAPIImpl
-import com.marvelcomics.brito.data_remote.datasource.mapper.CharacterMapper
-import com.marvelcomics.brito.data_remote.datasource.mapper.ComicMapper
-import com.marvelcomics.brito.data_remote.datasource.mapper.SeriesMapper
-import com.marvelcomics.brito.data_remote.datasource.mapper.ThumbnailMapper
 import com.marvelcomics.brito.data_remote.okhttp.KeyHashInterceptor
 import com.marvelcomics.brito.data_remote.repository.MarvelRemoteRepository
 import com.marvelcomics.brito.domain.repository.MarvelRepository
@@ -22,6 +18,7 @@ import com.marvelcomics.brito.domain.usecase.LoadCharacterUseCase
 import com.marvelcomics.brito.domain.usecase.LoadComicsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
 import com.marvelcomics.brito.domain.usecase.SaveCharacterUseCase
+import com.marvelcomics.brito.presentation.details.DetailCharacterViewModel
 import com.marvelcomics.brito.presentation.home.HomeViewModel
 import com.marvelcomics.brito.presentation.search.SearchViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,12 +26,34 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 @InternalCoroutinesApi
-class MarvelModules {
+object MarvelModules {
+
+    fun injectFeature(baseURL: String) {
+        MarvelModules.baseURL = baseURL
+        loadFeature
+    }
+
+    internal var baseURL: String = ""
+
+    private val loadFeature by lazy {
+        loadKoinModules(
+            listOf(
+                Data.database,
+                Domain.usesCases,
+                Data.interceptors,
+                Data.repositories,
+                Data.api,
+                Presentation.viewModels
+            )
+        )
+    }
 
     object Data {
         private val pubKey = "9294302a561e7a8a489807700c2b56a9"
@@ -63,24 +82,17 @@ class MarvelModules {
         val database = module {
             single {
                 Room.databaseBuilder(
-                    androidApplication(),
+                    androidContext(),
                     AppDatabase::class.java,
                     databaseName
                 ).build()
             }
         }
 
-        val mappers = module {
-            factory { ThumbnailMapper() }
-            factory { CharacterMapper(get()) }
-            factory { SeriesMapper(get()) }
-            factory { ComicMapper(get()) }
-        }
-
         val api = module {
             single<MarvelAPI> {
                 MarvelAPIImpl(
-                    MarvelAPI.BASE_URL,
+                    baseURL,
                     get(named(Interceptors.KEY_HASH)),
                     get(named(Interceptors.LOGGING))
                 )
@@ -88,7 +100,7 @@ class MarvelModules {
         }
 
         val repositories = module {
-            single<MarvelRemoteDataSource> { MarvelRemoteRepository(get(), get(), get(), get()) }
+            single<MarvelRemoteDataSource> { MarvelRemoteRepository(get()) }
             single<MarvelLocalDataSource> { MarvelLocalRepository(get()) }
             single<MarvelRepository> { MarvelRepo(get(), get()) }
         }
@@ -96,8 +108,9 @@ class MarvelModules {
 
     object Presentation {
         val viewModels = module {
-            viewModel { HomeViewModel(get()) }
+            viewModel { HomeViewModel(get(), get()) }
             viewModel { SearchViewModel(get(), get()) }
+            viewModel { DetailCharacterViewModel(get(), get(), Dispatchers.IO) }
         }
     }
 
@@ -108,7 +121,7 @@ class MarvelModules {
             factory { LoadCharacterByIdUseCase(get(), Dispatchers.IO) }
             factory { LoadCharacterUseCase(get(), Dispatchers.IO) }
             factory { LoadComicsUseCase(get(), Dispatchers.IO) }
-            factory { LoadSeriesUseCase(get(), Dispatchers.IO) }
+            factory { LoadSeriesUseCase(get()) }
             factory { SaveCharacterUseCase(get(), Dispatchers.IO) }
         }
     }

@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.data_remote
 
 import com.marvelcomics.brito.data_remote.datasource.response.ThumbnailResponse
+import com.marvelcomics.brito.data_remote.exception.MarvelApiException
 import okhttp3.ResponseBody
 import org.junit.Test
 import retrofit2.HttpException
@@ -89,6 +90,21 @@ internal class DataRemoteExtensionKtTest {
                 throwable.handledByCommon<Throwable>().handleByCode(mappedCodes)
             }
         )
+    }
+
+    @Test
+    fun `GIVEN received a object WHEN tried to get its value THEN return destiny object`() {
+        val result = getObjectOrNull("10").throwIfNull()
+        assert(result.isNotEmpty())
+    }
+
+    @Test(expected = MarvelApiException::class)
+    fun `GIVEN received a object WHEN tried to get its value THEN return a exception of nullable`() {
+        getObjectOrNull(null).throwIfNull()
+    }
+
+    private fun getObjectOrNull(param: String?): List<String>? {
+        return param?.let { listOf("0") }
     }
 }
 

@@ -2,6 +2,7 @@ package com.marvelcomics.brito.data_remote
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.marvelcomics.brito.data_remote.exception.MarvelApiException
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -60,6 +61,13 @@ inline fun <reified T> Throwable.handledByCommon(): T {
             this
         }
     }
+}
+
+@Throws(MarvelApiException::class)
+inline fun <reified T> T?.throwIfNull(): T {
+    this?.let {
+        return it
+    } ?: throw MarvelApiException("Error Mapping ${T::class.java.canonicalName}")
 }
 
 class NullBodyException : Exception()
