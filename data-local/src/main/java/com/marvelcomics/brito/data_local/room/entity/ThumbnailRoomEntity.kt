@@ -4,6 +4,6 @@ import androidx.room.Entity
 
 @Entity(tableName = "thumbnail")
 data class ThumbnailRoomEntity(
-    val path: String? = null,
-    val extension: String? = null
+    var path: String? = null,
+    var extension: String? = null
 )

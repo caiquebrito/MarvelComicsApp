@@ -11,13 +11,8 @@ class LoadCharacterUseCase(
 ) : CoroutineUseCase<String, List<CharacterEntity>>(dispatcher) {
 
     override suspend fun performAction(param: String?): Result<List<CharacterEntity>> {
-        return param?.let { param ->
-            marvelRepository.getCharacters(param).resultFromNullable()
-                .onSuccess {
-                    if (it.isEmpty()) {
-                        throw EmptyException()
-                    }
-                }
+        return param?.let {
+            marvelRepository.getCharacters(it).resultFromNullable()
         } ?: throw EmptyInputException()
     }
 }

@@ -1,6 +1,5 @@
 package com.marvelcomics.brito.presentation.search
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.usecase.LoadCharacterUseCase
 import com.marvelcomics.brito.domain.usecase.SaveCharacterUseCase
@@ -14,23 +13,34 @@ class SearchViewModel(
     private val loadCharacterUseCase: LoadCharacterUseCase,
     private val saveCharacterUseCase: SaveCharacterUseCase
 ) :
-    ViewModel<SearchUiState, SearchUiEffect>(SearchUiState(false, null)) {
+    ViewModel<SearchUiState, SearchUiEffect>(
+        SearchUiState(
+            isIdle = true,
+            showLoading = false,
+            listCharacters = null
+        )
+    ) {
+
+    private var listIds: List<Int>? = null
+
+    fun setListIds(ids: List<Int>) {
+        listIds = ids
+    }
 
     fun searchCharacterByName(name: String) {
         viewModelScope.launch {
-            Log.i("CoroutineTest", "Before execution")
+            setState { state ->
+                state.copy(isIdle = false, showLoading = true)
+            }
             var listCharacters: List<CharacterEntity>? = null
             loadCharacterUseCase.invoke(name)
                 .onSuccess {
-                    Log.i("CoroutineTest", "Success execution")
                     listCharacters = it
                 }.onFailure {
-                    Log.i("CoroutineTest", "Failure execution")
                     sendEffect(SearchUiEffect.ShowError)
                 }
-            Log.i("CoroutineTest", "After execution")
-            setState { state ->
-                state.copy(
+            setState {
+                SearchUiState(
                     showLoading = false,
                     listCharacters = listCharacters
                 )
@@ -40,12 +50,22 @@ class SearchViewModel(
 
     fun addCharacterButtonClicked(characterEntity: CharacterEntity) {
         viewModelScope.launch {
-            saveCharacterUseCase.invoke(characterEntity)
-                .onSuccess {
-                    sendEffect(SearchUiEffect.BackToHome)
-                }.onFailure {
-                    sendEffect(SearchUiEffect.ShowError)
+            listIds?.let { ids ->
+                if (ids.contains(characterEntity.id)) {
+                    sendEffect(SearchUiEffect.ShowAlreadyAddedError)
+                } else {
+                    saveCharacterOnDatabase(characterEntity)
                 }
+            } ?: saveCharacterOnDatabase(characterEntity)
         }
+    }
+
+    private suspend fun saveCharacterOnDatabase(characterEntity: CharacterEntity) {
+        saveCharacterUseCase.invoke(characterEntity)
+            .onSuccess {
+                sendEffect(SearchUiEffect.BackToHome)
+            }.onFailure {
+                sendEffect(SearchUiEffect.ShowError)
+            }
     }
 }
