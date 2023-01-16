@@ -21,6 +21,6 @@ class MarvelApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Marvel.init("https://gateway.marvel.com/v1/public/")
+        Marvel.init()
     }
 }

@@ -91,7 +91,7 @@ dependencies {
         implementation(google.material)
         implementation(activity)
     }
-    
+
     with(libs.kotlin) {
         implementation(stdlib)
         implementation(coroutines.core)

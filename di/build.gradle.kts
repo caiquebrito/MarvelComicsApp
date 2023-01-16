@@ -15,6 +15,24 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildTypes {
+        debug {
+            buildConfigField(
+                "String",
+                "MARVEL_URL",
+                "\"https://gateway.marvel.com/v1/public/\""
+            )
+        }
+
+        release {
+            buildConfigField(
+                "String",
+                "MARVEL_URL",
+                "\"https://gateway.marvel.com/v1/public/\""
+            )
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.valueOf(libs.versions.javaVersion.get())
         targetCompatibility = JavaVersion.valueOf(libs.versions.javaVersion.get())
@@ -37,6 +55,7 @@ dependencies {
     with(libs.koin) {
         implementation(core)
         implementation(android)
+        testImplementation(junit)
     }
 
     with(libs.androidx) {
@@ -44,12 +63,17 @@ dependencies {
         kapt(room.compiler)
     }
 
+    with(libs.kotlin.coroutines) {
+        implementation(core)
+        testImplementation(test)
+    }
+
     with(libs) {
         implementation(retrofit)
         implementation(okhttp.loggingInterceptor)
 
-        implementation(kotlin.coroutines.core)
-
         testImplementation(junit4)
+        testImplementation(junit.jupiter.api)
+        testImplementation(mockK)
     }
 }

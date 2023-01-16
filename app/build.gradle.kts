@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()
-    
+
     defaultConfig {
         applicationId = "com.marvelcomics.brito.marvelcomics"
         versionCode = 1
@@ -44,13 +44,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    
+
     packagingOptions {
         packagingOptions.resources.excludes += setOf(
             "/META-INF/{AL2.0,LGPL2.1}"
         )
     }
-
 }
 
 dependencies {
