@@ -5,5 +5,5 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 object Marvel {
-    fun init(baseUrl: String) = injectFeature(baseUrl)
+    fun init() = injectFeature()
 }

@@ -30,19 +30,19 @@ abstract class CoroutineUseCase<in TParam, out TResult>(private val dispatcher: 
 
 fun <TResultModel> CoroutineUseCase.Result<TResultModel>.onSuccess(callback: (TResultModel) -> Unit):
     CoroutineUseCase.Result<TResultModel> {
-        if (this is CoroutineUseCase.Result.Success) {
-            callback.invoke(this.result)
-        }
-        return this
+    if (this is CoroutineUseCase.Result.Success) {
+        callback.invoke(this.result)
     }
+    return this
+}
 
 fun <TResultModel> CoroutineUseCase.Result<TResultModel>.onFailure(callback: (Throwable) -> Unit):
     CoroutineUseCase.Result<TResultModel> {
-        if (this is CoroutineUseCase.Result.Failure) {
-            callback.invoke(this.error ?: Exception())
-        }
-        return this
+    if (this is CoroutineUseCase.Result.Failure) {
+        callback.invoke(this.error ?: Exception())
     }
+    return this
+}
 
 fun <TResultModel> TResultModel.resultFromNullable(): CoroutineUseCase.Result<TResultModel> {
     return CoroutineUseCase.Result.fromNullable(this)

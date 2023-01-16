@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object WebServiceFactory {
-    internal fun createWebService(httpClient: OkHttpClient, baseUrl: String): MarvelAPI {
+    fun createWebService(httpClient: OkHttpClient, baseUrl: String): MarvelAPI {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(httpClient)
