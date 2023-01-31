@@ -16,16 +16,12 @@ class MarvelRemoteRepository(
     private val api: MarvelAPI,
 ) : MarvelRemoteDataSource {
 
-    override suspend fun getCharactersByName(name: String): List<CharacterEntity> {
-        return handleApi {
-            api.characters(name).getBodyOrThrow().fromResponseToEntity().throwIfNull()
-        }
+    override suspend fun getCharactersByName(name: String): List<CharacterEntity> = handleApi {
+        api.characters(name).getBodyOrThrow().fromResponseToEntity().throwIfNull()
     }
 
-    override suspend fun getComicsById(characterId: Int): List<ComicEntity> {
-        return handleApi {
-            api.comics(characterId).getBodyOrThrow().fromResponseToEntity().throwIfNull()
-        }
+    override suspend fun getComicsById(characterId: Int): List<ComicEntity> = handleApi {
+        api.comics(characterId).getBodyOrThrow().fromResponseToEntity().throwIfNull()
     }
 
     override fun getSeriesById(characterId: Int): Flow<List<SeriesEntity>> = flow {
