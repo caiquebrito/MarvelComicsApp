@@ -1,4 +1,4 @@
-package com.marvelcomics.brito.domain.fake
+package com.marvelcomics.brito.presentation.fake
 
 import com.marvelcomics.brito.domain.repository.MarvelRepository
 import com.marvelcomics.brito.entity.CharacterEntity

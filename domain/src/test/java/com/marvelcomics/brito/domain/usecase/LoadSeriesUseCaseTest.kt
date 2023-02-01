@@ -2,23 +2,10 @@ package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.DispatcherRule
 import com.marvelcomics.brito.domain.fake.MarvelFakeRepository
-import com.marvelcomics.brito.domain.repository.MarvelRepository
-import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.entity.SeriesEntity
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
-import java.net.UnknownHostException
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test

@@ -5,11 +5,9 @@ import com.marvelcomics.brito.domain.exception.EmptyInputException
 import com.marvelcomics.brito.domain.fake.MarvelFakeRepository
 import com.marvelcomics.brito.domain.repository.MarvelRepository
 import com.marvelcomics.brito.entity.CharacterEntity
-import kotlin.test.assertFailsWith
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 

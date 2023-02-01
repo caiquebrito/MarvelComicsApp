@@ -22,7 +22,6 @@ class LoadComicsUseCaseTest {
     private var comicsUseCase =
         LoadComicsUseCase(marvelFakeRepository, dispatcherRule.dispatcher)
 
-
     @Test
     fun `when the result is success and validate object`() = runTest {
         val result = comicsUseCase.invoke(10).onSuccess {

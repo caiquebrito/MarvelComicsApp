@@ -10,8 +10,8 @@ import com.marvelcomics.brito.presentation.flow.ViewModel
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val loadAllCharactersUseCase: LoadAllCharactersUseCase,
-    val loadAllCharactersIdsUseCase: LoadAllCharactersIdsUseCase
+    private val loadAllCharactersUseCase: LoadAllCharactersUseCase,
+    private val loadAllCharactersIdsUseCase: LoadAllCharactersIdsUseCase
 ) :
     ViewModel<HomeUiState, HomeUiEffect>(HomeUiState(showLoading = true)) {
 
