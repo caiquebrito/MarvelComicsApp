@@ -34,9 +34,7 @@ class HomeViewModel(
     }
 
     fun emptyButtonItemClicked() {
-        viewModelScope.launch {
-            sendOpenSearchScreenEffect(ids = null)
-        }
+        sendOpenSearchScreenEffect(ids = null)
     }
 
     fun searchButtonClicked() {

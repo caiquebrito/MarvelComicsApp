@@ -3,18 +3,22 @@ package com.marvelcomics.brito.presentation.home
 import com.marvelcomics.brito.domain.usecase.LoadAllCharactersIdsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadAllCharactersUseCase
 import com.marvelcomics.brito.entity.CharacterEntity
-import com.marvelcomics.brito.presentation.BaseViewModelTest
+import com.marvelcomics.brito.presentation.DispatcherRule
 import com.marvelcomics.brito.presentation.fake.MarvelFakeErrorRepository
 import com.marvelcomics.brito.presentation.fake.MarvelFakeRepository
 import com.marvelcomics.brito.presentation.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class HomeViewModelTest : BaseViewModelTest() {
+class HomeViewModelTest {
+
+    @get:Rule
+    var dispatcherRule = DispatcherRule()
 
     // Fake repository
     private val fakeRepository = MarvelFakeRepository()
@@ -43,7 +47,7 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         viewModel.getLocalCharacters()
 
-        stateEmissions.assertValues(
+        stateEmissions.assertValuesInOrder(
             homeUiState,
             homeUiState.copy(showLoading = false, listCharacters = listCharacters)
         )
@@ -56,8 +60,9 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         viewModelError.getLocalCharacters()
 
-        effectEmissions.assertValues(
-            HomeUiEffect.ShowError
+        effectEmissions.assertValuesInOrder(
+            HomeUiEffect.ShowError,
+            keepJobAlive = true
         )
     }
 
@@ -67,7 +72,7 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         viewModel.emptyButtonItemClicked()
 
-        effectEmissions.assertValues(
+        effectEmissions.assertValuesInOrder(
             HomeUiEffect.OpenSearchScreen(null)
         )
     }
@@ -79,7 +84,7 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         viewModel.searchButtonClicked()
 
-        effectEmissions.assertValues(
+        effectEmissions.assertValuesInOrder(
             HomeUiEffect.OpenSearchScreen(listOfIds)
         )
     }
@@ -90,7 +95,7 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         viewModelError.searchButtonClicked()
 
-        effectEmissions.assertValues(
+        effectEmissions.assertValuesInOrder(
             HomeUiEffect.OpenSearchScreen(null)
         )
     }
@@ -102,7 +107,7 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         viewModel.adapterItemClicked(characterEntity)
 
-        effectEmissions.assertValues(
+        effectEmissions.assertValuesInOrder(
             HomeUiEffect.OpenDetailScreen(characterEntity)
         )
     }

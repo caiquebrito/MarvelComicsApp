@@ -46,7 +46,6 @@ class DetailCharacterViewModel(
 
     private suspend fun getSeriesById(id: Int) {
         loadSeriesUseCase.invoke(id)
-            .flowOn(dispatcher)
             .onStart {
                 setState { state ->
                     state.copy(isIdle = false, showSeriesLoading = true)
@@ -56,7 +55,9 @@ class DetailCharacterViewModel(
                 setState { state ->
                     state.copy(showSeriesLoading = false)
                 }
-            }.catch {
+            }
+            .flowOn(dispatcher)
+            .catch {
                 sendEffect(DetailCharacterUiEffect.ShowSeriesError)
             }
             .collect {
