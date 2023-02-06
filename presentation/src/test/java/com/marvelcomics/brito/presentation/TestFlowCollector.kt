@@ -22,18 +22,18 @@ class TestFlowCollector<T>(
         flow.collect { values.add(it) }
     }
 
-    fun assertNoValues(keepJobAlive: Boolean = false): TestFlowCollector<T> {
+    fun assertNoValues(): TestFlowCollector<T> {
         assertEquals(emptyList<T>(), this.values)
-        if (keepJobAlive)
-            job.cancel()
         return this
     }
 
-    fun assertValuesInOrder(vararg values: T, keepJobAlive: Boolean = false): TestFlowCollector<T> {
+    fun assertValuesInOrder(vararg values: T): TestFlowCollector<T> {
         assertEquals(values.toList(), this.values)
-        if (keepJobAlive)
-            job.cancel()
         return this
+    }
+
+    fun finishJob() {
+        job.cancel()
     }
 }
 
