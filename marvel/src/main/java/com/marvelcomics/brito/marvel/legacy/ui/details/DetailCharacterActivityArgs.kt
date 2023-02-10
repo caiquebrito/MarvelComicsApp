@@ -10,7 +10,7 @@ import com.marvelcomics.brito.marvel.legacy.ui.models.toDataBundle
 
 class DetailCharacterActivityArgs(val characterEntity: CharacterEntity?) : ActivityArgs {
     override fun build(context: Context): Intent {
-        return Intent(context, DetailCharacterActivity::class.java).apply {
+        return Intent(context, DetailCharacterFragment::class.java).apply {
             putExtra(EXTRA_CHARACTER, characterEntity?.toDataBundle())
         }
     }

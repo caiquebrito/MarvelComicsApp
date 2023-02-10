@@ -6,7 +6,7 @@ import com.marvelcomics.brito.marvel.legacy.ui.ActivityArgs
 
 class SearchActivityArgs(val listIds: List<Int>) : ActivityArgs {
     override fun build(context: Context): Intent {
-        return Intent(context, SearchActivity::class.java).apply {
+        return Intent(context, SearchFragment::class.java).apply {
             putExtra(EXTRA_LIST_IDS, listIds.toIntArray())
         }
     }
