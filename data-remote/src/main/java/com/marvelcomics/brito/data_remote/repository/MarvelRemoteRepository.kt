@@ -5,6 +5,7 @@ import com.marvelcomics.brito.data_remote.api.MarvelAPI
 import com.marvelcomics.brito.data_remote.datasource.response.fromResponseToEntity
 import com.marvelcomics.brito.data_remote.getBodyOrThrow
 import com.marvelcomics.brito.data_remote.handleApi
+import com.marvelcomics.brito.data_remote.handleThrowableByCommon
 import com.marvelcomics.brito.data_remote.throwIfNull
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.entity.ComicEntity

@@ -3,17 +3,23 @@ package com.marvelcomics.brito.presentation.home
 import com.marvelcomics.brito.domain.usecase.LoadAllCharactersIdsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadAllCharactersUseCase
 import com.marvelcomics.brito.entity.CharacterEntity
-import com.marvelcomics.brito.presentation.BaseViewModelTest
+import com.marvelcomics.brito.presentation.CoroutineTestRule
+import com.marvelcomics.brito.presentation.collectTestFlows
 import com.marvelcomics.brito.presentation.fake.MarvelFakeErrorRepository
 import com.marvelcomics.brito.presentation.fake.MarvelFakeRepository
+import com.marvelcomics.brito.presentation.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class HomeViewModelTest : BaseViewModelTest() {
+class HomeViewModelTest {
+
+    @get:Rule
+    var coroutineTestRule = CoroutineTestRule()
 
     // Fake repository
     private val fakeRepository = MarvelFakeRepository()
@@ -51,6 +57,7 @@ class HomeViewModelTest : BaseViewModelTest() {
         collectTestFlows(viewModelError.effect) { effect ->
             viewModelError.getLocalCharacters()
             effect.assertValuesInOrder(
+                HomeUiEffect.ShowError,
                 HomeUiEffect.ShowError
             )
         }

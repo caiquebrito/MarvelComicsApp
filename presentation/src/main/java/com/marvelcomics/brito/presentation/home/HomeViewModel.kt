@@ -26,6 +26,7 @@ class HomeViewModel(
                     listCharacters = it
                 }.onFailure {
                     sendEffect(HomeUiEffect.ShowError)
+                    sendEffect(HomeUiEffect.ShowError)
                 }
             setState {
                 HomeUiState(showLoading = false, listCharacters = listCharacters)
