@@ -1,6 +1,6 @@
 [versions]
 # Android Gradle Plugin
-gradleplugin = "7.2.1"
+androidgradleplugin = "7.2.1"
 
 # Others Plugins
 gradle-ktlint = "11.0.0"
@@ -10,9 +10,9 @@ gradle-detekt = "1.22.0-RC2"
 kotlin = "1.7.0"
 
 # Default Config
-compileSdk = "32"
+compileSdk = "33"
 minSdk = "21"
-targetSdk = "31"
+targetSdk = "33"
 javaVersion = "VERSION_11"
 javaTarget = "11"
 
@@ -32,11 +32,11 @@ compose = "1.2.0"
 composecompiler = "1.2.0"
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "gradleplugin" }
-android-library = { id = "com.android.library", version.ref = "gradleplugin" }
-android-lint = { id = "com.android.lint", version.ref = "gradleplugin" }
-android-test = { id = "com.android.test", version.ref = "gradleplugin" }
-java-library = { id = "java-library", version.ref = "gradleplugin" }
+android-application = { id = "com.android.application", version.ref = "androidgradleplugin" }
+android-library = { id = "com.android.library", version.ref = "androidgradleplugin" }
+android-lint = { id = "com.android.lint", version.ref = "androidgradleplugin" }
+android-test = { id = "com.android.test", version.ref = "androidgradleplugin" }
+java-library = { id = "java-library", version.ref = "androidgradleplugin" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
@@ -65,7 +65,7 @@ androidx-archCoreTesting = "androidx.arch.core:core-testing:2.1.0"
 androidx-constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.1"
 androidx-coreKtx = {module = "androidx.core:core-ktx", version.ref = "kotlin" }
 androidx-recyclerView = "androidx.recyclerview:recyclerview:1.2.0"
-navigation-safeArgs-gradlePlugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
+navigation-safeArgs-androidgradleplugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 androidx-navigationUi = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 androidx-navigationFragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 androidx-test-espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
@@ -94,6 +94,7 @@ androidx-test-runner = { module = "androidx.test:runner", version.ref = "android
 
 # Kotlin
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version = "1.1.51" }
 
 # Coroutines
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }

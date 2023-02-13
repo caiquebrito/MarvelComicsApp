@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.navigation.safeargs.kotlin) apply false
 }
 
 allprojects {

@@ -3,6 +3,8 @@ package com.marvelcomics.brito.data_remote
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.marvelcomics.brito.data_remote.exception.MarvelApiException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -34,7 +36,7 @@ inline fun <reified T> Response<T>.getBodyOrThrow(): T {
 }
 
 inline fun <reified T> Throwable.handleByCode(
-    mapCode: HashMap<String, Exception>
+    mapCode: Map<String, Exception>
 ): T {
     throw when (this) {
         is ErrorBodyException -> {
@@ -84,3 +86,16 @@ data class ErrorBody(
     @SerializedName("message") val message: String,
     @SerializedName("code") val code: String
 )
+
+fun <T> Flow<T>.handleThrowableByCommon(mapException: Map<String, Exception>? = null): Flow<T> =
+    catch { throwable ->
+        mapException?.let {
+            throwable.handledByCommon<Exception>().handleByCode(mapException)
+        } ?: throwable.handledByCommon<Exception>().handleByCode(defaultCoraExceptions)
+    }
+
+val defaultCoraExceptions = mapOf<String, Exception>(
+    "ABC-123" to InvalidTransactionCode()
+)
+
+class InvalidTransactionCode : Exception()

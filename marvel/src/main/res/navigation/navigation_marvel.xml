@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_marvel">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/marvel_nav_graph"
+    app:startDestination="@id/home_fragment">
 
+    <fragment
+        android:id="@+id/home_fragment"
+        android:name="com.marvelcomics.brito.marvel.legacy.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/navigate_to_search_fragment"
+            app:destination="@+id/search_fragment" />
+        <action
+            android:id="@+id/navigate_to_detail_character_fragment"
+            app:destination="@+id/detail_character_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/search_fragment"
+        android:name="com.marvelcomics.brito.marvel.legacy.ui.search.SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <argument
+            android:name="character_list_id"
+            app:argType="integer[]" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_character_fragment"
+        android:name="com.marvelcomics.brito.marvel.legacy.ui.details.DetailCharacterFragment"
+        tools:layout="@layout/fragment_detail_character">
+        <argument
+            android:name="character_bundle"
+            app:argType="com.marvelcomics.brito.marvel.legacy.ui.models.CharacterDataBundle" />
+    </fragment>
 </navigation>

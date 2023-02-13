@@ -1,13 +1,17 @@
 package com.marvelcomics.brito.marvel.legacy.ui.search
 
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.marvelcomics.brito.marvel.databinding.ActivitySearchBinding
+import com.marvelcomics.brito.marvel.R
+import com.marvelcomics.brito.marvel.databinding.FragmentSearchBinding
 import com.marvelcomics.brito.marvel.hideKeyboard
 import com.marvelcomics.brito.marvel.legacy.extensions.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.marvel.legacy.extensions.dpToPx
@@ -20,14 +24,11 @@ import com.marvelcomics.brito.presentation.search.SearchUiState
 import com.marvelcomics.brito.presentation.search.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val viewModel: SearchViewModel by viewModel()
-    private val binding by viewBinding(ActivitySearchBinding::inflate)
-
-    private val args: SearchActivityArgs by lazy {
-        SearchActivityArgs.deserializeFrom(intent)
-    }
+    private val binding by viewBinding(FragmentSearchBinding::bind)
+    private val navArgs by navArgs<SearchFragmentArgs>()
 
     private val actionsEnter = listOf(
         EditorInfo.IME_ACTION_NEXT,
@@ -36,10 +37,8 @@ class SearchActivity : AppCompatActivity() {
         EditorInfo.IME_ACTION_SEARCH
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initFromExtras()
         initViews()
 
@@ -48,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initFromExtras() {
-        viewModel.setListIds(args.listIds)
+        viewModel.setListIds(navArgs.characterListId.toList())
     }
 
     private fun initViews() = with(binding) {
@@ -96,16 +95,25 @@ class SearchActivity : AppCompatActivity() {
     private fun handleEffect(effect: SearchUiEffect) {
         when (effect) {
             SearchUiEffect.ShowError -> {
-                Toast.makeText(this, "Show Error", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Show Error", Toast.LENGTH_LONG).show()
             }
             SearchUiEffect.BackToHome -> {
-                setResult(RESULT_OK)
-                onBackPressed()
+                val navController = findNavController()
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    INSERTED_CHARACTER,
+                    true
+                )
+                navController.navigateUp()
             }
             SearchUiEffect.ShowAlreadyAddedError -> {
-                Toast.makeText(this, "Character Already Added", Toast.LENGTH_LONG)
+                Toast.makeText(requireContext(), "Character Already Added", Toast.LENGTH_LONG)
                     .show()
             }
         }
+    }
+
+    companion object {
+        const val INSERTED_CHARACTER =
+            "com.marvelcomics.brito.marvel.legacy.ui.search.INSERTED_CHARACTER"
     }
 }

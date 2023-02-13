@@ -15,6 +15,7 @@ dependencies {
     with(libs) {
         testImplementation(androidx.archCoreTesting)
         testImplementation(kotlin.coroutines.test)
+        testImplementation(kotlin.test)
         testImplementation(mockK)
 
         testImplementation(junit4)

@@ -1,6 +1,6 @@
 package com.marvelcomics.brito.entity
 
-class CharacterEntity(
+data class CharacterEntity(
     val id: Int,
     val name: String?,
     val description: String?,

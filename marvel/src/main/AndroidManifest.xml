@@ -3,15 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.marvelcomics.brito.marvel">
 
-
-    <application
-        android:allowBackup="true"
-        android:fullBackupContent="true"
-        android:supportsRtl="true"
-        tools:targetApi="n">
-        <activity
-            android:name=".legacy.ui.details.DetailCharacterActivity"
-            android:screenOrientation="portrait" />
+    <application tools:targetApi="n">
         <activity
             android:name=".compose.home.HomeComposeActivity"
             android:label="@string/title_activity_home_compose" />
@@ -19,12 +11,9 @@
             android:name=".legacy.ui.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme"/>
+            android:theme="@style/SplashTheme" />
         <activity
-            android:name=".legacy.ui.home.HomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".legacy.ui.search.SearchActivity"
+            android:name=".legacy.ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
     </application>

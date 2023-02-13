@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safeargs.kotlin)
 }
 
 kapt {
@@ -13,15 +14,6 @@ kapt {
 
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()
-
-//    signingConfigs {
-//        debug {
-//            storeFile file ("../tools/debug.keystore")
-//            storePassword = "android"
-//            keyAlias = "androiddebugkey"
-//            keyPassword = "android"
-//        }
-//    }
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
@@ -66,6 +58,9 @@ dependencies {
     implementation(project(":entity"))
     implementation(project(":domain"))
     implementation(project(":di"))
+    implementation("androidx.appcompat:appcompat:1.6.0")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     with(libs.androidx) {
         implementation(lifecycle.runtime.ktx)
