@@ -11,12 +11,10 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/navigate_to_search_fragment"
-            app:destination="@+id/search_fragment"
-            app:popUpToInclusive="true" />
+            app:destination="@+id/search_fragment" />
         <action
             android:id="@+id/navigate_to_detail_character_fragment"
-            app:destination="@+id/detail_character_fragment"
-            app:popUpToInclusive="true" />
+            app:destination="@+id/detail_character_fragment" />
     </fragment>
 
     <fragment

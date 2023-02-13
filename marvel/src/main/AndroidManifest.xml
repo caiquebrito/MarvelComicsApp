@@ -3,11 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.marvelcomics.brito.marvel">
 
-    <application
-        android:allowBackup="true"
-        android:fullBackupContent="true"
-        android:supportsRtl="true"
-        tools:targetApi="n">
+    <application tools:targetApi="n">
         <activity
             android:name=".compose.home.HomeComposeActivity"
             android:label="@string/title_activity_home_compose" />

@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val viewModel: SearchViewModel by viewModel()
     private val binding by viewBinding(FragmentSearchBinding::bind)
-    private val args by navArgs<SearchFragmentArgs>()
+    private val navArgs by navArgs<SearchFragmentArgs>()
 
     private val actionsEnter = listOf(
         EditorInfo.IME_ACTION_NEXT,
@@ -46,7 +47,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun initFromExtras() {
-        viewModel.setListIds(args.characterListId.toList())
+        viewModel.setListIds(navArgs.characterListId.toList())
     }
 
     private fun initViews() = with(binding) {
@@ -97,13 +98,22 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 Toast.makeText(requireContext(), "Show Error", Toast.LENGTH_LONG).show()
             }
             SearchUiEffect.BackToHome -> {
-//                setResult(RESULT_OK)
-//                onBackPressed()
+                val navController = findNavController()
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    INSERTED_CHARACTER,
+                    true
+                )
+                navController.navigateUp()
             }
             SearchUiEffect.ShowAlreadyAddedError -> {
                 Toast.makeText(requireContext(), "Character Already Added", Toast.LENGTH_LONG)
                     .show()
             }
         }
+    }
+
+    companion object {
+        const val INSERTED_CHARACTER =
+            "com.marvelcomics.brito.marvel.legacy.ui.search.INSERTED_CHARACTER"
     }
 }

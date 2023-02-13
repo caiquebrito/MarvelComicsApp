@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marvelcomics.brito.entity.CharacterEntity
@@ -24,6 +25,7 @@ import com.marvelcomics.brito.marvel.legacy.extensions.openScreen
 import com.marvelcomics.brito.marvel.legacy.extensions.viewBinding
 import com.marvelcomics.brito.marvel.legacy.ui.home.adapter.HomeCardAdapter
 import com.marvelcomics.brito.marvel.legacy.ui.models.toDataBundle
+import com.marvelcomics.brito.marvel.legacy.ui.search.SearchFragment
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeUiState
 import com.marvelcomics.brito.presentation.home.HomeViewModel
@@ -40,21 +42,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initNav()
         initViews()
         initObservers()
         onStateChange(viewModel, ::handleStates)
         onEffectTriggered(viewModel, ::handleEffects)
     }
 
-    private fun initObservers() {
-        registerSearchActivityResult =
-            registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()
-            ) { result: ActivityResult ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    viewModel.getLocalCharacters()
-                }
+    private fun initNav() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.get<Boolean>(
+            SearchFragment.INSERTED_CHARACTER
+        )?.let {
+            if (it) {
+                viewModel.getLocalCharacters()
             }
+        }
     }
 
     private fun initViews() = with(binding) {
@@ -66,6 +68,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         )
         imageviewMarvelSearch.setOnClickListener {
             viewModel.searchButtonClicked()
+        }
+    }
+
+    private fun initObservers() {
+        registerSearchActivityResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                viewModel.getLocalCharacters()
+            }
         }
     }
 
@@ -111,10 +123,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return HomeCardAdapter(
             listOf(
                 CharacterEntity(
-                    id = 0,
-                    name = "Click to Add",
-                    description = null,
-                    thumbnailEntity = null
+                    id = 0, name = "Click to Add", description = null, thumbnailEntity = null
                 )
             )
         ) {

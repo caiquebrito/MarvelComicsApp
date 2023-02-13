@@ -12,7 +12,7 @@ kotlin = "1.7.0"
 # Default Config
 compileSdk = "33"
 minSdk = "21"
-targetSdk = "31"
+targetSdk = "33"
 javaVersion = "VERSION_11"
 javaTarget = "11"
 
