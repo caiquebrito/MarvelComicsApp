@@ -12,20 +12,20 @@ data class CharacterDataBundle(
     val thumbnailDataBundle: ThumbnailDataBundle?
 ) : Parcelable
 
-fun CharacterEntity.toDataBundle(): CharacterDataBundle {
+fun CharacterEntity.fromEntityToBundle(): CharacterDataBundle {
     return CharacterDataBundle(
         id = id,
         name = name,
         description = description,
-        thumbnailDataBundle = thumbnailEntity?.toDataBundle()
+        thumbnailDataBundle = thumbnailEntity?.fromEntityToBundle()
     )
 }
 
-fun CharacterDataBundle.fromDataBundle(): CharacterEntity {
+fun CharacterDataBundle.fromBundleToEntity(): CharacterEntity {
     return CharacterEntity(
         id = id,
         name = name,
         description = description,
-        thumbnailEntity = thumbnailDataBundle?.fromDataBundle()
+        thumbnailEntity = thumbnailDataBundle?.fromBundleToEntity()
     )
 }
