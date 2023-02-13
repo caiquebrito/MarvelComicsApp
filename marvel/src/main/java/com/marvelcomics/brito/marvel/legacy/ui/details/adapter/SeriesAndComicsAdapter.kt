@@ -10,12 +10,12 @@ import com.marvelcomics.brito.marvel.databinding.ViewSeriesAndComicItemBinding
 import com.marvelcomics.brito.marvel.legacy.models.MarvelThumbnailAspectRatio
 
 class SeriesAndComicsAdapter(
-        private val list: List<Any>
+    private val list: List<Any>
 ) : RecyclerView.Adapter<SeriesAndComicsAdapter.SeriesAndComicsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeriesAndComicsViewHolder {
         val itemBinding = ViewSeriesAndComicItemBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+            LayoutInflater.from(parent.context), parent, false
         )
         return SeriesAndComicsViewHolder(itemBinding)
     }
@@ -28,7 +28,8 @@ class SeriesAndComicsAdapter(
         holder.bind(list[position])
     }
 
-    class SeriesAndComicsViewHolder(val binding: ViewSeriesAndComicItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class SeriesAndComicsViewHolder(val binding: ViewSeriesAndComicItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dataObject: Any) = with(binding) {
             val uiOject = when (dataObject) {
@@ -45,9 +46,9 @@ class SeriesAndComicsAdapter(
 
             uiOject?.let {
                 Glide.with(root)
-                        .load(it.thumbnailUri)
-                        .centerCrop()
-                        .into(imageviewSeriesAndMoviesItem)
+                    .load(it.thumbnailUri)
+                    .centerCrop()
+                    .into(imageviewSeriesAndMoviesItem)
                 textviewSeriesAndMoviesItemContent.text = it.description
             }
         }
@@ -55,18 +56,18 @@ class SeriesAndComicsAdapter(
 }
 
 data class SeriesAndComicsUiObject(
-        val description: String,
-        val thumbnailUri: String
+    val description: String,
+    val thumbnailUri: String
 )
 
 fun SeriesEntity.entityToUiObject() = SeriesAndComicsUiObject(
-        description = description ?: "Empty Description",
-        thumbnailUri = thumbnailEntity?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL)
-                ?: ""
+    description = description ?: "Empty Description",
+    thumbnailUri = thumbnailEntity?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.MEDIUM)
+        ?: ""
 )
 
 fun ComicEntity.entityToUiObject() = SeriesAndComicsUiObject(
-        description = description ?: "Empty Description",
-        thumbnailUri = thumbnailEntity?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.SMALL)
-                ?: ""
+    description = description ?: "Empty Description",
+    thumbnailUri = thumbnailEntity?.getFullUrlThumbnailWithAspect(MarvelThumbnailAspectRatio.Portrait.MEDIUM)
+        ?: ""
 )

@@ -23,12 +23,15 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textview_detail_character_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_round_8"
+            android:backgroundTint="@color/marvel_black"
             android:fontFamily="sans-serif-medium"
+            android:padding="4dp"
             android:textColor="@color/marvel_white"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@id/textview_detail_character_description"
@@ -36,14 +39,17 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textview_detail_character_description"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_round_8"
+            android:backgroundTint="@color/marvel_black"
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:maxLines="3"
+            android:padding="4dp"
             android:textColor="@color/marvel_white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,6 +86,20 @@
             app:layout_constraintEnd_toStartOf="@id/view_detail_character_div"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/circularprogressindicator_detail_character_comics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/marvel_red"
+            app:indicatorSize="120dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/view_detail_character_div"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackThickness="10dp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_detail_character_series"
             android:layout_width="0dp"
@@ -88,5 +108,19 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/view_detail_character_div" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/circularprogressindicator_detail_character_series"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/marvel_red"
+            app:indicatorSize="120dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/view_detail_character_div"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackThickness="10dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
