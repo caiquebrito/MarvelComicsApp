@@ -24,7 +24,7 @@ import com.marvelcomics.brito.marvel.legacy.extensions.onStateChange
 import com.marvelcomics.brito.marvel.legacy.extensions.openScreen
 import com.marvelcomics.brito.marvel.legacy.extensions.viewBinding
 import com.marvelcomics.brito.marvel.legacy.ui.home.adapter.HomeCardAdapter
-import com.marvelcomics.brito.marvel.legacy.ui.models.toDataBundle
+import com.marvelcomics.brito.marvel.legacy.ui.models.fromEntityToBundle
 import com.marvelcomics.brito.marvel.legacy.ui.search.SearchFragment
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeUiState
@@ -112,7 +112,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             is HomeUiEffect.OpenDetailScreen -> {
                 openScreen(
                     HomeFragmentDirections.navigateToDetailCharacterFragment(
-                        effect.entity.toDataBundle()
+                        effect.entity.fromEntityToBundle()
                     )
                 )
             }

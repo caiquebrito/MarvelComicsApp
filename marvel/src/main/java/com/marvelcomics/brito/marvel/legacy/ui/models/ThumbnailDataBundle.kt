@@ -10,14 +10,14 @@ class ThumbnailDataBundle(
     val extension: String? = null
 ) : Parcelable
 
-fun ThumbnailEntity.toDataBundle(): ThumbnailDataBundle {
+fun ThumbnailEntity.fromEntityToBundle(): ThumbnailDataBundle {
     return ThumbnailDataBundle(
         path = path,
         extension = extension
     )
 }
 
-fun ThumbnailDataBundle.fromDataBundle(): ThumbnailEntity {
+fun ThumbnailDataBundle.fromBundleToEntity(): ThumbnailEntity {
     return ThumbnailEntity(
         path = path,
         extension = extension
