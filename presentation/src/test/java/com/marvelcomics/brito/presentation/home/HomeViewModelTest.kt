@@ -7,7 +7,6 @@ import com.marvelcomics.brito.presentation.CoroutineTestRule
 import com.marvelcomics.brito.presentation.collectTestFlows
 import com.marvelcomics.brito.presentation.fake.MarvelFakeErrorRepository
 import com.marvelcomics.brito.presentation.fake.MarvelFakeRepository
-import com.marvelcomics.brito.presentation.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.test.runTest
