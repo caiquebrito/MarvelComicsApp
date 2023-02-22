@@ -64,7 +64,7 @@ androidx-appcompat = "androidx.appcompat:appcompat:1.4.1"
 androidx-archCoreTesting = "androidx.arch.core:core-testing:2.1.0"
 androidx-constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 androidx-coreKtx = {module = "androidx.core:core-ktx", version.ref = "kotlin" }
-androidx-recyclerView = "androidx.recyclerview:recyclerview:1.2.0"
+androidx-recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
 navigation-safeArgs-androidgradleplugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 androidx-navigationUi = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 androidx-navigationFragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
