@@ -4,7 +4,6 @@
 		"config:base"
 	],
 	"packageRules": [{
-		"packagePatterns": ["*"],
 		"excludePackagePatterns": ["^java-library"]
 	}]
 }
