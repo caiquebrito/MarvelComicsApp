@@ -11,6 +11,7 @@ dependencies {
     with(libs.kotlin) {
         implementation(stdlib)
         implementation(coroutines.core)
+        testImplementation(coroutines.test)
     }
 
     with(libs) {
