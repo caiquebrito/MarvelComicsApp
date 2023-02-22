@@ -21,7 +21,7 @@ class MarvelRepo(
         return remote.getComicsById(characterId)
     }
 
-    override fun getSeries(characterId: Int): Flow<List<SeriesEntity>> {
+    override suspend fun getSeries(characterId: Int): Flow<List<SeriesEntity>> {
         return remote.getSeriesById(characterId)
     }
 
