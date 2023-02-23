@@ -123,7 +123,7 @@ compose-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", versi
 canarinho = "com.github.concretesolutions:canarinho:2.0.2"
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
-junit4 = "junit:junit:4.12"
+junit4 = "junit:junit:4.13.2"
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
 mockK = "io.mockk:mockk:1.13.2"
