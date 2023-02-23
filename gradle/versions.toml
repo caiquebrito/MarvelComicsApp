@@ -126,8 +126,8 @@ glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = 
 junit4 = "junit:junit:4.12"
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
-mockK = "io.mockk:mockk:1.13.2"
-mockK-agent-jvm = "io.mockk:mockk-agent-jvm:1.12.3"
+mockK = "io.mockk:mockk:1.13.4"
+mockK-agent-jvm = "io.mockk:mockk-agent-jvm:1.13.4"
 okhttp-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
