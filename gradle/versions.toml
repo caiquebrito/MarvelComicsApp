@@ -68,7 +68,7 @@ androidx-recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
 navigation-safeArgs-androidgradleplugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 androidx-navigationUi = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 androidx-navigationFragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
-androidx-test-espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
+androidx-test-espressoCore = "androidx.test.espresso:espresso-core:3.5.1"
 
 # androidx-lifecycle
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxlifecycle" }
