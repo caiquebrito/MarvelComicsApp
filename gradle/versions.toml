@@ -7,7 +7,7 @@ gradle-ktlint = "11.0.0"
 gradle-detekt = "1.22.0"
 
 # Kotlin
-kotlin = "1.7.0"
+kotlin = "1.9.0"
 
 # Default Config
 compileSdk = "33"
