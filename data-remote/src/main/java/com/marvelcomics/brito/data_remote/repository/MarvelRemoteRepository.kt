@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 class
 MarvelRemoteRepository(
-    private val api: MarvelAPI,
+    private val api: MarvelAPI
 ) : MarvelRemoteDataSource {
 
     override suspend fun getCharactersByName(name: String) = handleApi {

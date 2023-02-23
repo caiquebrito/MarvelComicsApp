@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit
 
 object OkHttpClientFactory {
     fun createHttpClient(vararg interceptors: Interceptor): OkHttpClient {
-
         val certificatePinner = CertificatePinner.Builder().add(
             "marvel.com",
             "sha256/79127babc1d3625ae552c54b34fdb53217137cefbce66f506bc9831cac6b3c4f"

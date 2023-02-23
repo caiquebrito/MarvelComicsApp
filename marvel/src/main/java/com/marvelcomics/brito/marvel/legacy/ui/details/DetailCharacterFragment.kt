@@ -55,13 +55,17 @@ class DetailCharacterFragment : Fragment(R.layout.fragment_detail_character) {
             ItemOffSetDecorationVertical(8.dpToPx(resources))
         )
         recyclerviewDetailCharacterComics.layoutManager = LinearLayoutManager(
-            this.root.context, RecyclerView.VERTICAL, false
+            this.root.context,
+            RecyclerView.VERTICAL,
+            false
         )
         recyclerviewDetailCharacterSeries.addItemDecoration(
             ItemOffSetDecorationVertical(8.dpToPx(resources))
         )
         recyclerviewDetailCharacterSeries.layoutManager = LinearLayoutManager(
-            this.root.context, RecyclerView.VERTICAL, false
+            this.root.context,
+            RecyclerView.VERTICAL,
+            false
         )
     }
 

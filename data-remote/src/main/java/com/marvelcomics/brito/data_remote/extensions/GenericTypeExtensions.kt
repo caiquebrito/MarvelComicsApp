@@ -22,7 +22,7 @@ inline fun <reified T> handleFlowApi(
 
 inline fun <reified T> handleApi(
     noinline errorHandling: ((throwable: Throwable) -> T)? = null,
-    callHandling: () -> T,
+    callHandling: () -> T
 ): T {
     return try {
         callHandling.invoke()

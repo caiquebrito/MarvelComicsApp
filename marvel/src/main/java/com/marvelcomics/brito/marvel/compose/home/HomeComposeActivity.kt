@@ -247,7 +247,7 @@ fun HeroesCardComponent(
                         fontSize = 16.sp,
                         letterSpacing = 0.5.sp
                     ),
-                    color = White,
+                    color = White
                 )
                 Text(
                     text = heroesName,
@@ -277,7 +277,7 @@ fun HomeBackgroundComponent(content: @Composable () -> Unit) {
             painter = painterResource(id = R.drawable.ic_background_marvel),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.matchParentSize(),
+            modifier = Modifier.matchParentSize()
         )
         Surface(
             color = Black,
@@ -301,7 +301,7 @@ fun HomeToolbarComponent(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .height(50.dp)
                 .width(100.dp)
-                .align(Alignment.Center),
+                .align(Alignment.Center)
         )
         Image(
             painter = painterResource(id = R.drawable.ic_search),

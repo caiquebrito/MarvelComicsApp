@@ -16,7 +16,7 @@ import com.marvelcomics.brito.presentation.flow.repeatExecuteAndCollectIn
 inline fun <reified State : UIState, reified Effect : UIEffect> Fragment.onStateChange(
     viewModel: ViewModel<State, Effect>,
     crossinline handleStates: (State) -> Unit,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
 ) {
     viewModel.state.launchAndCollectIn(
         owner = viewLifecycleOwner,
@@ -29,7 +29,7 @@ inline fun <reified State : UIState, reified Effect : UIEffect> Fragment.onState
     viewModel: ViewModel<State, Effect>,
     crossinline handleStates: (State) -> Unit,
     crossinline onRepeat: () -> Unit,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
 ) {
     viewModel.state.repeatExecuteAndCollectIn(
         owner = viewLifecycleOwner,
@@ -42,7 +42,7 @@ inline fun <reified State : UIState, reified Effect : UIEffect> Fragment.onState
 inline fun <reified State : UIState, reified Effect : UIEffect> Fragment.onEffectTriggered(
     viewModel: ViewModel<State, Effect>,
     crossinline handleEffect: (Effect) -> Unit,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
 ) {
     viewModel.effect.launchAndCollectIn(
         owner = viewLifecycleOwner,
@@ -54,7 +54,7 @@ inline fun <reified State : UIState, reified Effect : UIEffect> Fragment.onEffec
 inline fun <reified State : UIState> Fragment.onStateChange(
     viewModel: StateViewModel<State>,
     crossinline handleStates: (State) -> Unit,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
 ) {
     viewModel.state.launchAndCollectIn(
         owner = viewLifecycleOwner,
@@ -67,7 +67,7 @@ inline fun <reified State : UIState> Fragment.onStateChange(
     viewModel: StateViewModel<State>,
     crossinline handleStates: (State) -> Unit,
     crossinline onRepeat: () -> Unit,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
 ) {
     viewModel.state.repeatExecuteAndCollectIn(
         owner = viewLifecycleOwner,
@@ -80,7 +80,7 @@ inline fun <reified State : UIState> Fragment.onStateChange(
 inline fun <reified Effect : UIEffect> Fragment.onEffectTriggered(
     viewModel: EffectViewModel<Effect>,
     crossinline handleEffect: (Effect) -> Unit,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
 ) {
     viewModel.effect.launchAndCollectIn(
         owner = viewLifecycleOwner,

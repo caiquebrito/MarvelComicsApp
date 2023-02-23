@@ -12,7 +12,7 @@ inline fun <T> Flow<T>.repeatExecuteAndCollectIn(
     owner: LifecycleOwner,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     crossinline operation: suspend CoroutineScope.(T) -> Unit,
-    crossinline onRepeat: () -> Unit,
+    crossinline onRepeat: () -> Unit
 ) = owner.lifecycleScope.launch {
     owner.repeatOnLifecycle(minActiveState) {
         onRepeat.invoke()
@@ -25,7 +25,7 @@ inline fun <T> Flow<T>.repeatExecuteAndCollectIn(
 inline fun <T> Flow<T>.launchAndCollectIn(
     owner: LifecycleOwner,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    crossinline operation: suspend CoroutineScope.(T) -> Unit,
+    crossinline operation: suspend CoroutineScope.(T) -> Unit
 ) = owner.lifecycleScope.launch {
     owner.repeatOnLifecycle(minActiveState) {
         collect {

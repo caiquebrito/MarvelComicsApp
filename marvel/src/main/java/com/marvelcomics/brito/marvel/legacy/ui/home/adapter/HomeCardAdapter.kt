@@ -17,7 +17,9 @@ class HomeCardAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCardCardViewHolder {
         val itemBinding = ViewHomeCardItemBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
         return HomeCardCardViewHolder((itemBinding))
     }
