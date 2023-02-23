@@ -36,7 +36,8 @@ inline fun <reified T> Response<T>.getBodyOrThrow(): T =
  *
  * */
 fun Response<Void>.orThrow() =
-    if (this.isSuccessful)
+    if (this.isSuccessful) {
         true
-    else
+    } else {
         throw HttpException(this)
+    }

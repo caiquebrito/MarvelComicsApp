@@ -15,7 +15,9 @@ class SearchCharacterAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchCharacterViewHolder {
         val itemBinding = ViewSearchCharacterItemBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
         return SearchCharacterViewHolder(itemBinding)
     }

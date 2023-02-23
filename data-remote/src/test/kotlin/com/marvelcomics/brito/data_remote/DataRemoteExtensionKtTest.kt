@@ -4,6 +4,12 @@ import com.marvelcomics.brito.data_remote.datasource.response.ThumbnailResponse
 import com.marvelcomics.brito.data_remote.exception.ErrorBodyParseException
 import com.marvelcomics.brito.data_remote.exception.MappingCodeNotFound
 import com.marvelcomics.brito.data_remote.exception.NullBodyException
+import com.marvelcomics.brito.data_remote.extensions.getBodyOrThrow
+import com.marvelcomics.brito.data_remote.extensions.handleApi
+import com.marvelcomics.brito.data_remote.extensions.handleFlowApi
+import com.marvelcomics.brito.data_remote.extensions.mapCoraExceptionOrThrow
+import com.marvelcomics.brito.data_remote.extensions.parseHttpExceptionOrThrow
+import com.marvelcomics.brito.data_remote.extensions.throwIfNull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
@@ -105,6 +111,17 @@ internal class DataRemoteExtensionKtTest {
     @Test(expected = NullPointerException::class)
     fun `GIVEN received a object WHEN tried to get its value THEN return a exception of nullable`() {
         getObjectOrNull(null).throwIfNull()
+    }
+
+    @Test
+    fun `GIVEN execution call WHEN the return is a success THEN check flow result`() = runTest {
+        val thumbnailResponse = ThumbnailResponse()
+        thumbnailResponse.path = "www.teste.com"
+        thumbnailResponse.extension = ".jpeg"
+        val response = Response.success(thumbnailResponse)
+        var body: Any? = null
+        handleFlowApi { body = response.getBodyOrThrow() }.collect()
+        assert(body is ThumbnailResponse) { "Should return the Response from extension method" }
     }
 
     @Test(expected = UnitTestException::class)

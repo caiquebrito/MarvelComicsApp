@@ -64,7 +64,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             ItemOffSetDecorationHorizontal(16.dpToPx(resources))
         )
         recyclerviewMarvelCharacters.layoutManager = LinearLayoutManager(
-            this.root.context, RecyclerView.HORIZONTAL, false
+            this.root.context,
+            RecyclerView.HORIZONTAL,
+            false
         )
         imageviewMarvelSearch.setOnClickListener {
             viewModel.searchButtonClicked()
@@ -123,7 +125,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return HomeCardAdapter(
             listOf(
                 CharacterEntity(
-                    id = 0, name = "Click to Add", description = null, thumbnailEntity = null
+                    id = 0,
+                    name = "Click to Add",
+                    description = null,
+                    thumbnailEntity = null
                 )
             )
         ) {

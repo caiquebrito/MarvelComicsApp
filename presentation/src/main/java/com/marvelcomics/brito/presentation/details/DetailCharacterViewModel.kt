@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class DetailCharacterViewModel(
     private val loadComicsUseCase: LoadComicsUseCase,
     private val loadSeriesUseCase: LoadSeriesUseCase,
-    private val dispatcher: CoroutineDispatcher,
+    private val dispatcher: CoroutineDispatcher
 ) : ViewModel<DetailCharacterUiState, DetailCharacterUiEffect>(DetailCharacterUiState(isIdle = true)) {
 
     fun getComicsAndSeriesById(id: Int) {

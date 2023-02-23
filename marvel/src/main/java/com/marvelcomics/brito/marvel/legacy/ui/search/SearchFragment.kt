@@ -65,7 +65,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             ItemOffSetDecorationHorizontal(16.dpToPx(resources))
         )
         recyclerviewSearch.layoutManager = LinearLayoutManager(
-            this.root.context, RecyclerView.HORIZONTAL, false
+            this.root.context,
+            RecyclerView.HORIZONTAL,
+            false
         )
     }
 

@@ -15,7 +15,9 @@ class SeriesAndComicsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeriesAndComicsViewHolder {
         val itemBinding = ViewSeriesAndComicItemBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
         return SeriesAndComicsViewHolder(itemBinding)
     }
