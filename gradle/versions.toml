@@ -61,7 +61,7 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 androidx-activity-compose = "androidx.activity:activity-compose:1.6.1"
 androidx-annotation = "androidx.annotation:annotation:1.6.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.4.1"
-androidx-archCoreTesting = "androidx.arch.core:core-testing:2.1.0"
+androidx-archCoreTesting = "androidx.arch.core:core-testing:2.2.0"
 androidx-constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 androidx-coreKtx = {module = "androidx.core:core-ktx", version.ref = "kotlin" }
 androidx-recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
