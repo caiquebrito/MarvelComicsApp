@@ -31,7 +31,6 @@ include(
     ":data",
     ":data-remote",
     ":data-local",
-    ":di",
-    ":entity",
-    ":marvel"
+    ":main",
+    ":entity"
 )

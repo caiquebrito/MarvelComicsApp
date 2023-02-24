@@ -1,2 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.marvelcomics.brito.presentation" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.marvelcomics.brito.presentation" >
+
+    <application tools:targetApi="n">
+        <activity
+            android:name="com.marvelcomics.brito.presentation.ui.compose.home.HomeComposeActivity"
+            android:label="@string/title_activity_home_compose" />
+        <activity
+            android:name="com.marvelcomics.brito.presentation.ui.legacy.view.splash.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme" />
+        <activity
+            android:name="com.marvelcomics.brito.presentation.ui.legacy.view.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+    </application>
+</manifest>
