@@ -46,8 +46,8 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(project(":data-remote"))
-    implementation(project(":data-local"))
+    implementation(project(":dataremote"))
+    implementation(project(":datalocal"))
     implementation(project(":presentation"))
 
     implementation(libs.kotlin.stdlib)

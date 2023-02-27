@@ -4,6 +4,9 @@ import com.marvelcomics.brito.domain.DispatcherRule
 import com.marvelcomics.brito.domain.exception.EmptyInputException
 import com.marvelcomics.brito.domain.fake.MarvelFakeRepository
 import com.marvelcomics.brito.domain.repository.MarvelRepository
+import com.marvelcomics.brito.domain.usecase.models.CoroutineUseCase
+import com.marvelcomics.brito.domain.usecase.models.onFailure
+import com.marvelcomics.brito.domain.usecase.models.onSuccess
 import com.marvelcomics.brito.entity.CharacterEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

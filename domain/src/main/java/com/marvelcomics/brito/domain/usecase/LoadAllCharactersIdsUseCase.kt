@@ -1,6 +1,9 @@
 package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.repository.MarvelRepository
+import com.marvelcomics.brito.domain.usecase.models.CoroutineUseCase
+import com.marvelcomics.brito.domain.usecase.models.Result
+import com.marvelcomics.brito.domain.usecase.models.resultFromNullable
 import kotlinx.coroutines.CoroutineDispatcher
 
 class LoadAllCharactersIdsUseCase(

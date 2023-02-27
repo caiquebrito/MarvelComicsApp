@@ -29,8 +29,8 @@ include(
     ":domain",
     ":presentation",
     ":data",
-    ":data-remote",
-    ":data-local",
+    ":dataremote",
+    ":datalocal",
     ":main",
     ":entity"
 )

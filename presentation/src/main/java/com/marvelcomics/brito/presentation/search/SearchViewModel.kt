@@ -3,8 +3,8 @@ package com.marvelcomics.brito.presentation.search
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.usecase.LoadCharacterUseCase
 import com.marvelcomics.brito.domain.usecase.SaveCharacterUseCase
-import com.marvelcomics.brito.domain.usecase.onFailure
-import com.marvelcomics.brito.domain.usecase.onSuccess
+import com.marvelcomics.brito.domain.usecase.models.onFailure
+import com.marvelcomics.brito.domain.usecase.models.onSuccess
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.presentation.flow.ViewModel
 import kotlinx.coroutines.launch

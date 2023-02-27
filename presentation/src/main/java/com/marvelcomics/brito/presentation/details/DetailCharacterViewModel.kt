@@ -3,13 +3,12 @@ package com.marvelcomics.brito.presentation.details
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.usecase.LoadComicsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
-import com.marvelcomics.brito.domain.usecase.onFailure
-import com.marvelcomics.brito.domain.usecase.onSuccess
+import com.marvelcomics.brito.domain.usecase.models.onFailure
+import com.marvelcomics.brito.domain.usecase.models.onSuccess
 import com.marvelcomics.brito.entity.ComicEntity
 import com.marvelcomics.brito.presentation.flow.ViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
