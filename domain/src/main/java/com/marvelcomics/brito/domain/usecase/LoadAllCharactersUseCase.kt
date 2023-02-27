@@ -1,6 +1,10 @@
 package com.marvelcomics.brito.domain.usecase
 
 import com.marvelcomics.brito.domain.repository.MarvelRepository
+import com.marvelcomics.brito.domain.usecase.models.CoroutineUseCase
+import com.marvelcomics.brito.domain.usecase.models.Result
+import com.marvelcomics.brito.domain.usecase.models.onSuccess
+import com.marvelcomics.brito.domain.usecase.models.resultFromNullable
 import com.marvelcomics.brito.entity.CharacterEntity
 import kotlinx.coroutines.CoroutineDispatcher
 

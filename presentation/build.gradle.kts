@@ -3,6 +3,13 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safeargs.kotlin)
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 android {
@@ -11,6 +18,7 @@ android {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -22,12 +30,37 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.javaTarget.get()
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composecompiler.get()
+    }
+
+    buildFeatures {
+        compose = true
+        viewBinding = true
+    }
+
+    packagingOptions {
+        packagingOptions.resources.excludes += setOf(
+            "/META-INF/{AL2.0,LGPL2.1}"
+        )
+    }
 }
+
+val debugImplementation = "debugImplementation"
 
 dependencies {
     implementation(project(":data"))
     implementation(project(":entity"))
     implementation(project(":domain"))
+
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.8.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     with(libs.kotlin) {
         implementation(stdlib)
@@ -40,8 +73,15 @@ dependencies {
     }
 
     with(libs.androidx) {
+        implementation(lifecycle.runtime.ktx)
+        implementation(lifecycle.common.java8)
+        implementation(recyclerView)
         implementation(appcompat)
         implementation(coreKtx)
+        implementation(constraintLayout)
+        implementation(navigationUi)
+        implementation(navigationFragment)
+        androidTestImplementation(test.espressoCore)
         testImplementation(archCoreTesting)
     }
 
@@ -50,8 +90,39 @@ dependencies {
         implementation(runtime.ktx)
     }
 
+    with(libs.compose) {
+        implementation(foundation.foundation)
+        implementation(material.material)
+        implementation(ui.tooling)
+        implementation(ui.tooling.preview)
+        implementation(ui.ui)
+        implementation(constraintLayout)
+        kapt(runtime)
+        implementation(material3)
+        implementation(google.material)
+        implementation(activity)
+    }
+
     with(libs) {
         testImplementation(mockK)
         testImplementation(junit4)
+
+        implementation(canarinho)
+
+        implementation(glide)
+        kapt(glide.compiler)
+
+        implementation(koin.android)
+
+        testImplementation(junit4)
+        androidTestImplementation(junit4)
+        androidTestImplementation(compose.test.junit4)
+
+        debugImplementation(compose.test.manifest)
+    }
+
+    with(libs.okhttp) {
+        implementation(okhttp)
+        implementation(loggingInterceptor)
     }
 }

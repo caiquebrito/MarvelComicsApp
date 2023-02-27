@@ -53,8 +53,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":marvel"))
-    implementation(project(":di"))
+    implementation(project(":presentation"))
+    implementation(project(":main"))
 
     with(libs.androidx) {
         implementation(appcompat)

@@ -29,9 +29,8 @@ include(
     ":domain",
     ":presentation",
     ":data",
-    ":data-remote",
-    ":data-local",
-    ":di",
-    ":entity",
-    ":marvel"
+    ":dataremote",
+    ":datalocal",
+    ":main",
+    ":entity"
 )
