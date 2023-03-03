@@ -7,33 +7,15 @@ jobs:
   validate_pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      
-      - name: Install dependencies
-        run: npm install @octokit/rest
-        
-      - name: Validate Pull Request title
+      - name: Validar Título do Pull Request
         run: |
-          const { Octokit } = require("@octokit/rest");
-          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-          
-          const prTitleRegex = /^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$/;
-          
-          const prTitle = process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF;
-          if (!prTitleRegex.test(prTitle)) {
-            const comment = octokit.issues.createComment({
-              owner: process.env.GITHUB_REPOSITORY.split("/")[0],
-              repo: process.env.GITHUB_REPOSITORY.split("/")[1],
-              issue_number: process.env.GITHUB_PULL_REQUEST_NUMBER,
-              body: "O título do Pull Request não está no formato correto. O formato correto é: [TIPO][SIGLA-123] Descrição. Exemplo: [FEATURE][ABC-123] Adiciona nova funcionalidade"
-            });
-          }
+          if [[ ${{ github.event.pull_request.title }} =~ ^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$ ]]; then
+            echo "Título Válido xD"
+          else
+            echo "Título inválido. O título deve seguir o padrão '[TIPO][ID-123] Descrição'. Por favor, corrija o título do pull request."
+            gh pr comment ${{ github.event.pull_request.number }} --body "O título do pull request é inválido. Por favor, corrija o título seguindo o padrão '[TIPO][ID-123] Descrição'."
+            exit 1
+          fi
 
       - name: Finalize job
         run: echo "Pull Request title validation completed."
