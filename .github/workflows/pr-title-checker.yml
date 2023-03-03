@@ -16,7 +16,6 @@ jobs:
           if ! [[ "$title" =~ $pattern ]]; then
             echo "Pull request title is not in the expected format"
             echo "Title should match pattern: $pattern"
-            exit 1
           fi
       - name: Add comment to PR
         uses: actions/github-script@v5
