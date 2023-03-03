@@ -7,10 +7,12 @@ jobs:
   validate_pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Validar Título do Pull Request
+      - name: Validate pull request title format
         run: |
-          if [[ ${{ github.event.pull_request.title }} =~ ^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$ ]]; then
-            echo "Título Válido xD"
+          pattern="^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$"
+          if [[ ${{ github.event.pull_request.title }} =~ $pattern ]]; then
+            echo "Pull request title is not in the expected format"
+            echo "Title should match pattern: $pattern"
           else
             echo "Título inválido. O título deve seguir o padrão '[TIPO][ID-123] Descrição'. Por favor, corrija o título do pull request."
             gh pr comment ${{ github.event.pull_request.number }} --body "O título do pull request é inválido. Por favor, corrija o título seguindo o padrão '[TIPO][ID-123] Descrição'."
