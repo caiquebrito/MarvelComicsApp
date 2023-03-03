@@ -5,7 +5,7 @@
   },
   "CHECKS": {
     "prefixes": ["["],
-    "regexp": "(FEATURE\\]|BUGFIX\\]|HOTFIX\\]|CHORE\\]|REFACTOR\\]|TEST\\])\[[A-Z]\-[0-9]\] [a-zA-Z]*",
+    "regexp": "(FEATURE\\]|BUGFIX\\]|HOTFIX\\]|CHORE\\]|REFACTOR\\]|TEST\\])\\[[A-Z]\\-[0-9]\\] [a-zA-Z]*",
     "regexpFlags": "i",
     "ignoreLabels" : ["dont-check-PRs-with-this-label", "meta"]
   },
