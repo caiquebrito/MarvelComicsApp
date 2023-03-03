@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation.safeargs.kotlin)
+    alias(libs.plugins.devtools.ksp)
 }
 
 kapt {
@@ -36,7 +37,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composecompiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     buildFeatures {
@@ -101,6 +102,8 @@ dependencies {
         implementation(material3)
         implementation(google.material)
         implementation(activity)
+        implementation(navigation.core)
+        ksp(navigation.ksp)
     }
 
     with(libs) {

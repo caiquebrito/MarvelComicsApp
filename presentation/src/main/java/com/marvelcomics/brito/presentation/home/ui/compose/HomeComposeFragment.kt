@@ -3,9 +3,8 @@ package com.marvelcomics.brito.presentation.home.ui.compose
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,9 +47,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.fragment.app.Fragment
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.entity.ThumbnailEntity
 import com.marvelcomics.brito.presentation.R
+import com.marvelcomics.brito.presentation.databinding.FragmentHomeComposeBinding
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeViewModel
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
@@ -60,18 +61,20 @@ import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPrevi
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppTheme
 import com.marvelcomics.brito.presentation.ui.compose.theme.White
 import com.marvelcomics.brito.presentation.ui.compose.theme.White60
+import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeComposeActivity : ComponentActivity() {
+class HomeFragmentCompose : Fragment(R.layout.fragment_home_compose) {
 
+    private val binding by viewBinding(FragmentHomeComposeBinding::bind)
     private val viewModel: HomeViewModel by viewModel()
     private var registerSearchActivityResult: ActivityResultLauncher<Intent>? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initObservers()
-        setContent {
+        binding.composeContent.setContent {
             val state = viewModel.state.collectAsStateWithLifecycle().value
             viewModel.effect.collectAsEffect(::handleEffect)
             MarvelComicsAppTheme {
@@ -102,16 +105,16 @@ class HomeComposeActivity : ComponentActivity() {
     private fun handleEffect(effect: HomeUiEffect) {
         when (effect) {
             is HomeUiEffect.ShowError -> {
-                Toast.makeText(this, "Show Error", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Show Error", Toast.LENGTH_LONG).show()
             }
             is HomeUiEffect.OpenSearchScreen -> {
-                Toast.makeText(this, "Open Search", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Open Search", Toast.LENGTH_LONG).show()
                 effect.ids?.let {
 //                    openScreen(HomeFragmentDirections.navigateToSearchFragment(it.toIntArray()))
                 }
             }
             is HomeUiEffect.OpenDetailScreen -> {
-                Toast.makeText(this, "Open Detail", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Open Detail", Toast.LENGTH_LONG).show()
 //                openScreen(
 //                    HomeFragmentDirections.navigateToDetailCharacterFragment(
 //                        effect.entity.fromEntityToBundle()
