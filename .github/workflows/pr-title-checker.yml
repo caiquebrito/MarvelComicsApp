@@ -1,19 +1,20 @@
 name: "PR Title Checker"
 on:
   pull_request_target:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - labeled
-      - unlabeled
+    types: [opened, reopened, edited]
 
 jobs:
-  check:
+  validate_pr:
     runs-on: ubuntu-latest
     steps:
-      - uses: caiquebrito/pr-title-checker@main
-        with:
-          GITHUB_TOKEN: ${{ secrets.ACTION_SECRET }}
-          pass_on_octokit_error: false
-          configuration_path: ".github/pr-title-checker-config.json"
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Validate pull request title format
+        run: |
+          title=$(echo "${{ github.event.pull_request.title }}" | tr -d '\n')
+          pattern="^(\[FEATURE\]|\[BUGFIX\]|\[HOTFIX\]|\[CHORE\]|\[REFACTOR\]|\[TEST\])\[[A-Z]*-[0-9]*\] [a-zA-Z]*$"
+          if ! [[ "$title" =~ $pattern ]]; then
+            echo "Pull request title is not in the expected format"
+            echo "Title should match pattern: $pattern"
+            exit 1
+          fi
