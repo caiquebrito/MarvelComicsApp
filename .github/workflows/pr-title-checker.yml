@@ -19,6 +19,9 @@ jobs:
             gh pr comment ${{ github.event.pull_request.number }} --body "O título do pull request é inválido. Por favor, corrija o título seguindo o padrão '[TIPO][ID-123] Descrição'."
             exit 1
           fi
-
+          
       - name: Finalize job
         run: echo "Pull Request title validation completed."
+          
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_ACTIONS }}
