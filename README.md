@@ -16,3 +16,4 @@ Simple app with Koin, Kotlin Coroutines, Kotlin Flows, Retrofit, MVI / MVVM and 
 
 ### Static Quality
 * [DeteKt](https://github.com/detekt/detekt)
+ 
