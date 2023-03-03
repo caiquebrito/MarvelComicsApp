@@ -1,0 +1,17 @@
+{
+  "LABEL": {
+    "name": "title needs formatting",
+    "color": "EEEEEE"
+  },
+  "CHECKS": {
+    "prefixes": ["fix: ", "feat: "],
+    "regexp": "(\[FEATURE\]|\[BUGFIX\]|\[HOTFIX\]|\[CHORE\]|\[REFACTOR\]|\[TEST\])\[[A-Z]\-[0-9]\] [a-zA-Z]*",
+    "regexpFlags": "i",
+    "ignoreLabels" : ["dont-check-PRs-with-this-label", "meta"]
+  },
+  "MESSAGES": {
+    "success": "All OK",
+    "failure": "Failing CI test",
+    "notice": ""
+  }
+}
