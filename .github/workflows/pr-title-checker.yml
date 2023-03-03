@@ -14,6 +14,6 @@ jobs:
     steps:
       - uses: caiquebrito/pr-title-checker@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTION_SECRET }}
           pass_on_octokit_error: false
           configuration_path: ".github/pr-title-checker-config.json"
