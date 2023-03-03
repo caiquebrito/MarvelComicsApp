@@ -9,8 +9,9 @@ jobs:
     steps:
       - name: Validate pull request title format
         run: |
+          title=$(echo "${{ github.event.pull_request.title }}")
           pattern="^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$"
-          if [[ ${{ github.event.pull_request.title }} =~ $pattern ]]; then
+          if [[ "$title" =~ $pattern ]]; then
             echo "Pull request title is not in the expected format"
             echo "Title should match pattern: $pattern"
           else
