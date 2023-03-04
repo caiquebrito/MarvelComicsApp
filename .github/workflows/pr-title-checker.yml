@@ -16,12 +16,7 @@ jobs:
           pattern="^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$"
           if ! [[ "${{ github.event.pull_request.title }}" =~ $pattern ]]; then
             echo "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'."
-            curl \
-              -X POST \
-              $URL \
-              -H "Content-Type: application/json" \
-              -H "Authorization: token $GITHUB_TOKEN" \
-              --data '{ "body": "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'." }'
+            curl -X POST $URL -H "Content-Type: application/json" -H "Authorization: token $GITHUB_TOKEN" --data '{ "body": "Titulo inválido. Por favor corrija o título do pull request para o padrão [TIPO][ID-123] Descrição." }'
             exit 1
           else
             echo "Title validation succeeded."
