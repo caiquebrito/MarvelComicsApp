@@ -7,21 +7,17 @@ jobs:
   validate_pr:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Validate pull request title format
         run: |
-          title=$(echo "${{ github.event.pull_request.title }}")
           pattern="^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$"
-          if [[ "$title" =~ $pattern ]]; then
-            echo "Pull request title is not in the expected format"
-            echo "Title should match pattern: $pattern"
-          else
-            echo "Título inválido. O título deve seguir o padrão '[TIPO][ID-123] Descrição'. Por favor, corrija o título do pull request."
-            gh pr comment ${{ github.event.pull_request.number }} --body "O título do pull request é inválido. Por favor, corrija o título seguindo o padrão '[TIPO][ID-123] Descrição'."
+          if ! [[ ${{ github.event.pull_request.title }} =~ $pattern ]]; then
+            echo "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'."
+            gh auth login --with-token <<< "${{ secrets.GITHUB_ACTIONS }}"
+            gh pr comment ${{ github.event.pull_request.number }} --body "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'."
             exit 1
+          else
+            echo "Title validation succeeded."
           fi
-          
-      - name: Finalize job
-        run: echo "Pull Request title validation completed."
-          
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_ACTIONS }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_ACTIONS }}
