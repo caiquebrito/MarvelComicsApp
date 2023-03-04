@@ -11,7 +11,7 @@ jobs:
       - name: Validate pull request title format
         run: |
           pattern="^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$"
-          if ! [[ ${{ github.event.pull_request.title }} =~ $pattern ]]; then
+          if ! [[ "${{ github.event.pull_request.title }}" =~ $pattern ]]; then
             echo "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'."
             gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
             gh pr comment ${{ github.event.pull_request.number }} --body "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'."
