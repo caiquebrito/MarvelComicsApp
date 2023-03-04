@@ -9,15 +9,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Validate pull request title format
+        env:
+          URL: ${{ github.event.issue.comments_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pattern="^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$"
           if ! [[ "${{ github.event.pull_request.title }}" =~ $pattern ]]; then
             echo "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'."
-            gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-            gh pr comment ${{ github.event.pull_request.number }} --body "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'."
+            curl \
+              -X POST \
+              $URL \
+              -H "Content-Type: application/json" \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              --data '{ "body": "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'." }'
             exit 1
           else
             echo "Title validation succeeded."
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
