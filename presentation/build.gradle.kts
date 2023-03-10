@@ -98,6 +98,7 @@ dependencies {
         implementation(ui.tooling.preview)
         implementation(ui.ui)
         implementation(constraintLayout)
+        implementation(coil)
         kapt(runtime)
         implementation(material3)
         implementation(google.material)
@@ -111,6 +112,7 @@ dependencies {
         testImplementation(junit4)
 
         implementation(canarinho)
+        implementation(google.accompanist.systemuicontroller)
 
         implementation(glide)
         kapt(glide.compiler)

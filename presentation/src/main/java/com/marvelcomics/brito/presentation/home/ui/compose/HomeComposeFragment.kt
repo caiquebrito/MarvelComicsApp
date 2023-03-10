@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -28,6 +29,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -37,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -48,12 +51,16 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.entity.ThumbnailEntity
 import com.marvelcomics.brito.presentation.R
 import com.marvelcomics.brito.presentation.databinding.FragmentHomeComposeBinding
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeViewModel
+import com.marvelcomics.brito.presentation.search.ui.compose.SearchComposeFragment
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsStateWithLifecycle
 import com.marvelcomics.brito.presentation.ui.compose.theme.Black
@@ -61,6 +68,7 @@ import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPrevi
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppTheme
 import com.marvelcomics.brito.presentation.ui.compose.theme.White
 import com.marvelcomics.brito.presentation.ui.compose.theme.White60
+import com.marvelcomics.brito.presentation.ui.extensions.openScreen
 import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -73,6 +81,7 @@ class HomeFragmentCompose : Fragment(R.layout.fragment_home_compose) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initNav()
         initObservers()
         binding.composeContent.setContent {
             val state = viewModel.state.collectAsStateWithLifecycle().value
@@ -88,6 +97,16 @@ class HomeFragmentCompose : Fragment(R.layout.fragment_home_compose) {
                     adapterItemClick = viewModel::adapterItemClicked,
                     emptyAdapterItemClick = viewModel::emptyButtonItemClicked
                 )
+            }
+        }
+    }
+
+    private fun initNav() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.get<Boolean>(
+            SearchComposeFragment.INSERTED_CHARACTER
+        )?.let {
+            if (it) {
+                viewModel.getLocalCharacters()
             }
         }
     }
@@ -108,9 +127,8 @@ class HomeFragmentCompose : Fragment(R.layout.fragment_home_compose) {
                 Toast.makeText(requireContext(), "Show Error", Toast.LENGTH_LONG).show()
             }
             is HomeUiEffect.OpenSearchScreen -> {
-                Toast.makeText(requireContext(), "Open Search", Toast.LENGTH_LONG).show()
                 effect.ids?.let {
-//                    openScreen(HomeFragmentDirections.navigateToSearchFragment(it.toIntArray()))
+                    openScreen(HomeFragmentComposeDirections.navigateToSearchFragmentCompose(it.toIntArray()))
                 }
             }
             is HomeUiEffect.OpenDetailScreen -> {
@@ -169,35 +187,47 @@ fun HomeScreenConstraint(
                         height = Dimension.fillToConstraints
                     }
             ) {
-                listHeroes?.let {
-                    LazyRow(
-                        modifier = Modifier.wrapContentHeight(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        contentPadding = PaddingValues(horizontal = 16.dp)
-                    ) {
-                        items(it) { item ->
-                            HeroesCardComponent(
-                                modifier = Modifier.clickable {
-                                    adapterItemClick.invoke(item)
+                Box {
+                    if (showLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(150.dp)
+                                .align(Alignment.Center),
+                            color = Color.Red,
+                            strokeWidth = 12.dp
+                        )
+                    } else {
+                        listHeroes?.let {
+                            LazyRow(
+                                modifier = Modifier.wrapContentHeight(),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                contentPadding = PaddingValues(horizontal = 16.dp)
+                            ) {
+                                items(it) { item ->
+                                    HeroesCardComponent(
+                                        modifier = Modifier.clickable {
+                                            adapterItemClick.invoke(item)
+                                        },
+                                        backgroundResource = item.thumbnailEntity?.getFullUrlThumbnailWithAspect(
+                                            MarvelThumbnailAspectRatio.Standard.MEDIUM
+                                        ),
+                                        heroesTitle = item.name,
+                                        heroesName = "Loading..."
+                                    )
+                                }
+                            }
+                        } ?: HeroesCardComponent(
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .clickable {
+                                    emptyAdapterItemClick.invoke()
                                 },
-                                backgroundResource = item.thumbnailEntity?.getFullUrlThumbnailWithAspect(
-                                    MarvelThumbnailAspectRatio.Standard.MEDIUM
-                                ),
-                                heroesTitle = item.name,
-                                heroesName = "Loading..."
-                            )
-                        }
+                            backgroundResource = null,
+                            heroesTitle = null,
+                            heroesName = "Loading..."
+                        )
                     }
-                } ?: HeroesCardComponent(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .clickable {
-                            emptyAdapterItemClick.invoke()
-                        },
-                    backgroundResource = null,
-                    heroesTitle = null,
-                    heroesName = "Loading..."
-                )
+                }
             }
         }
     }
@@ -228,17 +258,22 @@ fun HeroesCardComponent(
 
                 val (centerDiv, tooltip, backgroundHeroes, title, name) = createRefs()
 
-//                Image(
-//                    painter = painterResource(id = backgroundResource),
-//                    contentDescription = null,
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .constrainAs(backgroundHeroes) {
-//                            linkTo(top = parent.top, bottom = centerDiv.top)
-//                            height = Dimension.fillToConstraints
-//                        }
-//                )
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(backgroundResource)
+                        .error(R.drawable.ic_thanos)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(R.drawable.ic_hail_hydra),
+                    contentDescription = "Image Placeholder",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(backgroundHeroes) {
+                            linkTo(top = parent.top, bottom = centerDiv.top)
+                            height = Dimension.fillToConstraints
+                        }
+                )
 
                 Surface(
                     modifier = Modifier

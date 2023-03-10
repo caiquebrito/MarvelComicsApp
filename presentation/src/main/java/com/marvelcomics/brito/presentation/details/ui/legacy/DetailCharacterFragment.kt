@@ -19,7 +19,6 @@ import com.marvelcomics.brito.presentation.ui.extensions.dpToPx
 import com.marvelcomics.brito.presentation.ui.extensions.onEffectTriggered
 import com.marvelcomics.brito.presentation.ui.extensions.onStateChange
 import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
-import com.marvelcomics.brito.presentation.ui.legacy.view.details.DetailCharacterFragmentArgs
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.presentation.ui.models.fromBundleToEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel

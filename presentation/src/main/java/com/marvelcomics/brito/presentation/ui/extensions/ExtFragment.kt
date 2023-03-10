@@ -96,3 +96,7 @@ fun Fragment.openScreen(direction: NavDirections) {
 fun Fragment.openScreen(@IdRes id: Int) {
     findNavController().navigate(id)
 }
+
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}

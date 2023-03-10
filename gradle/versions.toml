@@ -123,6 +123,9 @@ compose-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", versi
 compose-navigation-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "compose-navigation" }
 compose-navigation-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "compose-navigation" }
 
+# Google
+google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version = "0.27.0" }
+
 # Others
 canarinho = "com.github.concretesolutions:canarinho:2.0.2"
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }

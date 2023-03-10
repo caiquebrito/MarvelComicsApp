@@ -1,5 +1,7 @@
 package com.marvelcomics.brito.presentation.ui.extensions
 
+import android.app.Activity
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import com.marvelcomics.brito.presentation.flow.EffectViewModel
@@ -84,4 +86,8 @@ inline fun <reified Effect : UIEffect> AppCompatActivity.onEffectTriggered(
         minActiveState = minActiveState,
         operation = { event -> handleEffect(event) }
     )
+}
+
+fun Activity.hideKeyboard() {
+    hideKeyboard(currentFocus ?: View(this))
 }
