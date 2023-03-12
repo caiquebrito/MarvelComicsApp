@@ -9,15 +9,22 @@ inline fun <reified T> handleFlowApi(
     mappedCodes: Map<String, Throwable>? = null,
     noinline errorHandling: ((throwable: Throwable) -> T)? = null,
     crossinline callHandling: () -> T
+) = errorHandling?.let {
+    flow {
+        emit(callHandling.invoke())
+    }.catch {
+        errorHandling.invoke(it)
+    }
+} ?: flow {
+    emit(callHandling.invoke())
+}.catchMappedException(mappedCodes)
+
+inline fun <reified T> handleFlow(
+    crossinline callHandling: () -> T
 ): Flow<T> {
-    val flow = flow {
+    return flow {
         emit(callHandling.invoke())
     }
-    return errorHandling?.let {
-        flow.catch {
-            errorHandling.invoke(it)
-        }
-    } ?: flow.catchMappedException(mappedCodes)
 }
 
 inline fun <reified T> handleApi(

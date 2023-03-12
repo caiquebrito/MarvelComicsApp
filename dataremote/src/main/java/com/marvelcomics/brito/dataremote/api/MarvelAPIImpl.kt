@@ -16,7 +16,7 @@ class MarvelAPIImpl(private val marvelWebService: MarvelAPI) : MarvelAPI {
         return marvelWebService.comics(characterId)
     }
 
-    override fun series(characterId: Int): Response<RemoteMarvelContainerResponse<SeriesResponse>> {
+    override suspend fun series(characterId: Int): Response<RemoteMarvelContainerResponse<SeriesResponse>> {
         return marvelWebService.series(characterId)
     }
 }

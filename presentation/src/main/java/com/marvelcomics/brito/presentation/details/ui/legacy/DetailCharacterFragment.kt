@@ -2,6 +2,7 @@ package com.marvelcomics.brito.presentation.details.ui.legacy
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -96,17 +97,21 @@ class DetailCharacterFragment : Fragment(R.layout.fragment_detail_character) {
     }
 
     private fun buildComicsEmptyState() {
-        TODO("Not yet implemented")
+        Toast.makeText(requireContext(), "Empty Comics State", Toast.LENGTH_SHORT).show()
     }
 
     private fun buildSeriesEmptyState() {
-        TODO("Not yet implemented")
+        Toast.makeText(requireContext(), "Empty Series State", Toast.LENGTH_SHORT).show()
     }
 
     private fun handleEffect(effect: DetailCharacterUiEffect) {
         when (effect) {
-            DetailCharacterUiEffect.ShowComicsError -> TODO()
-            DetailCharacterUiEffect.ShowSeriesError -> TODO()
+            DetailCharacterUiEffect.ShowComicsError -> {
+                Toast.makeText(requireContext(), "Show Comics Error", Toast.LENGTH_SHORT).show()
+            }
+            DetailCharacterUiEffect.ShowSeriesError -> {
+                Toast.makeText(requireContext(), "Show Series Error", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
