@@ -32,6 +32,6 @@
         tools:layout="@layout/fragment_detail_character">
         <argument
             android:name="character_bundle"
-            app:argType="com.marvelcomics.brito.presentation.ui.legacy.view.models.CharacterDataBundle" />
+            app:argType="com.marvelcomics.brito.presentation.ui.models.CharacterDataBundle" />
     </fragment>
 </navigation>

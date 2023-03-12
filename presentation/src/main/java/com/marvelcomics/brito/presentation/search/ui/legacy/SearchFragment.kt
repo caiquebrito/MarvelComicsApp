@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.marvelcomics.brito.marvel.hideKeyboard
 import com.marvelcomics.brito.presentation.R
 import com.marvelcomics.brito.presentation.databinding.FragmentSearchBinding
 import com.marvelcomics.brito.presentation.search.SearchUiEffect
@@ -19,10 +18,10 @@ import com.marvelcomics.brito.presentation.search.SearchViewModel
 import com.marvelcomics.brito.presentation.search.ui.legacy.adapter.SearchCharacterAdapter
 import com.marvelcomics.brito.presentation.ui.extensions.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.presentation.ui.extensions.dpToPx
+import com.marvelcomics.brito.presentation.ui.extensions.hideKeyboard
 import com.marvelcomics.brito.presentation.ui.extensions.onEffectTriggered
 import com.marvelcomics.brito.presentation.ui.extensions.onStateChange
 import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
-import com.marvelcomics.brito.presentation.ui.legacy.view.search.SearchFragmentArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -117,6 +116,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     companion object {
         const val INSERTED_CHARACTER =
-            "com.marvelcomics.brito.marvel.legacy.ui.search.INSERTED_CHARACTER"
+            "com.marvelcomics.brito.presentation.search.ui.legacy.INSERTED_CHARACTER"
     }
 }

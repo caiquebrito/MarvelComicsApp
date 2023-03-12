@@ -1,7 +1,9 @@
 package com.marvelcomics.brito.presentation.details.ui.legacy
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -19,7 +21,6 @@ import com.marvelcomics.brito.presentation.ui.extensions.dpToPx
 import com.marvelcomics.brito.presentation.ui.extensions.onEffectTriggered
 import com.marvelcomics.brito.presentation.ui.extensions.onStateChange
 import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
-import com.marvelcomics.brito.presentation.ui.legacy.view.details.DetailCharacterFragmentArgs
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.presentation.ui.models.fromBundleToEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,6 +52,7 @@ class DetailCharacterFragment : Fragment(R.layout.fragment_detail_character) {
             .into(imageviewDetailCharacter)
         textviewDetailCharacterName.text = characterEntity.name
         textviewDetailCharacterDescription.text = characterEntity.description
+        textviewDetailCharacterDescription.movementMethod = ScrollingMovementMethod()
 
         recyclerviewDetailCharacterComics.addItemDecoration(
             ItemOffSetDecorationVertical(8.dpToPx(resources))
@@ -97,17 +99,21 @@ class DetailCharacterFragment : Fragment(R.layout.fragment_detail_character) {
     }
 
     private fun buildComicsEmptyState() {
-        TODO("Not yet implemented")
+        Toast.makeText(requireContext(), "Empty Comics State", Toast.LENGTH_SHORT).show()
     }
 
     private fun buildSeriesEmptyState() {
-        TODO("Not yet implemented")
+        Toast.makeText(requireContext(), "Empty Series State", Toast.LENGTH_SHORT).show()
     }
 
     private fun handleEffect(effect: DetailCharacterUiEffect) {
         when (effect) {
-            DetailCharacterUiEffect.ShowComicsError -> TODO()
-            DetailCharacterUiEffect.ShowSeriesError -> TODO()
+            DetailCharacterUiEffect.ShowComicsError -> {
+                Toast.makeText(requireContext(), "Show Comics Error", Toast.LENGTH_SHORT).show()
+            }
+            DetailCharacterUiEffect.ShowSeriesError -> {
+                Toast.makeText(requireContext(), "Show Series Error", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
