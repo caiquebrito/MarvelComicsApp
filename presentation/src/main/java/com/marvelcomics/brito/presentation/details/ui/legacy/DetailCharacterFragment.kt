@@ -1,6 +1,7 @@
 package com.marvelcomics.brito.presentation.details.ui.legacy
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -51,6 +52,7 @@ class DetailCharacterFragment : Fragment(R.layout.fragment_detail_character) {
             .into(imageviewDetailCharacter)
         textviewDetailCharacterName.text = characterEntity.name
         textviewDetailCharacterDescription.text = characterEntity.description
+        textviewDetailCharacterDescription.movementMethod = ScrollingMovementMethod()
 
         recyclerviewDetailCharacterComics.addItemDecoration(
             ItemOffSetDecorationVertical(8.dpToPx(resources))
