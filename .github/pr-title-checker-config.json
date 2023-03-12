@@ -1,0 +1,15 @@
+{
+  "LABEL": {
+    "name": "O Título está fora do padrão",
+    "color": "EEEEEE"
+  },
+  "CHECKS": {
+    "regexp": "([FEATURE]|[BUGFIX]|[HOTFIX]|[CHORE]|[REFACTOR]|[TEST])[[A-Z]-[0-9]] [a-zA-Z]*",
+    "ignoreLabels" : ["Update"]
+  },
+  "MESSAGES": {
+    "success": "All OK",
+    "failure": "Failing CI test",
+    "notice": ""
+  }
+}

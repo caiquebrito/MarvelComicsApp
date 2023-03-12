@@ -127,6 +127,7 @@ class HomeFragmentCompose : Fragment(R.layout.fragment_home_compose) {
                 Toast.makeText(requireContext(), "Show Error", Toast.LENGTH_LONG).show()
             }
             is HomeUiEffect.OpenSearchScreen -> {
+                Toast.makeText(requireContext(), "Open Search", Toast.LENGTH_LONG).show()
                 effect.ids?.let {
                     openScreen(HomeFragmentComposeDirections.navigateToSearchFragmentCompose(it.toIntArray()))
                 }
