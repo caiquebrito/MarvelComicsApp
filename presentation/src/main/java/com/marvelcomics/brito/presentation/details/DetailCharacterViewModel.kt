@@ -1,6 +1,5 @@
 package com.marvelcomics.brito.presentation.details
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.marvelcomics.brito.domain.usecase.LoadComicsUseCase
 import com.marvelcomics.brito.domain.usecase.LoadSeriesUseCase
@@ -58,7 +57,6 @@ class DetailCharacterViewModel(
             }
             .flowOn(dispatcher)
             .catch {
-                Log.e("CatchError", it.message ?: "")
                 sendEffect(DetailCharacterUiEffect.ShowSeriesError)
             }
             .collect {

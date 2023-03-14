@@ -1,7 +1,9 @@
 package com.marvelcomics.brito.presentation.search.ui.compose
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -64,7 +67,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.presentation.R
-import com.marvelcomics.brito.presentation.databinding.FragmentSearchComposeBinding
 import com.marvelcomics.brito.presentation.search.SearchUiEffect
 import com.marvelcomics.brito.presentation.search.SearchViewModel
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
@@ -72,32 +74,39 @@ import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsStateWi
 import com.marvelcomics.brito.presentation.ui.compose.theme.Black
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPreview
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppTheme
-import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchComposeFragment : Fragment(R.layout.fragment_search_compose) {
+class SearchComposeFragment : Fragment() {
 
-    private val binding by viewBinding(FragmentSearchComposeBinding::bind)
     private val viewModel by viewModel<SearchViewModel>()
     private val navArgs by navArgs<SearchComposeFragmentArgs>()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                val state = viewModel.state.collectAsStateWithLifecycle().value
+                viewModel.effect.collectAsEffect(::handleEffect)
+                MarvelComicsAppTheme {
+                    SearchScreenConstraint(
+                        isIdle = state.isIdle,
+                        showLoading = state.showLoading,
+                        listCharacters = state.listCharacters,
+                        searchCharacterByName = viewModel::searchCharacterByName,
+                        addCharacterButtonClick = viewModel::addCharacterButtonClicked
+                    )
+                }
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFromExtras()
-        binding.composeContent.setContent {
-            val state = viewModel.state.collectAsStateWithLifecycle().value
-            viewModel.effect.collectAsEffect(::handleEffect)
-            MarvelComicsAppTheme {
-                SearchScreenConstraint(
-                    isIdle = state.isIdle,
-                    showLoading = state.showLoading,
-                    listCharacters = state.listCharacters,
-                    searchCharacterByName = viewModel::searchCharacterByName,
-                    addCharacterButtonClick = viewModel::addCharacterButtonClicked
-                )
-            }
-        }
     }
 
     private fun initFromExtras() {

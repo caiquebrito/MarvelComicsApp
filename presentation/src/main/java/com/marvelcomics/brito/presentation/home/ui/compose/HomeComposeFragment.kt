@@ -71,6 +71,7 @@ import com.marvelcomics.brito.presentation.ui.compose.theme.White60
 import com.marvelcomics.brito.presentation.ui.extensions.openScreen
 import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
+import com.marvelcomics.brito.presentation.ui.models.fromEntityToBundle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragmentCompose : Fragment(R.layout.fragment_home_compose) {
@@ -127,18 +128,20 @@ class HomeFragmentCompose : Fragment(R.layout.fragment_home_compose) {
                 Toast.makeText(requireContext(), "Show Error", Toast.LENGTH_LONG).show()
             }
             is HomeUiEffect.OpenSearchScreen -> {
-                Toast.makeText(requireContext(), "Open Search", Toast.LENGTH_LONG).show()
                 effect.ids?.let {
-                    openScreen(HomeFragmentComposeDirections.navigateToSearchFragmentCompose(it.toIntArray()))
+                    openScreen(
+                        HomeFragmentComposeDirections.navigateToSearchFragmentCompose(
+                            it.toIntArray()
+                        )
+                    )
                 }
             }
             is HomeUiEffect.OpenDetailScreen -> {
-                Toast.makeText(requireContext(), "Open Detail", Toast.LENGTH_LONG).show()
-//                openScreen(
-//                    HomeFragmentDirections.navigateToDetailCharacterFragment(
-//                        effect.entity.fromEntityToBundle()
-//                    )
-//                )
+                openScreen(
+                    HomeFragmentComposeDirections.navigateToDetailCharacterFragmentCompose(
+                        effect.entity.fromEntityToBundle()
+                    )
+                )
             }
         }
     }
@@ -156,8 +159,8 @@ fun HomeScreenConstraint(
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
-            val startGuideline = createGuidelineFromStart(0.1f)
-            val endGuideline = createGuidelineFromEnd(0.1f)
+            val startGuideline = createGuidelineFromStart(16.dp)
+            val endGuideline = createGuidelineFromEnd(16.dp)
             val topDivGuideline = createGuidelineFromTop(0.4f)
 
             val (toolbar, headerContent, bodyContent) = createRefs()

@@ -73,9 +73,6 @@ class DetailCharacterFragment : Fragment(R.layout.fragment_detail_character) {
     }
 
     private fun handleState(state: DetailCharacterUiState) = with(binding) {
-        if (state.isIdle) {
-            return
-        }
         circularprogressindicatorDetailCharacterComics.isVisible = state.showComicsLoading
         recyclerviewDetailCharacterComics.isVisible = state.showComicsLoading.not()
         recyclerviewDetailCharacterComics.adapter = state.listComics?.let { list ->

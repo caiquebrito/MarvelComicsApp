@@ -103,8 +103,8 @@ dependencies {
         implementation(material3)
         implementation(google.material)
         implementation(activity)
-        implementation(navigation.core)
-        ksp(navigation.ksp)
+        implementation(destination.core)
+        ksp(destination.ksp)
     }
 
     with(libs) {

@@ -17,5 +17,20 @@ class MainComposeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        /*
+        * setContent {
+            MarvelComicsAppTheme {
+                val navController = rememberAnimatedNavController()
+                BackHandler {
+                    navController.navigateUp()
+                }
+                DestinationsNavHost(
+                    navGraph = NavGraphs.root,
+                    engine = rememberAnimatedNavHostEngine(),
+                    navController = navController,
+                )
+            }
+        }
+        * */
     }
 }
