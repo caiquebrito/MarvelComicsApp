@@ -182,6 +182,7 @@ fun DetailCharacterHeaderComponent(
                     .wrapContentWidth()
                     .padding(bottom = 8.dp)
                     .background(color = Color.Black)
+                    .padding(4.dp)
                     .constrainAs(titleText) {
                         bottom.linkTo(descriptionText.top)
                         start.linkTo(startGuideline)
@@ -200,8 +201,10 @@ fun DetailCharacterHeaderComponent(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .wrapContentHeight()
                     .padding(bottom = 16.dp)
                     .background(color = Color.Black)
+                    .padding(4.dp)
                     .verticalScroll(scroll)
                     .constrainAs(descriptionText) {
                         bottom.linkTo(parent.bottom)
