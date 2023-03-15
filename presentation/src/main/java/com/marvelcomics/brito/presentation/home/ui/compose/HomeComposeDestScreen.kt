@@ -119,6 +119,9 @@ fun HomeComposeDestScreen(
 
     val state = viewModel.state.collectAsStateWithLifecycle().value
     viewModel.effect.collectAsEffect(::handleDestEffect)
+    if (state.showLoading) {
+        viewModel.getLocalCharacters()
+    }
     HomeBackgroundDestComponent {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
