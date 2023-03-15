@@ -198,33 +198,30 @@ fun DetailCharacterHeaderComponent(
                 color = White
             )
             val scroll = rememberScrollState(0)
-            Column(modifier = Modifier
-                .height(50.dp)
-                .verticalScroll(scroll)
-                .constrainAs(descriptionText) {
-                    bottom.linkTo(parent.bottom)
-                    linkTo(start = startGuideline, end = endGuideline)
-                    width = Dimension.fillToConstraints
-                }) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(bottom = 16.dp)
-                        .background(color = Color.Black)
-                        .padding(4.dp),
-                    text = characterBundle.description ?: "Empty Description",
-                    maxLines = 3,
-                    style = TextStyle(
-                        fontFamily = FontFamily.Default,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 20.sp,
-                        letterSpacing = 0.5.sp
-                    ),
-                    textAlign = TextAlign.Start,
-                    color = White
-                )
-            }
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(bottom = 16.dp)
+                    .background(color = Color.Black)
+                    .padding(4.dp)
+                    .verticalScroll(scroll)
+                    .constrainAs(descriptionText) {
+                        bottom.linkTo(parent.bottom)
+                        linkTo(start = startGuideline, end = endGuideline)
+                        width = Dimension.fillToConstraints
+                    },
+                text = characterBundle.description ?: "Empty Description",
+                maxLines = 3,
+                style = TextStyle(
+                    fontFamily = FontFamily.Default,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 20.sp,
+                    letterSpacing = 0.5.sp
+                ),
+                textAlign = TextAlign.Start,
+                color = White
+            )
         }
     }
 }
