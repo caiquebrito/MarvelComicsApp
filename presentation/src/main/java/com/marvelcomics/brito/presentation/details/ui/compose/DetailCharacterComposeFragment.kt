@@ -1,7 +1,9 @@
 package com.marvelcomics.brito.presentation.details.ui.compose
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -49,7 +52,6 @@ import coil.request.ImageRequest
 import com.marvelcomics.brito.entity.ComicEntity
 import com.marvelcomics.brito.entity.SeriesEntity
 import com.marvelcomics.brito.presentation.R
-import com.marvelcomics.brito.presentation.databinding.FragmentDetailCharacterComposeBinding
 import com.marvelcomics.brito.presentation.details.DetailCharacterUiEffect
 import com.marvelcomics.brito.presentation.details.DetailCharacterViewModel
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
@@ -58,34 +60,37 @@ import com.marvelcomics.brito.presentation.ui.compose.theme.Black
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPreview
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppTheme
 import com.marvelcomics.brito.presentation.ui.compose.theme.White
-import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
 import com.marvelcomics.brito.presentation.ui.models.CharacterDataBundle
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.presentation.ui.models.fromBundleToEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailCharacterComposeFragment : Fragment(R.layout.fragment_detail_character_compose) {
+class DetailCharacterComposeFragment : Fragment() {
 
-    private val binding by viewBinding(FragmentDetailCharacterComposeBinding::bind)
     private val viewModel by viewModel<DetailCharacterViewModel>()
     private val navArgs by navArgs<DetailCharacterComposeFragmentArgs>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.composeContent.setContent {
-            val state = viewModel.state.collectAsStateWithLifecycle().value
-            viewModel.effect.collectAsEffect(::handleEffect)
-            MarvelComicsAppTheme {
-                if (state.isIdle) {
-                    viewModel.getComicsAndSeriesById(navArgs.characterBundle.id)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                val state = viewModel.state.collectAsStateWithLifecycle().value
+                viewModel.effect.collectAsEffect(::handleEffect)
+                MarvelComicsAppTheme {
+                    if (state.isIdle) {
+                        viewModel.getComicsAndSeriesById(navArgs.characterBundle.id)
+                    }
+                    DetailCharacterScreenConstraint(
+                        characterBundle = navArgs.characterBundle,
+                        showComicsLoading = state.showComicsLoading,
+                        showSeriesLoading = state.showSeriesLoading,
+                        listComics = state.listComics,
+                        listSeries = state.listSeries
+                    )
                 }
-                DetailCharacterScreenConstraint(
-                    characterBundle = navArgs.characterBundle,
-                    showComicsLoading = state.showComicsLoading,
-                    showSeriesLoading = state.showSeriesLoading,
-                    listComics = state.listComics,
-                    listSeries = state.listSeries
-                )
             }
         }
     }

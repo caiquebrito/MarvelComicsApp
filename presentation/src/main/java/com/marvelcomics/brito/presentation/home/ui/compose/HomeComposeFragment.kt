@@ -3,7 +3,9 @@ package com.marvelcomics.brito.presentation.home.ui.compose
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -39,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -57,7 +60,6 @@ import coil.request.ImageRequest
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.entity.ThumbnailEntity
 import com.marvelcomics.brito.presentation.R
-import com.marvelcomics.brito.presentation.databinding.FragmentHomeComposeBinding
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeViewModel
 import com.marvelcomics.brito.presentation.search.ui.compose.SearchComposeFragment
@@ -69,37 +71,44 @@ import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppTheme
 import com.marvelcomics.brito.presentation.ui.compose.theme.White
 import com.marvelcomics.brito.presentation.ui.compose.theme.White60
 import com.marvelcomics.brito.presentation.ui.extensions.openScreen
-import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.presentation.ui.models.fromEntityToBundle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragmentCompose : Fragment(R.layout.fragment_home_compose) {
+class HomeFragmentCompose : Fragment() {
 
-    private val binding by viewBinding(FragmentHomeComposeBinding::bind)
     private val viewModel: HomeViewModel by viewModel()
     private var registerSearchActivityResult: ActivityResultLauncher<Intent>? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                val state = viewModel.state.collectAsStateWithLifecycle().value
+                viewModel.effect.collectAsEffect(::handleEffect)
+                MarvelComicsAppTheme {
+                    if (state.showLoading) {
+                        viewModel.getLocalCharacters()
+                    }
+                    HomeScreenConstraint(
+                        showLoading = state.showLoading,
+                        listHeroes = state.listCharacters,
+                        searchButtonClick = viewModel::searchButtonClicked,
+                        adapterItemClick = viewModel::adapterItemClicked,
+                        emptyAdapterItemClick = viewModel::emptyButtonItemClicked
+                    )
+                }
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initNav()
         initObservers()
-        binding.composeContent.setContent {
-            val state = viewModel.state.collectAsStateWithLifecycle().value
-            viewModel.effect.collectAsEffect(::handleEffect)
-            MarvelComicsAppTheme {
-                if (state.showLoading) {
-                    viewModel.getLocalCharacters()
-                }
-                HomeScreenConstraint(
-                    showLoading = state.showLoading,
-                    listHeroes = state.listCharacters,
-                    searchButtonClick = viewModel::searchButtonClicked,
-                    adapterItemClick = viewModel::adapterItemClicked,
-                    emptyAdapterItemClick = viewModel::emptyButtonItemClicked
-                )
-            }
-        }
     }
 
     private fun initNav() {
