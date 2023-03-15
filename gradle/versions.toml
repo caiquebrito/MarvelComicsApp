@@ -26,6 +26,8 @@ androidxlifecycle = "2.6.0"
 androidxtest = "1.5.2"
 koin = "3.3.3"
 glide = "4.15.1"
+koin-compose = "3.4.2"
+glide = "4.14.2"
 junit-jupiter = "5.9.2"
 coil = "2.2.2"
 compose = "1.3.3"
@@ -56,6 +58,7 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
 
 # Koin
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-junit = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
