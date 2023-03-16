@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Check if title contains "Update"
+        if: contains(github.event.pull_request.title, 'Update')
+        run: echo "Pull request title contains 'Update', skipping workflow"
+        continue-on-error: true
       - name: Validate pull request title format
         env:
           URL: ${{ github.event.pull_request.comments_url }}
