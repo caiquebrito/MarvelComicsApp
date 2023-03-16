@@ -7,7 +7,7 @@ jobs:
   validate_pull_request:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Check if title contains "Update"
         if: contains(github.event.pull_request.title, 'Update')
         run: echo "Pull request title contains 'Update', skipping workflow"
