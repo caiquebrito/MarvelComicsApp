@@ -1,7 +1,8 @@
 # MarvelComicsApp
-Simple app with Koin, Kotlin Coroutines, Kotlin Flows, Retrofit, MVI / MVVM and Clean Architecture concepts integrated with MarvelAPI.
+Simple app with Compose, Koin, Kotlin Coroutines, Kotlin Flows, Retrofit, MVI / MVVM and Clean Architecture concepts integrated with MarvelAPI.
 
 ### Libraries Reference
+* [Compose](https://developer.android.com/jetpack/compose/documentation)
 * [Insert Koin](https://insert-koin.io/)
 * [Kotlin Flows](https://developer.android.com/kotlin/flow)
 * [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
@@ -16,3 +17,4 @@ Simple app with Koin, Kotlin Coroutines, Kotlin Flows, Retrofit, MVI / MVVM and 
 
 ### Static Quality
 * [DeteKt](https://github.com/detekt/detekt)
+ 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/marvel_white"
-    tools:context="com.marvelcomics.brito.presentation.ui.legacy.view.details.DetailCharacterFragment">
+    tools:context="com.marvelcomics.brito.presentation.details.ui.legacy.DetailCharacterFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayout_detail_character_header"
@@ -46,10 +46,10 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/shape_round_8"
             android:backgroundTint="@color/marvel_black"
-            android:ellipsize="end"
             android:fontFamily="sans-serif"
-            android:maxLines="3"
+            android:maxLines="4"
             android:padding="4dp"
+            android:scrollbars="vertical"
             android:textColor="@color/marvel_white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

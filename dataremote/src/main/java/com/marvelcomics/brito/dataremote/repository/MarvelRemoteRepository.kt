@@ -5,11 +5,11 @@ import com.marvelcomics.brito.dataremote.api.MarvelAPI
 import com.marvelcomics.brito.dataremote.datasource.response.fromResponseToEntity
 import com.marvelcomics.brito.dataremote.extensions.getBodyOrThrow
 import com.marvelcomics.brito.dataremote.extensions.handleApi
-import com.marvelcomics.brito.dataremote.extensions.handleFlowApi
 import com.marvelcomics.brito.dataremote.extensions.throwIfNull
 import com.marvelcomics.brito.entity.ComicEntity
 import com.marvelcomics.brito.entity.SeriesEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class
 MarvelRemoteRepository(
@@ -24,7 +24,7 @@ MarvelRemoteRepository(
         api.comics(characterId).getBodyOrThrow().fromResponseToEntity().throwIfNull()
     }
 
-    override suspend fun getSeriesById(characterId: Int): Flow<List<SeriesEntity>> = handleFlowApi {
-        api.series(characterId).getBodyOrThrow().fromResponseToEntity().throwIfNull()
+    override suspend fun getSeriesById(characterId: Int): Flow<List<SeriesEntity>> = flow {
+        emit(api.series(characterId).getBodyOrThrow().fromResponseToEntity().throwIfNull())
     }
 }

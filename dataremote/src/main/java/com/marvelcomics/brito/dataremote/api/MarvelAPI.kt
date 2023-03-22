@@ -18,5 +18,5 @@ interface MarvelAPI {
     suspend fun comics(@Path("characterId") characterId: Int): Response<RemoteMarvelContainerResponse<ComicResponse>>
 
     @GET("characters/{characterId}/series")
-    fun series(@Path("characterId") characterId: Int): Response<RemoteMarvelContainerResponse<SeriesResponse>>
+    suspend fun series(@Path("characterId") characterId: Int): Response<RemoteMarvelContainerResponse<SeriesResponse>>
 }

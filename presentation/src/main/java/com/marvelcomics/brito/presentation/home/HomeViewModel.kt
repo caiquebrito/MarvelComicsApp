@@ -34,14 +34,6 @@ class HomeViewModel(
         }
     }
 
-    fun emptyButtonItemClicked() {
-        sendOpenSearchScreenEffect(ids = null)
-    }
-
-    fun searchButtonClicked() {
-        getLocalCharactersIds()
-    }
-
     private fun getLocalCharactersIds() {
         viewModelScope.launch {
             var listIds: List<Int>? = null
@@ -56,6 +48,14 @@ class HomeViewModel(
 
     private fun sendOpenSearchScreenEffect(ids: List<Int>?) {
         sendEffect(HomeUiEffect.OpenSearchScreen(ids))
+    }
+
+    fun emptyButtonItemClicked() {
+        sendOpenSearchScreenEffect(ids = null)
+    }
+
+    fun searchButtonClicked() {
+        getLocalCharactersIds()
     }
 
     fun adapterItemClicked(entity: CharacterEntity) {

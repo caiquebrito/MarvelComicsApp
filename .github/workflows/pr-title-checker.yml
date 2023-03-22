@@ -1,0 +1,27 @@
+name: "Pull Request Title Checker"
+on:
+  pull_request_target:
+    types: [opened, reopened, edited]
+
+jobs:
+  validate_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check if title contains "Update"
+        if: contains(github.event.pull_request.title, 'Update')
+        run: echo "Pull request title contains 'Update', skipping workflow"
+        continue-on-error: true
+      - name: Validate pull request title format
+        env:
+          URL: ${{ github.event.pull_request.comments_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pattern="^(\[(FEATURE|BUGFIX|HOTFIX|CHORE|REFACTOR|TEST)\])\[[A-Z]+-[0-9]+\]\s[a-zA-Z]+.*$"
+          if ! [[ "${{ github.event.pull_request.title }}" =~ $pattern ]]; then
+            echo "Titulo inválido. Por favor corrija o título do pull request para o padrão '[TIPO][ID-123] Descrição'."
+            curl -X POST $URL -H "Content-Type: application/json" -H "Authorization: token $GITHUB_TOKEN" --data '{ "body": "Titulo inválido. Por favor corrija o título do pull request para o padrão [TIPO][ID-123] Descrição." }'
+            exit 1
+          else
+            echo "Title validation succeeded."
+          fi

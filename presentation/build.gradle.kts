@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation.safeargs.kotlin)
+    alias(libs.plugins.devtools.ksp)
 }
 
 kapt {
@@ -36,7 +37,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composecompiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     buildFeatures {
@@ -97,10 +98,13 @@ dependencies {
         implementation(ui.tooling.preview)
         implementation(ui.ui)
         implementation(constraintLayout)
+        implementation(coil)
         kapt(runtime)
         implementation(material3)
         implementation(google.material)
         implementation(activity)
+        implementation(destination.core)
+        ksp(destination.ksp)
     }
 
     with(libs) {
@@ -108,6 +112,7 @@ dependencies {
         testImplementation(junit4)
 
         implementation(canarinho)
+        implementation(google.accompanist.systemuicontroller)
 
         implementation(glide)
         kapt(glide.compiler)

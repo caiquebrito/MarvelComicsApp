@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home_fragment"
-        android:name="com.marvelcomics.brito.presentation.ui.legacy.view.home.HomeFragment"
+        android:name="com.marvelcomics.brito.presentation.home.ui.legacy.HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/navigate_to_search_fragment"
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/search_fragment"
-        android:name="com.marvelcomics.brito.presentation.ui.legacy.view.search.SearchFragment"
+        android:name="com.marvelcomics.brito.presentation.search.ui.legacy.SearchFragment"
         tools:layout="@layout/fragment_search">
         <argument
             android:name="character_list_id"
@@ -28,10 +28,10 @@
 
     <fragment
         android:id="@+id/detail_character_fragment"
-        android:name="com.marvelcomics.brito.presentation.ui.legacy.view.details.DetailCharacterFragment"
+        android:name="com.marvelcomics.brito.presentation.details.ui.legacy.DetailCharacterFragment"
         tools:layout="@layout/fragment_detail_character">
         <argument
             android:name="character_bundle"
-            app:argType="com.marvelcomics.brito.presentation.ui.legacy.view.models.CharacterDataBundle" />
+            app:argType="com.marvelcomics.brito.presentation.ui.models.CharacterDataBundle" />
     </fragment>
 </navigation>
