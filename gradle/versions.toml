@@ -1,6 +1,6 @@
 [versions]
 # Android Gradle Plugin
-androidgradleplugin = "7.4.1"
+androidgradleplugin = "7.4.2"
 
 # Others Plugins
 gradle-ktlint = "11.3.1"
