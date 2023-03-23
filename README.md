@@ -10,7 +10,7 @@ Simple app with Compose, Koin, Kotlin Coroutines, Kotlin Flows, Retrofit, MVI / 
 * [Glide](https://github.com/bumptech/glide)
 
 ### Pic from the application
-![alt text](https://imgur.com/vaOJCPz.png "Hulk Smash!!!")
+In Progress
 
 ### CI Integration
 * [Bitrise](https://app.bitrise.io/)
