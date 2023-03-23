@@ -118,6 +118,7 @@ dependencies {
         kapt(glide.compiler)
 
         implementation(koin.android)
+        implementation(koin.androidx.compose)
 
         testImplementation(junit4)
         androidTestImplementation(junit4)

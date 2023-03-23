@@ -93,7 +93,6 @@ class SearchComposeFragment : Fragment() {
                 viewModel.effect.collectAsEffect(::handleEffect)
                 MarvelComicsAppTheme {
                     SearchScreenConstraint(
-                        isIdle = state.isIdle,
                         showLoading = state.showLoading,
                         listCharacters = state.listCharacters,
                         searchCharacterByName = viewModel::searchCharacterByName,
@@ -141,7 +140,6 @@ class SearchComposeFragment : Fragment() {
 
 @Composable
 fun SearchScreenConstraint(
-    isIdle: Boolean,
     showLoading: Boolean,
     listCharacters: List<CharacterEntity>?,
     searchCharacterByName: (String) -> Unit,
@@ -373,7 +371,6 @@ fun SearchBackgroundComponent(content: @Composable () -> Unit) {
 fun SearchScreenConstraintPreview() {
     MarvelComicsAppPreview {
         SearchScreenConstraint(
-            isIdle = true,
             showLoading = false,
             listCharacters = emptyList(),
             searchCharacterByName = { },
