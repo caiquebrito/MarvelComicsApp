@@ -10,6 +10,7 @@ import com.marvelcomics.brito.presentation.destinations.DetailCharacterDestScree
 import com.marvelcomics.brito.presentation.destinations.SearchComposeDestScreenDestination
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeViewModel
+import com.marvelcomics.brito.presentation.ui.compose.components.MarvelTransitions
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsStateWithLifecycle
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPreview
@@ -22,7 +23,7 @@ import com.ramcosta.composedestinations.result.ResultRecipient
 import org.koin.androidx.compose.koinViewModel
 
 @RootNavGraph(start = true)
-@Destination
+@Destination(style = MarvelTransitions::class)
 @Composable
 fun HomeComposeDestScreen(
     viewModel: HomeViewModel = koinViewModel(),

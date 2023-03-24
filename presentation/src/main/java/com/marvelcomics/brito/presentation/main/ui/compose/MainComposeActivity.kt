@@ -5,63 +5,147 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.marvelcomics.brito.presentation.NavGraphs
+import com.marvelcomics.brito.presentation.ui.compose.components.ProgressBar
+import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPreview
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 
 class MainComposeActivity : AppCompatActivity() {
 
-//    private val binding by viewBinding(ActivityMainComposeBinding::inflate)
-//    private val navController by lazy {
-//        Navigation.findNavController(this, R.id.nav_host_fragment_compose)
-//    }
+    private var navController: NavHostController? = null
+    private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
+        when (destination.route) {
+            MarvelScreenDirections.HOME_SCREEN.route ->
+                currentProgressValue =
+                    MarvelScreenDirections.HOME_SCREEN.progress
 
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
+            MarvelScreenDirections.SEARCH_SCREEN.route ->
+                currentProgressValue =
+                    MarvelScreenDirections.SEARCH_SCREEN.progress
+
+            MarvelScreenDirections.DETAIL_SCREEN.route ->
+                currentProgressValue =
+                    MarvelScreenDirections.DETAIL_SCREEN.progress
+        }
+    }
+    private var currentProgressValue = 0
+
+    override fun onResume() {
+        super.onResume()
+        addNavListener()
+    }
+
+    override fun onPause() {
+        navController?.removeOnDestinationChangedListener(listener)
+        super.onPause()
+    }
+
+    private fun addNavListener() {
+        navController?.addOnDestinationChangedListener(listener)
+    }
+
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(binding.root)
         setContent {
             MarvelComicsAppTheme {
-                val navController = rememberAnimatedNavController()
+                navController = rememberAnimatedNavController()
+                addNavListener()
                 BackHandler {
-                    navController.navigateUp()
+                    navController?.navigateUp()
                 }
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    TopBar()
-                    DestinationsNavHost(
-                        navGraph = NavGraphs.root,
-                        engine = rememberAnimatedNavHostEngine(),
-                        navController = navController
-                    )
-                }
+                val progressState = remember { mutableStateOf(currentProgressValue) }
+                MainComposeScreen(
+                    navController = navController,
+                    currentProgressValue = progressState.value
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
 @Composable
-fun TopBar() {
+fun MainComposeScreen(navController: NavHostController?, currentProgressValue: Int) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        val onBackButtonClicked: () -> Unit = { navController?.navigateUp() }
+        MainComposeTabComponent(
+            onBackButtonClicked = onBackButtonClicked,
+            currentProgressValue = currentProgressValue
+        )
+        navController?.let {
+            DestinationsNavHost(
+                navGraph = NavGraphs.root,
+                engine = rememberAnimatedNavHostEngine(),
+                navController = it
+            )
+        }
+    }
+}
+
+@Composable
+fun MainComposeTabComponent(
+    onBackButtonClicked: () -> Unit,
+    currentProgressValue: Int
+) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
+            .height(50.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "Sample Toolbar Project"
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .background(Color.Red)
+                .clickable { onBackButtonClicked.invoke() }
+        ) {
+        }
+        ProgressBar(
+            indicatorProgress = currentProgressValue.toFloat(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(20.dp)
+                .padding(end = 16.dp, start = 16.dp)
         )
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Preview
+@Composable
+fun MainComposeScreenPreview() {
+    MarvelComicsAppPreview {
+        val navController = rememberAnimatedNavController()
+        BackHandler {
+            navController.navigateUp()
+        }
+        MainComposeScreen(navController, 30)
     }
 }

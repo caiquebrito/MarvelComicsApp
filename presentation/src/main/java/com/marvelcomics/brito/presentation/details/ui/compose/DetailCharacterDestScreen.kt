@@ -1,11 +1,13 @@
 package com.marvelcomics.brito.presentation.details.ui.compose
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.marvelcomics.brito.presentation.details.DetailCharacterUiEffect
 import com.marvelcomics.brito.presentation.details.DetailCharacterViewModel
+import com.marvelcomics.brito.presentation.ui.compose.components.MarvelTransitions
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsStateWithLifecycle
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPreview
@@ -14,9 +16,9 @@ import com.marvelcomics.brito.presentation.ui.models.CharacterDataBundle
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
 
-@Destination
+@Destination(style = MarvelTransitions::class)
 @Composable
-fun DetailCharacterDestScreen(
+fun AnimatedVisibilityScope.DetailCharacterDestScreen(
     viewModel: DetailCharacterViewModel = koinViewModel(),
     characterBundle: CharacterDataBundle
 ) {

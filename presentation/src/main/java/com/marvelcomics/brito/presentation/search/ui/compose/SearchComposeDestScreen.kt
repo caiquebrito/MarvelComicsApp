@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.marvelcomics.brito.presentation.search.SearchUiEffect
 import com.marvelcomics.brito.presentation.search.SearchViewModel
+import com.marvelcomics.brito.presentation.ui.compose.components.MarvelTransitions
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsStateWithLifecycle
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPreview
@@ -14,7 +15,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import org.koin.androidx.compose.koinViewModel
 
-@Destination
+@Destination(style = MarvelTransitions::class)
 @Composable
 fun SearchComposeDestScreen(
     viewModel: SearchViewModel = koinViewModel(),

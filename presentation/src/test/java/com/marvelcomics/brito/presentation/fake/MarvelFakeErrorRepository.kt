@@ -16,7 +16,7 @@ class MarvelFakeErrorRepository : MarvelRepository {
         throw Throwable()
     }
 
-    override fun getSeries(characterId: Int): Flow<List<SeriesEntity>> {
+    override suspend fun getSeries(characterId: Int): Flow<List<SeriesEntity>> {
         throw Throwable()
     }
 
