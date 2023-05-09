@@ -52,7 +52,7 @@ class MainComposeActivity : AppCompatActivity() {
                     MarvelScreenDirections.DETAIL_SCREEN.progress
         }
     }
-    private var currentProgressValue = 0
+    private var currentProgressValue = 0f
 
     override fun onResume() {
         super.onResume()
@@ -90,7 +90,7 @@ class MainComposeActivity : AppCompatActivity() {
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
 @Composable
-fun MainComposeScreen(navController: NavHostController?, currentProgressValue: Int) {
+fun MainComposeScreen(navController: NavHostController?, currentProgressValue: Float) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -112,7 +112,7 @@ fun MainComposeScreen(navController: NavHostController?, currentProgressValue: I
 @Composable
 fun MainComposeTabComponent(
     onBackButtonClicked: () -> Unit,
-    currentProgressValue: Int
+    currentProgressValue: Float
 ) {
     Row(
         modifier = Modifier
@@ -128,7 +128,7 @@ fun MainComposeTabComponent(
         ) {
         }
         ProgressBar(
-            indicatorProgress = currentProgressValue.toFloat(),
+            indicatorProgress = currentProgressValue,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(20.dp)

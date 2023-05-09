@@ -24,7 +24,7 @@ fun ProgressBar(
 ) {
     val radius = 16f
     val cornerRadius = CornerRadius(radius, radius)
-    val progressAnimated = animateFloatAsState(targetValue = indicatorProgress)
+    val progressAnimated = animateFloatAsState(targetValue = indicatorProgress, label = "")
 
     Canvas(
         modifier = modifier.height(4.dp)
