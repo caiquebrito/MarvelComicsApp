@@ -146,6 +146,6 @@ fun MainComposeScreenPreview() {
         BackHandler {
             navController.navigateUp()
         }
-        MainComposeScreen(navController, 30)
+        MainComposeScreen(navController, 30f)
     }
 }
