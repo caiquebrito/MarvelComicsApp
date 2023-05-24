@@ -21,3 +21,8 @@ dependencies {
         testImplementation(junit4)
     }
 }
+
+java {
+    sourceCompatibility = JavaVersion.valueOf(libs.versions.javaVersion.get())
+    targetCompatibility = JavaVersion.valueOf(libs.versions.javaVersion.get())
+}
