@@ -3,7 +3,7 @@
 androidgradleplugin = "7.4.2"
 
 # Others Plugins
-gradle-ktlint = "11.3.1"
+gradle-ktlint = "11.3.2"
 gradle-detekt = "1.22.0"
 
 # Kotlin
