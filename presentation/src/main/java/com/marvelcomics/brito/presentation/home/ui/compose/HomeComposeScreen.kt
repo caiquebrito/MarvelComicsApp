@@ -6,28 +6,28 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.marvelcomics.brito.entity.CharacterEntity
 import com.marvelcomics.brito.entity.ThumbnailEntity
-import com.marvelcomics.brito.presentation.destinations.DetailCharacterDestScreenDestination
-import com.marvelcomics.brito.presentation.destinations.SearchComposeDestScreenDestination
+import com.marvelcomics.brito.presentation.destinations.DetailCharacterScreenDestination
+import com.marvelcomics.brito.presentation.destinations.SearchComposeScreenDestination
 import com.marvelcomics.brito.presentation.home.HomeUiEffect
 import com.marvelcomics.brito.presentation.home.HomeViewModel
+import com.marvelcomics.brito.presentation.navdestination.HomeNavGraph
+import com.marvelcomics.brito.presentation.ui.compose.components.MarvelTransitions
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsStateWithLifecycle
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPreview
 import com.marvelcomics.brito.presentation.ui.models.fromEntityToBundle
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
-import org.koin.androidx.compose.koinViewModel
 
-@RootNavGraph(start = true)
-@Destination
+@HomeNavGraph(start = true)
+@Destination(style = MarvelTransitions::class)
 @Composable
-fun HomeComposeDestScreen(
-    viewModel: HomeViewModel = koinViewModel(),
+fun HomeComposeScreen(
+    viewModel: HomeViewModel,
     navigator: DestinationsNavigator,
-    resultRecipient: ResultRecipient<SearchComposeDestScreenDestination, Boolean>
+    resultRecipient: ResultRecipient<SearchComposeScreenDestination, Boolean>
 ) {
     val context = LocalContext.current
     fun handleDestEffect(homeUiEffect: HomeUiEffect) {
@@ -35,18 +35,20 @@ fun HomeComposeDestScreen(
             is HomeUiEffect.ShowError -> {
                 Toast.makeText(context, "Show Error", Toast.LENGTH_LONG).show()
             }
+
             is HomeUiEffect.OpenSearchScreen -> {
                 homeUiEffect.ids?.let {
                     navigator.navigate(
-                        SearchComposeDestScreenDestination(
+                        SearchComposeScreenDestination(
                             listIds = it.toIntArray()
                         )
                     )
                 }
             }
+
             is HomeUiEffect.OpenDetailScreen -> {
                 navigator.navigate(
-                    DetailCharacterDestScreenDestination(
+                    DetailCharacterScreenDestination(
                         characterBundle = homeUiEffect.entity.fromEntityToBundle()
                     )
                 )
@@ -58,9 +60,11 @@ fun HomeComposeDestScreen(
         when (result) {
             is NavResult.Value -> {
                 if (result.value) {
+                    Toast.makeText(context, "The SharedValueWas: ${viewModel.lastAddedCharacter}", Toast.LENGTH_LONG).show()
                     viewModel.getLocalCharacters()
                 }
             }
+
             else -> {}
         }
     }
@@ -81,7 +85,7 @@ fun HomeComposeDestScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenConstraintDestPreview() {
+fun HomeComposeScreenPreview() {
     val listHeroes = listOf(
         CharacterEntity(
             id = 0,

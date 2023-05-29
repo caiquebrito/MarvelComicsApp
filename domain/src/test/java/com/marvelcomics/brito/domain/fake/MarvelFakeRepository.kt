@@ -17,7 +17,7 @@ class MarvelFakeRepository : MarvelRepository {
         return listOf(ComicEntity(1, "Title", "Description"))
     }
 
-    override fun getSeries(characterId: Int): Flow<List<SeriesEntity>> {
+    override suspend fun getSeries(characterId: Int): Flow<List<SeriesEntity>> {
         return flowOf(listOf(SeriesEntity(1, "Title", "Description", null)))
     }
 

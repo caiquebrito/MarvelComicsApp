@@ -4,7 +4,7 @@ import com.marvelcomics.brito.domain.DispatcherRule
 import com.marvelcomics.brito.domain.exception.EmptyInputException
 import com.marvelcomics.brito.domain.fake.MarvelFakeRepository
 import com.marvelcomics.brito.domain.repository.MarvelRepository
-import com.marvelcomics.brito.domain.usecase.models.CoroutineUseCase
+import com.marvelcomics.brito.domain.usecase.models.Result
 import com.marvelcomics.brito.domain.usecase.models.onFailure
 import com.marvelcomics.brito.domain.usecase.models.onSuccess
 import com.marvelcomics.brito.entity.ComicEntity
@@ -30,7 +30,7 @@ class LoadComicsUseCaseTest {
         val result = comicsUseCase.invoke(10).onSuccess {
             Assert.assertEquals(listComics, it)
         }
-        assert(result is CoroutineUseCase.Result.Success)
+        assert(result is Result.Success)
     }
 
     @Test
@@ -38,6 +38,6 @@ class LoadComicsUseCaseTest {
         val result = comicsUseCase.invoke(null).onFailure {
             assert(it is EmptyInputException)
         }
-        assert(result is CoroutineUseCase.Result.Failure)
+        assert(result is Result.Failure)
     }
 }
