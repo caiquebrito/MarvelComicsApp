@@ -126,7 +126,7 @@ compose-destination-core = { module = "io.github.raamcosta.compose-destinations:
 compose-destination-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "compose-destination" }
 
 # Google
-google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version = "0.28.0" }
+google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version = "0.30.1" }
 
 # Others
 canarinho = "com.github.concretesolutions:canarinho:2.0.2"
