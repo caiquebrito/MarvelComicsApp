@@ -16,43 +16,32 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.marvelcomics.brito.presentation.NavGraphs
+import com.marvelcomics.brito.presentation.home.HomeViewModel
 import com.marvelcomics.brito.presentation.ui.compose.components.ProgressBar
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPreview
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
+import com.ramcosta.composedestinations.navigation.dependency
+import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.scope.ScopeActivity
 
-class MainComposeActivity : AppCompatActivity() {
+class MainComposeActivity : ScopeActivity() {
 
     private var navController: NavHostController? = null
-    private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
-        when (destination.route) {
-            MarvelScreenDirections.HOME_SCREEN.route ->
-                currentProgressValue =
-                    MarvelScreenDirections.HOME_SCREEN.progress
-
-            MarvelScreenDirections.SEARCH_SCREEN.route ->
-                currentProgressValue =
-                    MarvelScreenDirections.SEARCH_SCREEN.progress
-
-            MarvelScreenDirections.DETAIL_SCREEN.route ->
-                currentProgressValue =
-                    MarvelScreenDirections.DETAIL_SCREEN.progress
-        }
-    }
     private var currentProgressValue = 0
+    private val listener = MarvelScreenDirections.getNavDestinationListener {
+        currentProgressValue = it
+    }
 
     override fun onResume() {
         super.onResume()
@@ -76,34 +65,56 @@ class MainComposeActivity : AppCompatActivity() {
                 navController = rememberAnimatedNavController()
                 addNavListener()
                 BackHandler {
-                    navController?.navigateUp()
+                    handleBackWithNav(this, navController)
                 }
-                val progressState = remember { mutableStateOf(currentProgressValue) }
                 MainComposeScreen(
+                    activity = this,
                     navController = navController,
-                    currentProgressValue = progressState.value
+                    currentProgressValue = currentProgressValue
                 )
             }
         }
     }
 }
 
+private fun handleBackWithNav(activity: AppCompatActivity, navController: NavHostController?) {
+    navController?.apply {
+        if (backQueue.isEmpty()) {
+            activity.onBackPressed()
+        } else {
+            navigateUp()
+        }
+    }
+}
+
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
 @Composable
-fun MainComposeScreen(navController: NavHostController?, currentProgressValue: Int) {
+fun MainComposeScreen(
+    activity: AppCompatActivity,
+    navController: NavHostController?,
+    currentProgressValue: Int
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        val onBackButtonClicked: () -> Unit = { navController?.navigateUp() }
+        val onBackButtonClicked: () -> Unit = {
+            handleBackWithNav(activity, navController)
+        }
         MainComposeTabComponent(
             onBackButtonClicked = onBackButtonClicked,
             currentProgressValue = currentProgressValue
         )
         navController?.let {
+            val homeViewModel = koinViewModel<HomeViewModel>()
             DestinationsNavHost(
-                navGraph = NavGraphs.root,
+                navGraph = NavGraphs.home,
                 engine = rememberAnimatedNavHostEngine(),
-                navController = it
+                navController = it,
+                dependenciesContainerBuilder = {
+                    dependency(NavGraphs.home) {
+                        homeViewModel
+                    }
+                }
             )
         }
     }
@@ -142,10 +153,15 @@ fun MainComposeTabComponent(
 @Composable
 fun MainComposeScreenPreview() {
     MarvelComicsAppPreview {
+        val activity = AppCompatActivity()
         val navController = rememberAnimatedNavController()
         BackHandler {
-            navController.navigateUp()
+            handleBackWithNav(activity, navController)
         }
-        MainComposeScreen(navController, 30)
+        MainComposeScreen(
+            activity,
+            navController,
+            30
+        )
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.marvelcomics.brito.presentation.details.DetailCharacterUiEffect
 import com.marvelcomics.brito.presentation.details.DetailCharacterViewModel
+import com.marvelcomics.brito.presentation.navdestination.HomeNavGraph
 import com.marvelcomics.brito.presentation.ui.compose.components.MarvelTransitions
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsEffect
 import com.marvelcomics.brito.presentation.ui.compose.extension.collectAsStateWithLifecycle
@@ -16,9 +17,10 @@ import com.marvelcomics.brito.presentation.ui.models.CharacterDataBundle
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
 
+@HomeNavGraph
 @Destination(style = MarvelTransitions::class)
 @Composable
-fun AnimatedVisibilityScope.DetailCharacterDestScreen(
+fun AnimatedVisibilityScope.DetailCharacterScreen(
     viewModel: DetailCharacterViewModel = koinViewModel(),
     characterBundle: CharacterDataBundle
 ) {
@@ -52,7 +54,7 @@ fun AnimatedVisibilityScope.DetailCharacterDestScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DetailCharacterScreenConstraintDestPreview() {
+fun DetailCharacterScreenPreview() {
     val characterBundle = CharacterDataBundle(
         0,
         null,

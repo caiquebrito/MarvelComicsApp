@@ -4,6 +4,8 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.marvelcomics.brito.presentation.home.HomeViewModel
+import com.marvelcomics.brito.presentation.navdestination.HomeNavGraph
 import com.marvelcomics.brito.presentation.search.SearchUiEffect
 import com.marvelcomics.brito.presentation.search.SearchViewModel
 import com.marvelcomics.brito.presentation.ui.compose.components.MarvelTransitions
@@ -15,10 +17,12 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import org.koin.androidx.compose.koinViewModel
 
+@HomeNavGraph
 @Destination(style = MarvelTransitions::class)
 @Composable
-fun SearchComposeDestScreen(
+fun SearchComposeScreen(
     viewModel: SearchViewModel = koinViewModel(),
+    homeViewModel: HomeViewModel,
     listIds: IntArray,
     resultNavigator: ResultBackNavigator<Boolean>
 ) {
@@ -28,9 +32,12 @@ fun SearchComposeDestScreen(
             SearchUiEffect.ShowError -> {
                 Toast.makeText(context, "Show Error", Toast.LENGTH_LONG).show()
             }
+
             SearchUiEffect.BackToHome -> {
+                homeViewModel.lastAddedCharacter = "test from another composable"
                 resultNavigator.navigateBack(result = true)
             }
+
             SearchUiEffect.ShowAlreadyAddedError -> {
                 Toast.makeText(context, "Character Already Added", Toast.LENGTH_LONG)
                     .show()
@@ -55,7 +62,7 @@ fun SearchComposeDestScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun SearchScreenConstraintDestPreview() {
+fun SearchComposeScreenPreview() {
     MarvelComicsAppPreview {
         SearchScreenConstraint(
             showLoading = false,

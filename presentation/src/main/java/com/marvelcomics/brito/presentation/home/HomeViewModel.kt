@@ -15,6 +15,8 @@ class HomeViewModel(
 ) :
     ViewModel<HomeUiState, HomeUiEffect>(HomeUiState(showLoading = true)) {
 
+    var lastAddedCharacter: String? = null
+
     fun getLocalCharacters() {
         viewModelScope.launch {
             setState { state ->
