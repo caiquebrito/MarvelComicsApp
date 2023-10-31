@@ -48,7 +48,7 @@ navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navi
 navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
-firebase-crashlytics = "com.google.firebase.crashlytics:2.9.4"
+firebase-crashlytics = "com.google.firebase.crashlytics:2.9.9"
 
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
