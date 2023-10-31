@@ -99,7 +99,7 @@ androidx-test-runner = { module = "androidx.test:runner", version.ref = "android
 
 # Kotlin
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version = "1.8.10" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version = "1.9.20" }
 
 # Coroutines
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
