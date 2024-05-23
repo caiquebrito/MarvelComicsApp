@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
 
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -50,6 +53,12 @@ android {
             "/META-INF/{AL2.0,LGPL2.1}"
         )
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 val debugImplementation = "debugImplementation"
@@ -82,8 +91,9 @@ dependencies {
         implementation(constraintLayout)
         implementation(navigationUi)
         implementation(navigationFragment)
-        androidTestImplementation(test.espressoCore)
         testImplementation(archCoreTesting)
+        testImplementation(ui.test.junit4)
+        debugImplementation(ui.test.manifest)
     }
 
     with(libs.androidx.lifecycle) {
@@ -109,7 +119,6 @@ dependencies {
         testImplementation(mockK)
         testImplementation(junit4)
 
-        implementation(canarinho)
         implementation(google.accompanist.systemuicontroller)
 
         implementation(glide)
@@ -123,10 +132,19 @@ dependencies {
         androidTestImplementation(compose.test.junit4)
 
         debugImplementation(compose.test.manifest)
+
+        testImplementation(robolectric)
     }
 
     with(libs.okhttp) {
         implementation(okhttp)
         implementation(loggingInterceptor)
+    }
+}
+
+tasks.withType<Test> { // Show more test execution information
+    testLogging {
+        events("failed", "passed", "skipped")
+        exceptionFormat = TestExceptionFormat.FULL
     }
 }

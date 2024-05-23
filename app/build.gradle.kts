@@ -58,7 +58,6 @@ dependencies {
 
     with(libs.androidx) {
         implementation(appcompat)
-        androidTestImplementation(test.espressoCore)
     }
 
     with(libs.koin) {
