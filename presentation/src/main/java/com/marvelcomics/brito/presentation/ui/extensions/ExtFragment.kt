@@ -89,14 +89,6 @@ inline fun <reified Effect : UIEffect> Fragment.onEffectTriggered(
     )
 }
 
-fun Fragment.openScreen(direction: NavDirections) {
-    findNavController().navigate(direction)
-}
-
-fun Fragment.openScreen(@IdRes id: Int) {
-    findNavController().navigate(id)
-}
-
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
 }

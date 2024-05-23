@@ -103,8 +103,6 @@ dependencies {
         implementation(material3)
         implementation(google.material)
         implementation(activity)
-        implementation(destination.core)
-        ksp(destination.ksp)
     }
 
     with(libs) {
