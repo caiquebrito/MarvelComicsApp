@@ -13,8 +13,8 @@ kotlin = "1.8.0"
 compileSdk = "33"
 minSdk = "21"
 targetSdk = "33"
-javaVersion = "VERSION_11"
-javaTarget = "11"
+javaVersion = "VERSION_17"
+javaTarget = "17"
 
 # Libs
 coroutines = "1.6.4"
@@ -143,5 +143,6 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 retrofit-gsonConverter = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 retrofit-mockWebServer = "com.squareup.okhttp3:mockwebserver:4.10.0"
 turbine = "app.cash.turbine:turbine:0.12.1"
+gson = "  implementation 'com.google.code.gson:gson:2.10.1'"
 
 [bundles]

@@ -19,6 +19,7 @@ import com.marvelcomics.brito.presentation.search.ui.legacy.SearchFragment
 import com.marvelcomics.brito.presentation.ui.extensions.ItemOffSetDecorationHorizontal
 import com.marvelcomics.brito.presentation.ui.extensions.animateFallRight
 import com.marvelcomics.brito.presentation.ui.extensions.dpToPx
+import com.marvelcomics.brito.presentation.ui.extensions.navigateTo
 import com.marvelcomics.brito.presentation.ui.extensions.onEffectTriggered
 import com.marvelcomics.brito.presentation.ui.extensions.onStateChange
 import com.marvelcomics.brito.presentation.ui.extensions.openScreen
@@ -90,11 +91,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
             is HomeUiEffect.OpenSearchScreen -> {
                 effect.ids?.let {
-                    openScreen(HomeFragmentDirections.navigateToSearchFragment(it.toIntArray()))
+                    navigateTo(HomeFragmentDirections.navigateToSearchFragment(it.toIntArray()))
                 }
             }
             is HomeUiEffect.OpenDetailScreen -> {
-                openScreen(
+                navigateTo(
                     HomeFragmentDirections.navigateToDetailCharacterFragment(
                         effect.entity.fromEntityToBundle()
                     )

@@ -70,7 +70,7 @@ import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppPrevi
 import com.marvelcomics.brito.presentation.ui.compose.theme.MarvelComicsAppTheme
 import com.marvelcomics.brito.presentation.ui.compose.theme.White
 import com.marvelcomics.brito.presentation.ui.compose.theme.White60
-import com.marvelcomics.brito.presentation.ui.extensions.openScreen
+import com.marvelcomics.brito.presentation.ui.extensions.navigateTo
 import com.marvelcomics.brito.presentation.ui.models.MarvelThumbnailAspectRatio
 import com.marvelcomics.brito.presentation.ui.models.fromEntityToBundle
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -136,17 +136,19 @@ class HomeFragmentCompose : Fragment() {
             is HomeUiEffect.ShowError -> {
                 Toast.makeText(requireContext(), "Show Error", Toast.LENGTH_LONG).show()
             }
+
             is HomeUiEffect.OpenSearchScreen -> {
                 effect.ids?.let {
-                    openScreen(
+                    navigateTo(
                         HomeFragmentComposeDirections.navigateToSearchFragmentCompose(
                             it.toIntArray()
                         )
                     )
                 }
             }
+
             is HomeUiEffect.OpenDetailScreen -> {
-                openScreen(
+                navigateTo(
                     HomeFragmentComposeDirections.navigateToDetailCharacterFragmentCompose(
                         effect.entity.fromEntityToBundle()
                     )
