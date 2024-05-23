@@ -32,7 +32,6 @@ coil = "2.2.2"
 compose = "1.4.3"
 compose-compiler = "1.4.3"
 ksp = "1.8.21-1.0.11"
-compose-destination = "1.7.36-beta"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidgradleplugin" }
@@ -122,8 +121,6 @@ compose-constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1
 compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
 compose-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 compose-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
-compose-destination-core = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "compose-destination" }
-compose-destination-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "compose-destination" }
 
 # Google
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version = "0.30.1" }
