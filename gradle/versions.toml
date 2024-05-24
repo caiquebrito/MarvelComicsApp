@@ -30,8 +30,7 @@ glide = "4.15.1"
 koin-compose = "3.5.6"
 junit-jupiter = "5.10.0"
 compose = "1.6.7"
-compose-compiler = "1.4.7"
-ksp = "1.8.21-1.0.11"
+ksp = "2.0.0-1.0.21"
 mockk = "1.13.10"
 
 [plugins]
@@ -52,6 +51,8 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.
 
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
+
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [libraries]
 

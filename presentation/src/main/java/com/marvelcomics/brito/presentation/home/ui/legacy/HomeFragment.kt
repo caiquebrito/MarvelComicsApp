@@ -22,7 +22,6 @@ import com.marvelcomics.brito.presentation.ui.extensions.dpToPx
 import com.marvelcomics.brito.presentation.ui.extensions.navigateTo
 import com.marvelcomics.brito.presentation.ui.extensions.onEffectTriggered
 import com.marvelcomics.brito.presentation.ui.extensions.onStateChange
-import com.marvelcomics.brito.presentation.ui.extensions.openScreen
 import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
 import com.marvelcomics.brito.presentation.ui.models.fromEntityToBundle
 import kotlinx.coroutines.InternalCoroutinesApi

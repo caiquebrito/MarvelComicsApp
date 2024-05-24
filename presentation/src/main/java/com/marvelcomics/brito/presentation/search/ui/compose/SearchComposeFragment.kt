@@ -46,6 +46,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -296,6 +297,7 @@ fun SearchCharacterItemComponent(
     }
 }
 
+const val OUTLINE_FIELD_TEST_TAG = "OutlineFieldSearchTag"
 @Composable
 fun SearchToolbarComponent(searchCharacterByName: (String) -> Unit, modifier: Modifier) {
     Row(
@@ -341,7 +343,7 @@ fun SearchToolbarComponent(searchCharacterByName: (String) -> Unit, modifier: Mo
                 focusManager.clearFocus()
                 searchCharacterByName.invoke(text.text)
             }),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().testTag(OUTLINE_FIELD_TEST_TAG)
         )
     }
 }

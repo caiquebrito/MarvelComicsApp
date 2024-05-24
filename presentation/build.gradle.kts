@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation.safeargs.kotlin)
     alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.compose.compiler)
 }
 
 kapt {
@@ -19,10 +20,13 @@ android {
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    testOptions {
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     compileOptions {
@@ -36,10 +40,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     buildFeatures {

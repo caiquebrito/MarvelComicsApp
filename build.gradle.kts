@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.navigation.safeargs.kotlin) apply false
     alias(libs.plugins.devtools.ksp) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 allprojects {
