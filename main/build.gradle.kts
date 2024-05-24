@@ -41,6 +41,12 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.javaTarget.get()
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    namespace = "com.marvelcomics.brito.di"
 }
 
 dependencies {

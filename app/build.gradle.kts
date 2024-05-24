@@ -43,6 +43,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     packagingOptions {
@@ -50,6 +51,8 @@ android {
             "/META-INF/{AL2.0,LGPL2.1}"
         )
     }
+
+    namespace = "com.marvelcomics.brito"
 }
 
 dependencies {

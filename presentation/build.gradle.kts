@@ -2,7 +2,6 @@
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -59,6 +58,8 @@ android {
             isIncludeAndroidResources = true
         }
     }
+
+    namespace = "com.marvelcomics.brito.presentation"
 }
 
 val debugImplementation = "debugImplementation"
@@ -92,8 +93,6 @@ dependencies {
         implementation(navigationUi)
         implementation(navigationFragment)
         testImplementation(archCoreTesting)
-        testImplementation(ui.test.junit4)
-        debugImplementation(ui.test.manifest)
     }
 
     with(libs.androidx.lifecycle) {
@@ -113,6 +112,8 @@ dependencies {
         implementation(material3)
         implementation(google.material)
         implementation(activity)
+        testImplementation(test.junit4)
+        debugImplementation(test.manifest)
     }
 
     with(libs) {

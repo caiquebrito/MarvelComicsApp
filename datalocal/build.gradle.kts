@@ -24,6 +24,8 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.javaTarget.get()
     }
+
+    namespace = "com.marvelcomics.brito.datalocal"
 }
 
 dependencies {
