@@ -23,11 +23,14 @@ class SearchViewModel(
 
     private var listIds: List<Int>? = null
 
+    var searchCalled = false
+
     fun setListIds(ids: List<Int>) {
         listIds = ids
     }
 
     fun searchCharacterByName(name: String) {
+        searchCalled = true
         viewModelScope.launch {
             setState { state ->
                 state.copy(isIdle = false, showLoading = true)
