@@ -17,7 +17,7 @@ javaVersion = "VERSION_17"
 javaTarget = "17"
 
 # Libs
-coroutines = "1.7.3"
+coroutines = "1.10.2"
 navigation = "2.5.3"
 okhttp = "4.10.0"
 retrofit = "3.0.0"
