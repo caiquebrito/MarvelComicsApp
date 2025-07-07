@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.marvelcomics.brito.marvelcomics"
+    namespace = "com.marvelcomics.brito"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

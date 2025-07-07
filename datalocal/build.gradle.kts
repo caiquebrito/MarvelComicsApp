@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.marvelcomics.brito.marvelcomics"
+    namespace = "com.marvelcomics.brito.datalocal"
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()

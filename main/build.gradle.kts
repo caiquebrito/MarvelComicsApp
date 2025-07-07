@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.marvelcomics.brito.marvelcomics"
+    namespace = "com.marvelcomics.brito.di"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     buildFeatures {

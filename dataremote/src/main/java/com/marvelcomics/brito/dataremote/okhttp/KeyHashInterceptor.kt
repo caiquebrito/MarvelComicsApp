@@ -19,7 +19,7 @@ class KeyHashInterceptor(
             e.printStackTrace()
         }
         var request = chain.request()
-        val url = request.url()
+        val url = request.url
             .newBuilder()
             .addQueryParameter(TIMESTAMP_KEY, timestamp)
             .addQueryParameter(APIKEY_KEY, publicKey)

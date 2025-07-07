@@ -17,12 +17,10 @@ import com.marvelcomics.brito.presentation.home.HomeViewModel
 import com.marvelcomics.brito.presentation.home.ui.legacy.adapter.HomeCardAdapter
 import com.marvelcomics.brito.presentation.search.ui.legacy.SearchFragment
 import com.marvelcomics.brito.presentation.ui.extensions.ItemOffSetDecorationHorizontal
-import com.marvelcomics.brito.presentation.ui.extensions.animateFallRight
 import com.marvelcomics.brito.presentation.ui.extensions.dpToPx
 import com.marvelcomics.brito.presentation.ui.extensions.navigateTo
 import com.marvelcomics.brito.presentation.ui.extensions.onEffectTriggered
 import com.marvelcomics.brito.presentation.ui.extensions.onStateChange
-import com.marvelcomics.brito.presentation.ui.extensions.openScreen
 import com.marvelcomics.brito.presentation.ui.extensions.viewBinding
 import com.marvelcomics.brito.presentation.ui.models.fromEntityToBundle
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -81,7 +79,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         } ?: getEmptyStateAdapter()
-        recyclerviewMarvelCharacters.animateFallRight()
     }
 
     private fun handleEffects(effect: HomeUiEffect) {
@@ -89,11 +86,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             is HomeUiEffect.ShowError -> {
                 Toast.makeText(requireContext(), "Show Error", Toast.LENGTH_LONG).show()
             }
+
             is HomeUiEffect.OpenSearchScreen -> {
                 effect.ids?.let {
                     navigateTo(HomeFragmentDirections.navigateToSearchFragment(it.toIntArray()))
                 }
             }
+
             is HomeUiEffect.OpenDetailScreen -> {
                 navigateTo(
                     HomeFragmentDirections.navigateToDetailCharacterFragment(
