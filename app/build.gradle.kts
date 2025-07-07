@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    namespace = "com.marvelcomics.brito.marvelcomics"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -13,9 +14,12 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    lint {
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     buildTypes {

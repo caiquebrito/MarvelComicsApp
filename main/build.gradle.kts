@@ -7,12 +7,21 @@ plugins {
 }
 
 android {
+    namespace = "com.marvelcomics.brito.marvelcomics"
     compileSdk = libs.versions.compileSdk.get().toInt()
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    lint {
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     buildTypes {

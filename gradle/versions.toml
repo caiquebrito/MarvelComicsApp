@@ -7,12 +7,12 @@ gradle-ktlint = "12.3.0"
 gradle-detekt = "1.23.8"
 
 # Kotlin
-kotlin = "2.2.0"
+kotlin = "2.1.20"
 
 # Default Config
-compileSdk = "33"
-minSdk = "21"
-targetSdk = "33"
+compileSdk = "35"
+minSdk = "26"
+targetSdk = "34"
 javaVersion = "VERSION_17"
 javaTarget = "17"
 
@@ -46,6 +46,7 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
 navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.4"
 
@@ -65,9 +66,9 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 androidx-activity-compose = "androidx.activity:activity-compose:1.10.1"
 androidx-annotation = "androidx.annotation:annotation:1.9.1"
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.1"
-androidx-archCoreTesting = "androidx.arch.core:core-testing:2.2.0"
+androidx-archCoreTesting = "androidx.arch.core:core-testing:2.1.0"
 androidx-constraintLayout = "androidx.constraintlayout:constraintlayout:2.2.1"
-androidx-coreKtx = {module = "androidx.core:core-ktx", version.ref = "kotlin" }
+androidx-core = "androidx.core:core-ktx:1.16.0"
 androidx-recyclerView = "androidx.recyclerview:recyclerview:1.4.0"
 navigation-safeArgs-androidgradleplugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 androidx-navigationUi = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }

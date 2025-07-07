@@ -3,6 +3,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation.safeargs.kotlin)
@@ -14,13 +15,17 @@ kapt {
 }
 
 android {
+    namespace = "com.marvelcomics.brito.marvelcomics"
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    lint {
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     compileOptions {
@@ -53,7 +58,6 @@ android {
 }
 
 val debugImplementation = "debugImplementation"
-
 dependencies {
     implementation(project(":data"))
     implementation(project(":entity"))
@@ -78,7 +82,7 @@ dependencies {
         implementation(lifecycle.common.java8)
         implementation(recyclerView)
         implementation(appcompat)
-        implementation(coreKtx)
+        implementation(core)
         implementation(constraintLayout)
         implementation(navigationUi)
         implementation(navigationFragment)
